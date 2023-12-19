@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <question>
+        <text>Какой проходной</text>
+        <intent><intent_self>балл</intent_self></intent>
+        <text>в</text>
+        <intent>
+            <value>2020</value>
+            <intent_self>году</intent_self>
+        </intent>
+        <text>?</text>
+    </question>
+
+
+
