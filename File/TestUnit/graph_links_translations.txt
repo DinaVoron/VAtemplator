@@ -1,0 +1,22 @@
+ACL: какой? 
+ACOMP: как? 
+ADVCL: по какой причине?  
+ADVMOD: как? 
+AGENT: кем?
+AMOD: какой?
+APPOS: кто?
+ATTR: что?
+CCOMP: что?
+COMPOUND: кого?/чего?
+CONJ: и
+CSUBJPASS:что?
+DATIVE: кому/чему?
+DET: кто? что?
+DOBJ: кого? что?
+EXPL: что?
+NEG: не
+NOUNMOD: кого? чего?
+OPRD: какой?
+POSS: кого? чего?
+PREDET: какой?
+ROOT: главное слово

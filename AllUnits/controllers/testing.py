@@ -1,6 +1,6 @@
 import logging
 import xml.etree.ElementTree as ET
-from state import set_debug
+from debug import set_debug
 
 
 def send_log(text, place):
@@ -83,21 +83,3 @@ def automatic_testing():
             res += 1
     print("Успешно пройдено {} из {} тестов!".format(res, q_len))
     return res
-
-
-# tree = ET.parse("info.xml")
-# root = tree.getroot()
-# arr = root.findall("intent")
-
-# Пробуем делать парсинг xml строки
-# tree = ET.ElementTree(ET.fromstring("<qu><text></text></qu>"))
-# root = tree.getroot()
-# arr = root.findall("text")
-
-# for intent in arr:
-#     print(intent.find("intent_self").text)
-#
-# print(get_question("info.xml"))
-
-
-automatic_testing()
