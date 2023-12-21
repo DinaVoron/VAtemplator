@@ -1,0 +1,119 @@
+12-21 10:53 "pass one two three" in main
+12-21 10:53 "answer" in sub1
+12-21 10:55 "pass one two three" in main
+12-21 10:55 "answer" in sub1
+12-21 10:59 "pass one two three" in main
+12-21 10:59 "answer" in sub1
+--------
+12-21 11:09 "pass one two three" in main
+12-21 11:09 "answer" in sub1
+--------
+12-21 11:09 "pass one two three" in main
+12-21 11:09 "answer" in sub1
+--------
+12-21 11:10 "" in main
+12-21 11:10 "" in main
+12-21 11:10 "" in main
+12-21 11:10 "" in main
+12-21 11:10 "" in main
+12-21 11:11 "pass one two three" in main
+12-21 11:11 "answer" in sub1
+--------
+12-21 11:11 "" in main
+12-21 11:11 "" in main
+12-21 11:11 "" in main
+12-21 11:21 "pass one two three" in main
+12-21 11:21 "answer" in sub1
+--------
+12-21 11:21 "" in main
+12-21 11:21 "" in main
+12-21 11:21 "" in main
+12-21 11:22 "pass one two three" in main
+12-21 11:22 "answer" in sub1
+--------
+12-21 11:22 "" in main
+12-21 11:22 "" in main
+12-21 11:22 "" in main
+12-21 11:22 "" in main
+12-21 11:23 "pass one two three" in main
+12-21 11:23 "answer" in sub1
+--------
+12-21 11:23 "" in main
+12-21 11:23 "" in main
+12-21 11:24 "pass one two three" in main
+12-21 11:24 "answer" in sub1
+--------
+12-21 11:24 "pass" in main
+12-21 11:24 "answer" in sub1
+--------
+12-21 11:24 "pass" in main
+12-21 11:24 "answer" in sub1
+--------
+12-21 11:25 "pass one two three" in main
+12-21 11:25 "answer" in sub1
+--------
+12-21 11:25 "a" in main
+12-21 11:25 "a pass" in main
+--------
+12-21 11:25 "a pass" in main
+12-21 11:25 "answer" in sub1
+--------
+12-21 11:26 "a pass one" in sub1
+12-21 11:26 "answer" in sub12
+--------
+12-21 11:26 "a pass one" in sub1
+12-21 11:26 "answer" in sub12
+--------
+12-21 11:26 "a pass one stop" in sub12
+12-21 11:28 "pass one two three" in main
+12-21 11:28 "answer" in sub1
+--------
+12-21 11:28 "a" in main
+12-21 11:28 "a pass" in main
+12-21 11:28 "answer" in sub1
+--------
+12-21 11:28 "a pass" in main
+12-21 11:28 "answer" in sub1
+--------
+12-21 11:28 "a pass one" in sub1
+12-21 11:28 "answer" in sub12
+--------
+12-21 11:28 "a pass one" in sub1
+12-21 11:28 "answer" in sub12
+--------
+12-21 11:28 "a pass one two" in sub12
+12-21 11:28 "a pass one two stop" in sub12
+12-21 11:29 "pass one two three" in main
+12-21 11:29 "answer" in sub1
+--------
+12-21 11:29 "a" in main
+12-21 11:29 "a pass" in main
+12-21 11:29 "answer" in sub1
+--------
+12-21 11:29 "a pass" in main
+12-21 11:29 "answer" in sub1
+--------
+12-21 11:29 "a pass one" in sub1
+12-21 11:29 "answer" in sub12
+--------
+12-21 11:29 "a pass one" in sub1
+12-21 11:29 "answer" in sub12
+--------
+12-21 11:29 "a pass one two" in sub12
+12-21 11:29 "a pass one two stop" in sub12
+12-21 11:32 "pass one two three" in main
+12-21 11:32 "answer" in sub1
+--------
+12-21 11:32 "a" in main
+12-21 11:32 "a pass" in main
+12-21 11:32 "answer" in sub1
+--------
+12-21 11:32 "a pass" in main
+12-21 11:32 "answer" in sub1
+--------
+12-21 11:32 "a pass one" in sub1
+12-21 11:32 "answer" in sub12
+--------
+12-21 11:32 "a pass one" in sub1
+12-21 11:32 "answer" in sub12
+--------
