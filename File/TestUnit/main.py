@@ -4,14 +4,19 @@ from state import set_debug
 
 
 def send_log(text, place):
-    logging.basicConfig(filename='temp.log', encoding='utf-8', level=logging.INFO,
-                        force=True, format='%(asctime)s %(message)s', datefmt='%m-%d %H:%M')
+    logging.basicConfig(
+        filename="temp.log",
+        encoding="utf-8",
+        level=logging.INFO,
+        force=True,
+        format="%(asctime)s %(message)s",
+        datefmt="%m-%d %H:%M")
     logging.info("\"" + text + "\"" + " in " + str(place))
 
 
 def print_info(filename):
-    f1 = open('temp.log', 'r+')
-    f2 = open(filename, 'a+')
+    f1 = open("temp.log", "r+")
+    f2 = open(filename, "a+'")
     f2.write(f1.read())
     f2.write('--------\n')
     f1.truncate(0)
@@ -21,14 +26,14 @@ def print_info(filename):
 
 def send_res(res):
     match res:
-        case 'OK':
-            filename = 'OK.log'
+        case "OK":
+            filename = "OK.log"
             print_info(filename)
-        case 'ERR':
-            filename = 'ERR.log'
+        case "ERR":
+            filename = "ERR.log"
             print_info(filename)
-        case 'NF':
-            filename = 'NF.log'
+        case "NF":
+            filename = "NF.log"
             print_info(filename)
 
 
@@ -36,12 +41,12 @@ def get_text_question(elem, question):
     for child in elem:
         get_text_question(child, question)
         if child.text is not None and child.text.find('\n'):
-            question[0] += child.text + ' '
+            question[0] += child.text + " "
 
 
 # функция, приводящая xml в вопрос
 def get_question(filename):
-    question = ['']
+    question = [""]
     tree = ET.parse(filename)
     root = tree.getroot()
     get_text_question(root, question)
@@ -49,11 +54,11 @@ def get_question(filename):
 
 
 def get_ok(answers, questions):
-    f1 = open('OK.log', 'r')
+    f1 = open("OK.log", "r")
     lines = f1.readlines()
     cur = 0
     while cur < len(lines):
-        if lines[cur][0] == '-':
+        if lines[cur][0] == "-":
             cur += 1
             continue
         else:
@@ -83,21 +88,6 @@ def automatic_testing():
             res += 1
     print("Успешно пройдено {} из {} тестов!".format(res, q_len))
     return res
-
-
-# tree = ET.parse("info.xml")
-# root = tree.getroot()
-# arr = root.findall("intent")
-
-# Пробуем делать парсинг xml строки
-# tree = ET.ElementTree(ET.fromstring("<qu><text></text></qu>"))
-# root = tree.getroot()
-# arr = root.findall("text")
-
-# for intent in arr:
-#     print(intent.find("intent_self").text)
-#
-# print(get_question("info.xml"))
 
 
 automatic_testing()
