@@ -30,8 +30,12 @@ def graph_testing(smgraph):
         for j in range(i+1, len(smgraph)):
             if smgraph[j].start == next:
                 print("Не хотите добавить вопрос с такими интентами?")
-                print(nodes[smgraph[i].start - 1].text + " " + nodes[smgraph[i].end - 1].text + " " + nodes[smgraph[j].end - 1].text)
-
+                print(
+                    nodes[smgraph[i].start - 1].text
+                    + " "
+                    + nodes[smgraph[i].end - 1].text
+                    + " "
+                    + nodes[smgraph[j].end - 1].text)
 
 
 n1 = Node(1, "Балл", "intent")
@@ -41,14 +45,9 @@ n4 = Node(4, "Год", "intent")
 n5 = Node(5, "Программная инженерия", "value")
 n6 = Node(6, "210", "value")
 
-nodes = []
-nodes.append(n1)
-nodes.append(n2)
-nodes.append(n3)
-nodes.append(n4)
-nodes.append(n5)
-nodes.append(n6)
-
+nodes = [
+    n1, n2, n3, n4, n5, n6
+]
 
 link1 = Link(2,5, "DET")
 link2 = Link(5, 4, "ATTR")
@@ -56,14 +55,9 @@ link3 = Link(4, 3, "DET")
 link4 = Link(3, 1, "ATTR")
 link5 = Link(1, 6, "DET")
 
-graph = []
-
-graph.append(link1)
-graph.append(link2)
-graph.append(link3)
-graph.append(link4)
-graph.append(link5)
-
+graph = [
+    link1, link2, link3, link4, link5
+]
 
 graph_testing(graph)
 
