@@ -117,3 +117,106 @@
 12-21 11:32 "a pass one" in sub1
 12-21 11:32 "answer" in sub12
 --------
+12-21 11:32 "a pass one two" in sub12
+12-21 11:32 "a pass one two stop" in sub12
+12-24 15:30 "pass one two three" in main
+12-24 15:30 "answer" in sub1
+--------
+12-24 15:31 "pass one two three" in main
+12-24 15:31 "answer" in sub1
+--------
+12-24 15:31 "pass one two three" in main
+12-24 15:31 "answer" in sub1
+--------
+12-24 15:32 "pass one two three" in main
+12-24 15:32 "answer" in sub1
+--------
+12-24 15:33 "pass one two three" in main
+12-24 15:33 "answer" in sub1
+--------
+12-24 15:33 "pass one two three" in main
+12-24 15:33 "answer" in sub1
+--------
+12-24 15:50 "pass one two three" in main
+12-24 15:50 "answer" in sub1
+--------
+12-24 15:51 "pass one two three" in main
+12-24 15:51 "answer" in sub1
+--------
+12-24 15:52 "pass one two three" in main
+12-24 15:52 "answer" in sub1
+--------
+12-24 15:53 "pass one two three" in main
+12-24 15:53 "answer" in sub1
+--------
+12-24 15:54 "pass one two three" in main
+12-24 15:54 "answer" in sub1
+--------
+12-24 15:55 "pass one two three" in main
+12-24 15:55 "answer" in sub1
+--------
+12-24 15:56 "pass one two three" in main
+12-24 15:56 "answer" in sub1
+--------
+12-24 15:57 "pass one two three" in main
+12-24 15:57 "answer" in sub1
+--------
+12-24 15:58 "pass one two three" in main
+12-24 15:58 "answer" in sub1
+--------
+12-24 15:58 "pass one two three" in main
+12-24 15:58 "answer" in sub1
+--------
+12-24 16:10 "pass one two three" in main
+12-24 16:10 "answer" in sub1
+--------
+12-24 16:11 "pass one two three" in main
+12-24 16:11 "answer" in sub1
+--------
+12-24 16:11 "pass one two three" in main
+12-24 16:11 "answer" in sub1
+--------
+12-24 16:12 "pass one two three" in main
+12-24 16:12 "answer" in sub1
+--------
+12-25 13:45 "pass one two three" in main
+12-25 13:45 "answer" in sub1
+--------
+12-25 13:45 "a" in main
+12-25 13:46 "a первый" in main
+12-25 13:46 "a первый one" in main
+12-25 13:46 "a первый one two" in main
+12-25 13:46 "a первый one two three" in main
+12-25 13:46 "a первый one two three pass" in main
+12-25 13:46 "answer" in sub1
+--------
+12-25 13:46 "a первый one two three pass" in main
+12-25 13:46 "answer" in sub1
+--------
+12-25 13:47 "a первый one two three pass stop" in sub1
+12-25 13:47 "answer" in sub12
+--------
+12-25 13:47 "a первый one two three pass stop" in sub1
+12-25 13:47 "answer" in sub12
+--------
+01-11 09:25 "one" in main
+01-11 09:25 "one pass" in main
+01-11 09:25 "answer" in sub1
+--------
+01-11 09:25 "one pass" in main
+01-11 09:25 "answer" in sub1
+--------
+01-11 09:25 "one pass one" in sub1
+01-11 09:25 "answer" in sub12
+--------
+01-11 09:25 "one pass one" in sub1
+01-11 09:25 "answer" in sub12
+--------
+01-11 09:25 "one pass one stop" in sub12
+01-11 09:28 "1" in main
+01-11 09:28 "1 pass" in main
+01-11 09:28 "answer" in sub1
+--------
+01-11 09:28 "1 pass" in main
+01-11 09:28 "answer" in sub1
+--------
