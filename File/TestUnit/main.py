@@ -1,17 +1,51 @@
 import logging
 import xml.etree.ElementTree as ET
 from state import set_debug
+import pymorphy3
+morph = pymorphy3.MorphAnalyzer()
 
-
-def send_log(text, place):
+def send_log(text, intents_values, place):
     logging.basicConfig(
         filename="temp.log",
         encoding="utf-8",
         level=logging.INFO,
         force=True,
         format="%(asctime)s %(message)s",
-        datefmt="%m-%d %H:%M")
-    logging.info("\"" + text + "\"" + " in " + str(place))
+        datefmt="%m-%d %H:%M:%S")
+    logging.info(make_log_message(text, intents_values, place))
+
+
+def intent_array(intents_values):
+    intent_values_new = {}
+    for i in range(len(intents_values)):
+        intent_values_new[intents_values[i]["intent"]] = intents_values[i]["meaning"]
+    return intent_values_new
+
+
+def log_message(text, intents_values_dic, place):
+    intent_values = intent_array(intents_values_dic)
+    res = ""
+    text_arr = []
+    intent_arr = []
+    text_split = text.split(" ")
+    for word in text_split:
+        if morph.parse(word)[0].normal_form in intent_values:
+            if len(text_arr) == 0:
+                res += "<intent>" + word + "</intent>"
+            else:
+                res += " ".join(text_arr) + "</text><intent>" + word + "</intent>"
+                text_arr = []
+        else:
+            if len(text_arr) == 0:
+                res += "<text>"
+                text_arr.append(word)
+            else:
+                text_arr.append(word)
+    if len(text_arr) != 0:
+        res += " ".join(text_arr) + "</text>"
+    return res
+
+
 
 
 def print_info(filename):
@@ -90,4 +124,15 @@ def automatic_testing():
     return res
 
 
-automatic_testing()
+test_text = "Скажи средний балл по программной инженерии в 2020 году"
+test_intents_values = [
+    {"intent": "балл", "meaning": None},
+    {"intent": "год", "meaning": 2020}
+]
+test_place = "2030ed"
+
+
+
+# print(intent_array(test_intents_values))
+print(log_message(test_text, test_intents_values, test_place))
+
