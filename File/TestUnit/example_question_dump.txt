@@ -13,3 +13,9 @@ send_log("10 баллов", 2)
 send_log("<question><text>Сколько</text><intent><intent_self>дополнительных баллов</intent_self></intent><text>при поступлении получают</text><intent><value>мастера спорта</value></intent><text>?</text>", 2)
 send_log("10 баллов", 2)
 send_res("OK")
+
+[sg.Button("Перейти к модулю тестирования")]
+
+        if event == "Перейти к модулю тестирования":
+            
+            window.close()
