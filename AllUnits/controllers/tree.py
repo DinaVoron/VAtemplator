@@ -3,6 +3,8 @@ import pickle as pc
 import PySimpleGUI as sg
 import pyttsx3
 import speech_recognition as sr
+from interface import *
+from graph import *
 
 engine = pyttsx3.init("sapi5")
 voices = engine.getProperty("voices")
@@ -246,15 +248,9 @@ class SceneTree:
 
 def window_tree(tree):
     layout = [
-        [sg.Text("Hello from PySimpleGUI")],
-        [sg.Button("Вывести дерево")],
-        [sg.InputText()],
-        [sg.Button("Найти интенты вопроса")],
-        [sg.Button("Перейти в сцену")],
-        [sg.Output(size=(100, 10), key="-Output-")],
-        [sg.Button("Закрыть")],
-        [sg.Button("Очистить")],
-        [sg.Button("Перейти к модулю тестирования")]
+        [sg.TabGroup([[sg.Tab('Вкладка 1', create_tab1_layout(), key='-TAB1-'),
+        sg.Tab('Вкладка 2', create_tab2_layout(), key='-TAB2-'),
+        sg.Tab('Вкладка 3', create_tab3_layout(), key='-TAB3-')]], tab_location='left')]
     ]
 
     window = sg.Window("Demo", layout)
@@ -283,6 +279,18 @@ def window_tree(tree):
     window.close()
 
 
+text = """
+Проходной балл по направлению подготовки "Прикладная математика и информатика" в 2020 году составил 197 баллов.
+Проходной балл по направлению подготовки "Прикладная математика и информатика" в 2021 году составил 211 баллов.
+Проходной балл по направлению подготовки "Прикладная математика и информатика" в 2022 году составил 200 баллов.
+Проходной балл по направлению подготовки "Прикладная математика и информатика" в 2023 году составил 230 баллов.
+В 2020 году по направлению подготовки "Математика и компьютерные науки" проходной балл равен 190.
+В 2021 году по направлению подготовки "Математика и компьютерные науки" проходной балл равен 172.
+В 2022 году по направлению подготовки "Математика и компьютерные науки" проходной балл равен 204.
+В 2023 году по направлению подготовки "Математика и компьютерные науки" проходной балл равен 200.
+
+"""
+
 def main():
     main_scene = Scene(name="main", answer=["a", "intent", "b"], pass_conditions=[["pass"]],
                        questions=[[IntentTemplate("направление"), "значение", IntentValue("направление"),
@@ -300,6 +308,9 @@ def main():
     print("---")
     tree.print_pretty_nodes()
     main_scene.print_answer()
+
+    graph = init_graph()
+    graph = graph_nlp_text(graph, text)
 
     window_tree(tree)
 

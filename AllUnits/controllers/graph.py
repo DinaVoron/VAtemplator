@@ -2,9 +2,9 @@ import re
 from enum import Enum
 import spacy
 from spacy.tokens import Span, Doc
+from spacy.symbols import NOUN, PRON, PROPN
 import networkx as nx
 from pyvis.network import Network
-from spacy.symbols import NOUN, PRON, PROPN
 
 
 class TokenType(Enum):
@@ -136,6 +136,9 @@ class GraphNode:
         self.p_pos = token.pos
         self.f_type = token.f_node_type
 
+    def is_text(self, text):
+        return text == " ".join(self.p_text)
+
     @property
     def text(self):
         return self.p_text
@@ -184,14 +187,6 @@ class Graph:
         self.p_graph = nx.DiGraph()
         self.static_index = 1
         self.static_layer = 1
-
-    @property
-    def nodes(self):
-        return self.p_graph.nodes
-
-    @property
-    def edges(self):
-        return self.p_graph.edges
 
     def visible(self):
         shape = ["triangle", "dot", "dot", "box"]
@@ -300,7 +295,7 @@ class Graph:
                 self.p_graph.add_node(
                     self.static_index + i,
                     data=GraphNode(token),
-                    layer=self.static_layer
+                    layer=[self.static_layer]
                 )
 
         for i, token in enumerate(tokens):
@@ -345,6 +340,62 @@ class Graph:
         self.static_index += len(tokens)
         self.static_layer += 1
 
+    def search(self, filter):
+        list_layer = []
+
+        for elem in filter:
+            if self.p_graph.has_node(elem["intent"]):
+                node_intent = self.p_graph.nodes[elem["intent"]]
+            else:
+                node_intent = None
+            # Входящие связи
+            in_edges = list(self.p_graph.in_edges(elem["intent"]))
+            # Исходящие связи
+            out_edges = list(self.p_graph.out_edges(elem["intent"]))
+            if node_intent is not None and node_intent["data"].is_intent:
+                if elem["meaning"] is not None:
+                    layer = []
+                    for meaning in elem["meaning"]:
+                        for edge in in_edges:
+                            node_in_edge = self.p_graph.nodes[edge[0]]
+                            if node_in_edge["data"].is_meaning and node_in_edge["data"].is_text(meaning):
+                                layer += node_in_edge["layer"]
+                    list_layer.append(sorted(list(set(layer))))
+            else:
+                list_layer.append([])
+
+        common_set = set(list_layer[0]).intersection(*list_layer[1:])
+        result_list_layer = list(common_set)
+
+        for elem in filter:
+            if self.p_graph.has_node(elem["intent"]):
+                node_intent = self.p_graph.nodes[elem["intent"]]
+            else:
+                node_intent = None
+            # Входящие связи
+            in_edges = list(self.p_graph.in_edges(elem["intent"]))
+            # Исходящие связи
+            out_edges = list(self.p_graph.out_edges(elem["intent"]))
+            if node_intent is not None and node_intent["data"].is_intent:
+                if elem["meaning"] is None:
+                    for edge in in_edges:
+                        node_in_edge = self.p_graph.nodes[edge[0]]
+                        if node_in_edge["data"].is_meaning and has_common_element(result_list_layer, node_in_edge["layer"]):
+                            if elem["meaning"] is None:
+                                elem["meaning"] = [" ".join(node_in_edge["data"].text)]
+                            else:
+                                elem["meaning"].append(" ".join(node_in_edge["data"].text))
+
+        return filter
+
+    @property
+    def nodes(self):
+        return self.p_graph.nodes
+
+    @property
+    def edges(self):
+        return self.p_graph.edges
+
     @property
     def list_intent(self):
         return [self.p_graph.nodes[i]['data'] for i in self.p_graph.nodes if self.p_graph.nodes[i]['data'].is_intent]
@@ -367,7 +418,6 @@ class Graph:
             return {"text": " ".join(node['data'].text), "layer": node['layer'], "type": node['data'].type,
                     "intent": node['data'].is_intent, "meaning": node['data'].is_meaning}
         return None
-
 
     def parsing_edge(self, i, j):
         if self.p_graph.has_edge(i, j):
@@ -499,6 +549,7 @@ def Create_a_list_of_entity_clusters(doc, sentence: spacy.tokens.span.Span):
 
 def create_list_token(doc, sentence: spacy.tokens.span.Span):
     conj = doc.vocab.strings.add("conj")
+    root = doc.vocab.strings.add("ROOT")
     list_dep = []
     list_head = []
 
@@ -510,7 +561,7 @@ def create_list_token(doc, sentence: spacy.tokens.span.Span):
         head = word.head
         fl = False
 
-        while dep == conj or head.is_stop or head.is_punct or head.is_digit:
+        while dep == conj or dep != root and (head.is_stop or head.is_punct or head.is_digit):
             if not fl:
                 if dep == conj:
                     list_dep += [(word.i, "")]
@@ -618,41 +669,21 @@ def auto_allocation_of_intents_and_values(tokens, list_head, list_dep):
     return tokens
 
 
-def summarize_text(original_text, sentences_count=3):
-    """
-    Create shortened text from the received text.
-
-    :param original_text:   The input text to be shortened.
-    :type original_text:    str
-    :param sentences_count: The number of sentences in the summary (default is 3).
-    :type sentences_count:  int
-    :return:                A shortened version of the input text.
-    :rtype:                 str
-    """
-    parser = PlaintextParser.from_string(original_text, Tokenizer('russian'))
-    summarizer = LsaSummarizer()
-    summary = summarizer(parser.document, sentences_count)
-
-    short_text = " ".join(str(sentence) for sentence in summary)
-    return short_text
+def has_common_element(array1, array2):
+    for element in array1:
+        if element in array2:
+            return True
+    return False
 
 
 def init_graph():
     return Graph()
 
+
 def graph_nlp_text(graph, text):
     bool_is_print = False
-    bool_is_short_text = False
-    degree_short_text = 0.8
 
     text = re.sub(r"\s+", " ", text, flags=re.DOTALL)
-
-    if bool_is_short_text:
-        if bool_is_print:
-            print(f"Исходный текст:    {text}")
-        text = summarize_text(text, sentences_count=max(1, int(len(sent_tokenize(text)) * degree_short_text)))
-        if bool_is_print:
-            print(f"Сокращенный текст: {text}")
 
     nlp = spacy.load("ru_core_news_sm")
     doc = nlp(text)
@@ -676,7 +707,7 @@ def graph_nlp_text(graph, text):
     return graph
 
 
-# text = """Проходные баллы по направлению подготовки бакалавриата и специалитета за 2020, 2021, 2022, 2023 год.
+'''# text = """Проходные баллы по направлению подготовки бакалавриата и специалитета за 2020, 2021, 2022, 2023 год.
 #     Правила приема в ДВФУ на обучение по программам бакалавриата в 2023 году определяют особенности приема в федеральное государственное автономное образовательное учреждение высшего образования Дальневосточный федеральный университет / ДВФУ / Университет.
 #     Правила приема в ДВФУ на обучение по программам специалитета в 2023 году определяют особенности приема в федеральное государственное автономное образовательное учреждение высшего образования Дальневосточный федеральный университет / ДВФУ / Университет.
 #     Правила приема в ДВФУ на обучение по программам магистратуры в 2023 году определяют особенности приема в федеральное государственное автономное образовательное учреждение высшего образования Дальневосточный федеральный университет / ДВФУ / Университет.
@@ -688,9 +719,33 @@ def graph_nlp_text(graph, text):
 #     Завершивших освоение образовательных программ среднего общего образования и успешно прошедших государственную итоговую аттестацию на территориях Донецкой Народной Республики, Луганской Народной Республики, Запорожской области, Херсонской области.
 #     Проходивших обучение за рубежом и вынужденных прервать его в связи с недружественными действиями иностранных государств, на основании частей 7 и 8 статьи 5 Федерального закона от 17 февраля 2023 г. № 19-ФЗ «Об особенностях правового регулирования отношений в сферах образования и науки», а также постановления Правительства Российской Федерации от 3 апреля 2023 г. № 528 «Об утверждении особенностей приема на обучение по образовательным программам высшего образования в 2023 году».
 #     """
-# graph = init_graph()
-# graph = graph_nlp_text(graph, text)
+text = """
+Проходной балл по направлению подготовки "Прикладная математика и информатика" в 2020 году составил 197 баллов.
+Проходной балл по направлению подготовки "Прикладная математика и информатика" в 2021 году составил 211 баллов.
+Проходной балл по направлению подготовки "Прикладная математика и информатика" в 2022 году составил 200 баллов.
+Проходной балл по направлению подготовки "Прикладная математика и информатика" в 2023 году составил 230 баллов.
+В 2020 году по направлению подготовки "Математика и компьютерные науки" проходной балл равен 190.
+В 2021 году по направлению подготовки "Математика и компьютерные науки" проходной балл равен 172.
+В 2022 году по направлению подготовки "Математика и компьютерные науки" проходной балл равен 204.
+В 2023 году по направлению подготовки "Математика и компьютерные науки" проходной балл равен 200.
 
-# print(graph.list_intent)
+"""
+graph = init_graph()
+graph = graph_nlp_text(graph, text)
 
-# graph.visible()
+filter = [{
+        "intent": "подготовка",
+        "meaning": ["прикладной математика", "информатика"]
+    }, {
+        "intent": "балл",
+        "meaning": None
+    }, {
+        "intent": "год",
+        "meaning": ["2022"]
+    }]
+filter = graph.search(filter)
+
+for fltr in filter:
+    print(fltr)
+
+graph.visible()'''
