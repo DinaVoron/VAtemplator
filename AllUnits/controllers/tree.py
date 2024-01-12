@@ -152,6 +152,7 @@ class Scene:
     # Пока intent всегда перед значением
     def get_work_question(self, user_question):
         user_question_list = user_question.split()
+        # привести к начальной форме через PyMorphy (3)
         intent_dict = []
         intent_count = 0
         for question in self.questions:
@@ -234,6 +235,13 @@ class SceneTree:
             new_intent = input()
 
         return True
+
+    def scene_add(self, parent_scene, name=None, children=None, pass_conditions=None, answer=None, questions=None,
+                 theme=None):
+        new_scene = Scene(name=name, children=children, pass_conditions=pass_conditions, answer=answer,
+                          questions=questions, theme=theme)
+        parent_scene.add_child(new_scene)
+        return new_scene
 
 
 def window_tree(tree):
