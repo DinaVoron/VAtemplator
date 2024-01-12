@@ -2,6 +2,8 @@ import logging
 import xml.etree.ElementTree as ET
 from debug import set_debug
 import pymorphy3
+import PySimpleGUI as sg
+from tree import *
 
 
 class Node(object):
@@ -53,8 +55,9 @@ def print_info(filename):
 
 def intent_array(intents_values):
     intent_values_new = {}
-    for i in range(len(intents_values)):
-        intent_values_new[intents_values[i]["intent"]] = intents_values[i]["meaning"]
+    if intents_values is not None:
+        for i in range(len(intents_values)):
+            intent_values_new[intents_values[i]["intent"]] = intents_values[i]["meaning"]
     return intent_values_new
 
 
@@ -126,7 +129,7 @@ def get_question(filename):
 
 
 def get_ok(answers, questions):
-    f1 = open('OK.log', 'r')
+    f1 = open("OK.log", "r")
     lines = f1.readlines()
     cur = 0
     while cur < len(lines):
@@ -134,9 +137,9 @@ def get_ok(answers, questions):
             cur += 1
             continue
         else:
-            answers.append(lines[cur].split(" ")[2])
+            answers.append(lines[cur].split(" ")[1])
             cur += 1
-            questions.append(lines[cur].split(" ")[2])
+            questions.append(lines[cur].split(" ")[1])
             cur += 1
 
 
@@ -158,11 +161,32 @@ def automatic_testing():
     for i in range(q_len):
         if plug_dialog(question_arr, answers_arr, question_arr[i]) == answers_arr[i]:
             res += 1
-    print("Успешно пройдено {} из {} тестов!".format(res, q_len))
-    return res
+    # print("Успешно пройдено {} из {} тестов!".format(res, q_len))
+    return "Успешно пройдено {} из {} тестов!".format(res, q_len)
 
 
-def graph_verify(smgraph):
+def graph_verify():
+    n1 = Node(1, "Балл", "intent")
+    n2 = Node(2, "Специальность", "intent")
+    n3 = Node(3, "2020", "value")
+    n4 = Node(4, "Год", "intent")
+    n5 = Node(5, "Программная инженерия", "value")
+    n6 = Node(6, "210", "value")
+
+    nodes = [
+        n1, n2, n3, n4, n5, n6
+    ]
+
+    link1 = Link(2, 5, "DET")
+    link2 = Link(5, 4, "ATTR")
+    link3 = Link(4, 3, "DET")
+    link4 = Link(3, 1, "ATTR")
+    link5 = Link(1, 6, "DET")
+
+    smgraph = [
+        link1, link2, link3, link4, link5
+    ]
+
     for i in range(len(smgraph)):
         next = smgraph[i].end
         for j in range(i + 1, len(smgraph)):
@@ -176,36 +200,28 @@ def graph_verify(smgraph):
                     + nodes[smgraph[j].end - 1].text)
 
 
+def window_testing():
+    layout = [
+        [sg.Button("Начать автоматическое тестирование")],
+        [sg.Button("Провести верификацию графа")],
+        [sg.Output(size=(100, 10), key="-Output-")],
+        [sg.Button("Назад")]
+    ]
+    window = sg.Window("Модуль тестирования", layout)
+    event, values = window.read()
+    while True:
+        event, values = window.read()
+        if event == "Начать автоматическое тестирование":
+            print(automatic_testing())
+        if event == "Провести верификацию графа":
+            print(graph_verify())
+        if event == "Закрыть" or event == sg.WIN_CLOSED:
+            break
+        if event == "Назад":
 
-test_text = "Скажи средний балл по программной инженерии в 2020 году"
-test_intents_values = [
-    {"intent": "балл", "meaning": None},
-    {"intent": "год", "meaning": 2020}
-]
-test_place = "2030ed"
+            window_tree()
+            window.close()
+            break
+    window.close()
 
 
-print(log_message(test_text, test_intents_values, test_place))
-
-n1 = Node(1, "Балл", "intent")
-n2 = Node(2, "Специальность", "intent")
-n3 = Node(3, "2020", "value")
-n4 = Node(4, "Год", "intent")
-n5 = Node(5, "Программная инженерия", "value")
-n6 = Node(6, "210", "value")
-
-nodes = [
-    n1, n2, n3, n4, n5, n6
-]
-
-link1 = Link(2, 5, "DET")
-link2 = Link(5, 4, "ATTR")
-link3 = Link(4, 3, "DET")
-link4 = Link(3, 1, "ATTR")
-link5 = Link(1, 6, "DET")
-
-graph = [
-    link1, link2, link3, link4, link5
-]
-
-graph_verify(graph)

@@ -245,15 +245,16 @@ def window_tree(tree):
         [sg.Button("Перейти в сцену")],
         [sg.Output(size=(100, 10), key="-Output-")],
         [sg.Button("Закрыть")],
-        [sg.Button("Очистить")]
+        [sg.Button("Очистить")],
+        [sg.Button("Перейти к модулю тестирования")]
     ]
 
     window = sg.Window("Demo", layout)
     event, values = window.read()
-    text_input = values[0]
 
     while True:
         event, values = window.read()
+        text_input = values[0]
         if event == "Вывести дерево":
             tree.print_pretty_nodes()
         if event == "Очистить":
@@ -265,6 +266,11 @@ def window_tree(tree):
         if event == "Перейти в сцену":
             cur_scene = tree.to_scene(text_input)
             print(cur_scene.name)
+        if event == "Перейти к модулю тестирования":
+            window.close()
+            window_testing()
+            break
+
 
     window.close()
 

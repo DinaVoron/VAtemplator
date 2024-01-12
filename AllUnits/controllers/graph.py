@@ -4,10 +4,6 @@ import spacy
 from spacy.tokens import Span, Doc
 import networkx as nx
 from pyvis.network import Network
-from sumy.parsers.plaintext import PlaintextParser
-from sumy.nlp.tokenizers import Tokenizer
-from sumy.summarizers.lsa import LsaSummarizer
-from nltk.tokenize import sent_tokenize
 from spacy.symbols import NOUN, PRON, PROPN
 
 
