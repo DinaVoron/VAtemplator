@@ -248,13 +248,14 @@ class SceneTree:
 
 def window_tree(tree):
     layout = [
-        [sg.TabGroup([[sg.Tab('Вкладка 1', create_tab1_layout(), key='-TAB1-'),
-        sg.Tab('Вкладка 2', create_tab2_layout(), key='-TAB2-'),
-        sg.Tab('Вкладка 3', create_tab3_layout(), key='-TAB3-')]], tab_location='left')]
+        [sg.TabGroup([[sg.Tab('Диалог', create_tab1_layout(), key='-TAB1-', background_color='#ffffff'),
+        sg.Tab('Тесты', create_tab2_layout(), key='-TAB2-', background_color='#ffffff'),
+        sg.Tab('Сеть', create_tab3_layout(), key='-TAB3-', background_color='#ffffff')]], tab_location='lefttop',
+                     background_color='#ffffff')]
     ]
 
-    window = sg.Window("Demo", layout)
-    event, values = window.read()
+    window = sg.Window("Demo", layout, background_color='#ffffff')
+    # event, values = window.read()
 
     while True:
         event, values = window.read()

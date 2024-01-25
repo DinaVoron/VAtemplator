@@ -3,7 +3,7 @@ import PySimpleGUI as sg
 
 def create_tab1_layout():
     layout = [
-        [sg.Button("Вывести дерево")],
+        [sg.Button("Вывести дерево", button_color='#ffffff on #17C3CE', border_width=0, font="Inter 12 bold")],
         [sg.InputText()],
         [sg.Button("Найти интенты вопроса")],
         [sg.Button("Перейти в сцену")],
@@ -29,3 +29,4 @@ def create_tab3_layout():
         [sg.Button("Назад")]
     ]
     return layout
+
