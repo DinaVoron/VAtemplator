@@ -17,8 +17,8 @@ def create_tab1_layout():
 
 def create_tab2_layout():
     layout = [
-        [sg.Text("Содержимое вкладки 2")],
-        [sg.Button("Назад")]
+        [sg.Text("Статистика работы")],
+        [sg.Text("Успех"), sg.Text("Провал"), sg.Text("Ошибка")]
     ]
     return layout
 
