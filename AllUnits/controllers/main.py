@@ -6,7 +6,7 @@ from testing import *
 import re
 
 
-# main()
+main()
 # tree = ET.parse("controllers/OK.log")
 # root = tree.getroot()
 # print(root.tag)
