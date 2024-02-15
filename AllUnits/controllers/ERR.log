@@ -1,2 +1,11 @@
 <logs>
+
+<log>
+
+<date>2024-02-14</date><time>01:50:07</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
+
+<date>2024-02-14</date><time>01:50:08</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
+
+</log>
+
 </logs>
