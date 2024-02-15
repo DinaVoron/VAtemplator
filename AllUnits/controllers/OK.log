@@ -1,13 +1,63 @@
-12-21 10:53 "pass one two three" in main
-12-21 10:53 "answer" in sub1
-12-21 10:55 "pass one two three" in main
-12-21 10:55 "answer" in sub1
-12-21 10:59 "pass one two three" in main
-12-21 10:59 "answer" in sub1
---------
-12-21 11:09 "pass one two three" in main
-12-21 11:09 "answer" in sub1
---------
-12-21 11:09 "pass one two three" in main
-12-21 11:09 "answer" in sub1
---------
+<logs>
+<log>
+
+<date>2024-02-14</date><time>01:50:07</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
+
+<date>2024-02-14</date><time>01:50:08</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
+
+</log>
+
+<log>
+
+<date>2024-02-14</date><time>01:50:08</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
+
+<date>2024-02-14</date><time>01:50:09</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
+
+</log>
+
+<log>
+
+<date>2024-02-14</date><time>01:50:10</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
+
+<date>2024-02-14</date><time>01:50:11</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
+
+</log>
+
+<log>
+
+<date>2024-02-14</date><time>01:50:11</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
+
+<date>2024-02-14</date><time>01:50:12</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
+
+</log>
+
+<log>
+
+<date>2024-02-14</date><time>01:50:45</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
+
+<date>2024-02-14</date><time>01:50:46</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
+
+</log>
+
+<log>
+
+<date>2024-02-14</date><time>01:50:46</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
+
+<date>2024-02-14</date><time>01:50:48</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
+
+</log>
+
+<log>
+
+<date>2024-02-14</date><time>01:50:48</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
+
+<date>2024-02-14</date><time>01:50:49</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
+
+</log>
+<log>
+<date>2024-02-14</date><time>01:50:49</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
+
+<date>2024-02-14</date><time>01:50:51</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
+
+</log>
+</logs>

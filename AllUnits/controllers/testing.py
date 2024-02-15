@@ -2,8 +2,10 @@ import logging
 import xml.etree.ElementTree as ET
 from debug import set_debug
 import pymorphy3
-import PySimpleGUI as sg
+from datetime import date
+import datetime
 from tree import *
+import re
 
 
 class Node(object):
@@ -34,20 +36,18 @@ class Link(object):
 
 
 def send_log(text, intent_values, place):
-    logging.basicConfig(
-        filename='temp.log',
-        encoding='utf-8',
-        level=logging.INFO,
-        force=True,
-        format='%(message)s'
-    )
-    logging.info(log_message(text, intent_values, place))
+    f = open("controllers/temp.log", "a+", encoding="utf-8")
+    f.write(log_message(text, intent_values, place) + "\r\n")
 
 
 def print_info(filename):
-    f1 = open('temp.log', 'r+')
-    f2 = open(filename, 'a+')
-    f2.write("<log>" + f1.read() + "</log>")
+    f1 = open('controllers/temp.log', 'r+')
+    f2 = open(filename, 'r')
+    text = f2.read()
+    f2.close()
+    text = re.sub("\s*</?logs>\s*", "", text)
+    f2 = open(filename, 'w')
+    f2.write("<logs>\r\n" + text + "\r\n<log>\r\n" + f1.read() + "</log>\r\n" + "</logs>")
     f1.truncate(0)
     f1.close()
     f2.close()
@@ -64,32 +64,32 @@ def intent_array(intents_values):
 def log_message(text, intents_values_dic, place):
     morph = pymorphy3.MorphAnalyzer()
     intent_values = intent_array(intents_values_dic)
-    res = ""
-    text_arr = []
+    res = "<text>"
     text_split = multi_split(text)
+    text_split_normal = []
     for word in text_split:
-        if morph.parse(word)[0].normal_form in intent_values:
-            if len(text_arr) == 0:
-                res += "<intent>" + word + "</intent>"
-            else:
-                res += " ".join(text_arr) + "</text><intent>" + word + "</intent>"
-                text_arr = []
-        else:
-            if len(text_arr) == 0:
-                res += "<text>"
-                text_arr.append(word)
-            else:
-                text_arr.append(word)
-    if len(text_arr) != 0:
-        res += " ".join(text_arr) + "</text>"
-    return res + "<place>in " + place + "</place>"
+        text_split_normal.append(morph.parse(word)[0].normal_form)
+    for words in intent_values:
+        new_words = words.split(" ")
+        arr_start = text_split_normal.index(new_words[0])
+        arr_end = text_split_normal.index(new_words[len(new_words) - 1])
+        text_split[arr_start] = "<intent>" + text_split[arr_start]
+        text_split[arr_end] = text_split[arr_end] + "</intent>"
+        if intent_values[words] is not None:
+            value_arr = str(intent_values[words]).split(" ")
+            arr_value_start = text_split_normal.index(morph.parse(str(value_arr[0]))[0].normal_form)
+            arr_value_end = text_split_normal.index(morph.parse(str(value_arr[len(value_arr) - 1]))[0].normal_form)
+            text_split[arr_value_start] = "<value>" + text_split[arr_value_start]
+            text_split[arr_value_end] = text_split[arr_value_end] + "</value>"
+    res = res + " ".join(text_split) + "</text>"
+    return "<date>" + str(date.today()) + "</date>" + "<time>" + str(datetime.datetime.now().strftime("%H:%M:%S")) + "</time>" + res + "<place>" + place + "</place>"
 
 
 def multi_split(input_string):
     delimiters = [
         ";", ",", ":",
         ".", "|", "?",
-        "\""
+        "\"", " "
     ]
     segments = [input_string]
     for delimiter in delimiters:
@@ -103,13 +103,13 @@ def multi_split(input_string):
 def send_res(res):
     match res:
         case 'OK':
-            filename = 'OK.log'
+            filename = 'controllers/OK.log'
             print_info(filename)
         case 'ERR':
-            filename = 'ERR.log'
+            filename = 'controllers/ERR.log'
             print_info(filename)
         case 'NF':
-            filename = 'NF.log'
+            filename = 'controllers/NF.log'
             print_info(filename)
 
 
@@ -129,7 +129,7 @@ def get_question(filename):
 
 
 def get_ok(answers, questions):
-    f1 = open("OK.log", "r")
+    f1 = open("controllers/OK.log", "r")
     lines = f1.readlines()
     cur = 0
     while cur < len(lines):
@@ -165,7 +165,7 @@ def automatic_testing():
     return "Успешно пройдено {} из {} тестов!".format(res, q_len)
 
 
-def graph_verify():
+def graph_verify_try():
     n1 = Node(1, "Балл", "intent")
     n2 = Node(2, "Специальность", "intent")
     n3 = Node(3, "2020", "value")
@@ -200,28 +200,21 @@ def graph_verify():
                     + nodes[smgraph[j].end - 1].text)
 
 
-def window_testing():
-    layout = [
-        [sg.Button("Начать автоматическое тестирование")],
-        [sg.Button("Провести верификацию графа")],
-        [sg.Output(size=(100, 10), key="-Output-")],
-        [sg.Button("Назад")]
-    ]
-    window = sg.Window("Модуль тестирования", layout)
-    event, values = window.read()
-    while True:
-        event, values = window.read()
-        if event == "Начать автоматическое тестирование":
-            print(automatic_testing())
-        if event == "Провести верификацию графа":
-            print(graph_verify())
-        if event == "Закрыть" or event == sg.WIN_CLOSED:
-            break
-        if event == "Назад":
-
-            window_tree()
-            window.close()
-            break
-    window.close()
-
-
+def graph_verify(graph):
+    print("Верификация графа...")
+    nodes = graph.nodes
+    edges = graph.edges
+    print(nodes)
+    print(edges)
+    for edge in edges:
+        next = edge[1]
+        print(next)
+        # for j in range(i + 1, len(edges)):
+        #     if edges[j][0] == next:
+        #         print("Не хотите добавить вопрос с такими интентами?")
+        #         print(
+        #             nodes[edges[i][0]].text
+        #             + " "
+        #             + nodes[edges[i][1]].text
+        #             + " "
+        #             + nodes[edges[j][0]].text)
