@@ -6,7 +6,7 @@ from testing import *
 import re
 
 
-# main()
+main()
 # tree = ET.parse("controllers/OK.log")
 # root = tree.getroot()
 # print(root.tag)
@@ -20,10 +20,10 @@ import re
 # print(not_found_amount)
 # print(error_amount)
 
-graph = init_graph()
-graph = graph_nlp_text(graph, text)
-
-graph_verify(graph)
+# graph = init_graph()
+# graph = graph_nlp_text(graph, text)
+#
+# graph_verify(graph)
 
 
 # print(automatic_testing())
