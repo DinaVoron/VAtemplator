@@ -6,7 +6,7 @@ from testing import *
 import re
 
 
-main()
+# main()
 # tree = ET.parse("controllers/OK.log")
 # root = tree.getroot()
 # print(root.tag)
@@ -24,3 +24,6 @@ graph = init_graph()
 graph = graph_nlp_text(graph, text)
 
 graph_verify(graph)
+
+
+# print(automatic_testing())

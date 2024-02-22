@@ -282,7 +282,7 @@ def window_tree(tree):
         if event == "err_log":
             subprocess.Popen(["notepad", "controllers/ERR.log"])
         if event == "autotest":
-            window["-Output-autotest-"].update("Автоматическое тестирование запущено...")
+            window["-Output-autotest-"].update(automatic_testing())
 
 
     window.close()

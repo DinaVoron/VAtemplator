@@ -128,19 +128,22 @@ def get_question(filename):
     return question[0]
 
 
-def get_ok(answers, questions):
-    f1 = open("controllers/OK.log", "r")
-    lines = f1.readlines()
-    cur = 0
-    while cur < len(lines):
-        if lines[cur][0] == '-':
-            cur += 1
-            continue
-        else:
-            answers.append(lines[cur].split(" ")[1])
-            cur += 1
-            questions.append(lines[cur].split(" ")[1])
-            cur += 1
+def get_ok(tree, answers, questions):
+    root = tree.getroot()
+    answer = True
+    for log in root:
+        answers_arr = []
+        questions_arr = []
+        reply = log.findall("text")
+        for rep in reply:
+            if answer:
+                answers_arr.append(rep)
+            else:
+                questions_arr.append(rep)
+            answer = not answer
+        answers.append(answers_arr)
+        questions.append(questions_arr)
+
 
 
 def plug_dialog(questions, answers, question):
@@ -153,7 +156,8 @@ def automatic_testing():
     question_arr = []
     answers_arr = []
     # Получаем ответы и вопросы из файла успешного логирования
-    get_ok(answers_arr, question_arr)
+    tree = ET.parse("controllers/OK.log")
+    get_ok(tree, answers_arr, question_arr)
     # Меняем состояние работы на debug
     set_debug(True)
     # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем с ответами
@@ -161,7 +165,6 @@ def automatic_testing():
     for i in range(q_len):
         if plug_dialog(question_arr, answers_arr, question_arr[i]) == answers_arr[i]:
             res += 1
-    # print("Успешно пройдено {} из {} тестов!".format(res, q_len))
     return "Успешно пройдено {} из {} тестов!".format(res, q_len)
 
 
@@ -200,21 +203,64 @@ def graph_verify_try():
                     + nodes[smgraph[j].end - 1].text)
 
 
+def find_all_paths(graph, current_node, visited, path, paths):
+    visited[current_node] = True
+    path.append(current_node)
+
+    for neighbor in graph[current_node]:
+        if not visited[neighbor]:
+            find_all_paths(graph, neighbor, visited, path, paths)
+
+
+    paths.append(path.copy())
+
+    visited[current_node] = False
+    path.pop()
+
+
+def find_all_chains(edges):
+    graph = {}
+    for edge in edges:
+        if edge[0] not in graph:
+            graph[edge[0]] = []
+        if edge[1] not in graph:
+            graph[edge[1]] = []
+
+        graph[edge[0]].append(edge[1])
+        graph[edge[1]].append(edge[0])
+
+    visited = {node: False for node in graph}
+    path = []
+    paths = []
+
+    for node in graph:
+        find_all_paths(graph, node, visited, path, paths)
+
+    return paths
+
+
 def graph_verify(graph):
     print("Верификация графа...")
     nodes = graph.nodes
-    edges = graph.edges
-    print(nodes)
-    print(edges)
-    for edge in edges:
-        next = edge[1]
-        print(next)
-        # for j in range(i + 1, len(edges)):
-        #     if edges[j][0] == next:
-        #         print("Не хотите добавить вопрос с такими интентами?")
-        #         print(
-        #             nodes[edges[i][0]].text
-        #             + " "
-        #             + nodes[edges[i][1]].text
-        #             + " "
-        #             + nodes[edges[j][0]].text)
+    edges = list(graph.edges)
+
+    chains = find_all_chains(edges)
+    for chain in chains:
+        print(chain)
+
+    # print(nodes)
+    # print(type(edges))
+    # for i in range(len(edges)):
+    #     edge = edges[i]
+    #     for j in range(i + 1, len(edges)):
+    #         if edges[j][0] == edge[1]:
+    #             print("Не хотите добавить вопрос с такими интентами?")
+    #             print(
+    #                 str(edges[i][0])
+    #                 + " "
+    #                 + str(edges[i][1])
+    #                 + " "
+    #                 + str(edges[j][1])
+    #             )
+
+
