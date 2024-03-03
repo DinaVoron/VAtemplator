@@ -22,8 +22,9 @@ main()
 
 # graph = init_graph()
 # graph = graph_nlp_text(graph, text)
-#
 # graph_verify(graph)
 
 
 # print(automatic_testing())
+
+# print(count_errors())

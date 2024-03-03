@@ -9,10 +9,10 @@ import re
 
 
 class Node(object):
-    def __init__(self, id, text, type):
-        self.id = id
-        self.text = text
-        self.type = type
+    def __init__(self, node_id, node_text, node_type):
+        self.id = node_id
+        self.text = node_text
+        self.type = node_type
 
     def id(self):
         return self.id
@@ -22,10 +22,10 @@ class Node(object):
 
 
 class Link(object):
-    def __init__(self, start, end, type):
-        self.start = start
-        self.end = end
-        self.type = type
+    def __init__(self, link_start, link_end, link_type):
+        self.start = link_start
+        self.end = link_end
+        self.type = link_type
 
     def end(self):
         return self.end
@@ -41,13 +41,15 @@ def send_log(text, intent_values, place):
 
 
 def print_info(filename):
-    f1 = open('controllers/temp.log', 'r+')
-    f2 = open(filename, 'r')
+    f1 = open("controllers/temp.log", "r+")
+    f2 = open(filename, "r")
     text = f2.read()
     f2.close()
     text = re.sub("\s*</?logs>\s*", "", text)
-    f2 = open(filename, 'w')
-    f2.write("<logs>\r\n" + text + "\r\n<log>\r\n" + f1.read() + "</log>\r\n" + "</logs>")
+    f2 = open(filename, "w")
+    f2.write("<logs>\r\n" + text + "\r\n<log>\r\n" + f1.read()
+             + "</log>\r\n"
+             + "</logs>")
     f1.truncate(0)
     f1.close()
     f2.close()
@@ -57,7 +59,8 @@ def intent_array(intents_values):
     intent_values_new = {}
     if intents_values is not None:
         for i in range(len(intents_values)):
-            intent_values_new[intents_values[i]["intent"]] = intents_values[i]["meaning"]
+            intent_values_new[intents_values[i]["intent"]] = (
+                intents_values)[i]["meaning"]
     return intent_values_new
 
 
@@ -77,12 +80,19 @@ def log_message(text, intents_values_dic, place):
         text_split[arr_end] = text_split[arr_end] + "</intent>"
         if intent_values[words] is not None:
             value_arr = str(intent_values[words]).split(" ")
-            arr_value_start = text_split_normal.index(morph.parse(str(value_arr[0]))[0].normal_form)
-            arr_value_end = text_split_normal.index(morph.parse(str(value_arr[len(value_arr) - 1]))[0].normal_form)
-            text_split[arr_value_start] = "<value>" + text_split[arr_value_start]
+            arr_value_start = text_split_normal.index(
+                morph.parse(str(value_arr[0]))[0].normal_form
+            )
+            arr_value_end = text_split_normal.index(
+                morph.parse(str(value_arr[len(value_arr) - 1]))[0].normal_form
+            )
+            text_split[arr_value_start] = ("<value>"
+                                           + text_split[arr_value_start])
             text_split[arr_value_end] = text_split[arr_value_end] + "</value>"
     res = res + " ".join(text_split) + "</text>"
-    return "<date>" + str(date.today()) + "</date>" + "<time>" + str(datetime.datetime.now().strftime("%H:%M:%S")) + "</time>" + res + "<place>" + place + "</place>"
+    return ("<date>" + str(date.today()) + "</date>" + "<time>"
+            + str(datetime.datetime.now().strftime("%H:%M:%S"))
+            + "</time>" + res + "<place>" + place + "</place>")
 
 
 def multi_split(input_string):
@@ -102,14 +112,14 @@ def multi_split(input_string):
 
 def send_res(res):
     match res:
-        case 'OK':
-            filename = 'controllers/OK.log'
+        case "OK":
+            filename = "controllers/OK.log"
             print_info(filename)
-        case 'ERR':
-            filename = 'controllers/ERR.log'
+        case "ERR":
+            filename = "controllers/ERR.log"
             print_info(filename)
-        case 'NF':
-            filename = 'controllers/NF.log'
+        case "NF":
+            filename = "controllers/NF.log"
             print_info(filename)
 
 
@@ -117,7 +127,7 @@ def get_text_question(elem, question):
     for child in elem:
         get_text_question(child, question)
         if child.text is not None and child.text.find('\n'):
-            question[0] += child.text + ' '
+            question[0] += child.text + " "
 
 
 def get_question(filename):
@@ -145,7 +155,6 @@ def get_ok(tree, answers, questions):
         questions.append(questions_arr)
 
 
-
 def plug_dialog(questions, answers, question):
     index = questions.index(question)
     return answers[index]
@@ -160,10 +169,13 @@ def automatic_testing():
     get_ok(tree, answers_arr, question_arr)
     # Меняем состояние работы на debug
     set_debug(True)
-    # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем с ответами
+    # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем
     q_len = len(question_arr)
     for i in range(q_len):
-        if plug_dialog(question_arr, answers_arr, question_arr[i]) == answers_arr[i]:
+        if plug_dialog(
+                question_arr,
+                answers_arr,
+                question_arr[i]) == answers_arr[i]:
             res += 1
     return "Успешно пройдено {} из {} тестов!".format(res, q_len)
 
@@ -211,7 +223,6 @@ def find_all_paths(graph, current_node, visited, path, paths):
         if not visited[neighbor]:
             find_all_paths(graph, neighbor, visited, path, paths)
 
-
     paths.append(path.copy())
 
     visited[current_node] = False
@@ -248,19 +259,18 @@ def graph_verify(graph):
     for chain in chains:
         print(chain)
 
-    # print(nodes)
-    # print(type(edges))
-    # for i in range(len(edges)):
-    #     edge = edges[i]
-    #     for j in range(i + 1, len(edges)):
-    #         if edges[j][0] == edge[1]:
-    #             print("Не хотите добавить вопрос с такими интентами?")
-    #             print(
-    #                 str(edges[i][0])
-    #                 + " "
-    #                 + str(edges[i][1])
-    #                 + " "
-    #                 + str(edges[j][1])
-    #             )
+
+def count_errors():
+    res = {}
+    logs = ET.parse("controllers/ERR.log").getroot()
+    for log in logs:
+        places = log.findall("place")
+        for place in places:
+            if place.text in res:
+                res[place.text] += 1
+            else:
+                res[place.text] = 1
+    return res
+
 
 
