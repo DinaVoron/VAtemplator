@@ -161,7 +161,6 @@ def automatic_testing():
     for i in range(q_len):
         if plug_dialog(question_arr, answers_arr, question_arr[i]) == answers_arr[i]:
             res += 1
-    # print("Успешно пройдено {} из {} тестов!".format(res, q_len))
     return "Успешно пройдено {} из {} тестов!".format(res, q_len)
 
 
