@@ -5,6 +5,7 @@ import pyttsx3
 import speech_recognition as sr
 from interface import *
 from graph import *
+import subprocess
 
 engine = pyttsx3.init("sapi5")
 voices = engine.getProperty("voices")
@@ -273,8 +274,15 @@ def window_tree(tree):
             print(cur_scene.name)
         if event == "Перейти к модулю тестирования":
             window.close()
-            window_testing()
             break
+        if event == "ok_log":
+            subprocess.Popen(["notepad", "controllers/OK.log"])
+        if event == "nf_log":
+            subprocess.Popen(["notepad", "controllers/NF.log"])
+        if event == "err_log":
+            subprocess.Popen(["notepad", "controllers/ERR.log"])
+        if event == "autotest":
+            window["-Output-autotest-"].update(automatic_testing())
 
 
     window.close()

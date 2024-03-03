@@ -2,15 +2,17 @@ import logging
 import xml.etree.ElementTree as ET
 from debug import set_debug
 import pymorphy3
-import PySimpleGUI as sg
+from datetime import date
+import datetime
 from tree import *
+import re
 
 
 class Node(object):
-    def __init__(self, id, text, type):
-        self.id = id
-        self.text = text
-        self.type = type
+    def __init__(self, node_id, node_text, node_type):
+        self.id = node_id
+        self.text = node_text
+        self.type = node_type
 
     def id(self):
         return self.id
@@ -20,10 +22,10 @@ class Node(object):
 
 
 class Link(object):
-    def __init__(self, start, end, type):
-        self.start = start
-        self.end = end
-        self.type = type
+    def __init__(self, link_start, link_end, link_type):
+        self.start = link_start
+        self.end = link_end
+        self.type = link_type
 
     def end(self):
         return self.end
@@ -34,20 +36,18 @@ class Link(object):
 
 
 def send_log(text, intent_values, place):
-    logging.basicConfig(
-        filename='temp.log',
-        encoding='utf-8',
-        level=logging.INFO,
-        force=True,
-        format='%(message)s'
-    )
-    logging.info(log_message(text, intent_values, place))
+    f = open("controllers/temp.log", "a+", encoding="utf-8")
+    f.write(log_message(text, intent_values, place) + "\r\n")
 
 
 def print_info(filename):
-    f1 = open('temp.log', 'r+')
-    f2 = open(filename, 'a+')
-    f2.write("<log>" + f1.read() + "</log>")
+    f1 = open('controllers/temp.log', 'r+')
+    f2 = open(filename, 'r')
+    text = f2.read()
+    f2.close()
+    text = re.sub("\s*</?logs>\s*", "", text)
+    f2 = open(filename, 'w')
+    f2.write("<logs>\r\n" + text + "\r\n<log>\r\n" + f1.read() + "</log>\r\n" + "</logs>")
     f1.truncate(0)
     f1.close()
     f2.close()
@@ -64,32 +64,33 @@ def intent_array(intents_values):
 def log_message(text, intents_values_dic, place):
     morph = pymorphy3.MorphAnalyzer()
     intent_values = intent_array(intents_values_dic)
-    res = ""
-    text_arr = []
+    res = "<text>"
     text_split = multi_split(text)
+    text_split_normal = []
     for word in text_split:
-        if morph.parse(word)[0].normal_form in intent_values:
-            if len(text_arr) == 0:
-                res += "<intent>" + word + "</intent>"
-            else:
-                res += " ".join(text_arr) + "</text><intent>" + word + "</intent>"
-                text_arr = []
-        else:
-            if len(text_arr) == 0:
-                res += "<text>"
-                text_arr.append(word)
-            else:
-                text_arr.append(word)
-    if len(text_arr) != 0:
-        res += " ".join(text_arr) + "</text>"
-    return res + "<place>in " + place + "</place>"
+        text_split_normal.append(morph.parse(word)[0].normal_form)
+    for words in intent_values:
+        new_words = words.split(" ")
+        arr_start = text_split_normal.index(new_words[0])
+        arr_end = text_split_normal.index(new_words[len(new_words) - 1])
+        text_split[arr_start] = "<intent>" + text_split[arr_start]
+        text_split[arr_end] = text_split[arr_end] + "</intent>"
+        if intent_values[words] is not None:
+            value_arr = str(intent_values[words]).split(" ")
+            arr_value_start = text_split_normal.index(morph.parse(str(value_arr[0]))[0].normal_form)
+            arr_value_end = text_split_normal.index(morph.parse(str(value_arr[len(value_arr) - 1]))[0].normal_form)
+            text_split[arr_value_start] = "<value>" + text_split[arr_value_start]
+            text_split[arr_value_end] = text_split[arr_value_end] + "</value>"
+    res = res + " ".join(text_split) + "</text>"
+    return ("<date>" + str(date.today()) + "</date>" + "<time>" + str(datetime.datetime.now().strftime("%H:%M:%S"))
+            + "</time>" + res + "<place>" + place + "</place>")
 
 
 def multi_split(input_string):
     delimiters = [
         ";", ",", ":",
         ".", "|", "?",
-        "\""
+        "\"", " "
     ]
     segments = [input_string]
     for delimiter in delimiters:
@@ -103,13 +104,13 @@ def multi_split(input_string):
 def send_res(res):
     match res:
         case 'OK':
-            filename = 'OK.log'
+            filename = 'controllers/OK.log'
             print_info(filename)
         case 'ERR':
-            filename = 'ERR.log'
+            filename = 'controllers/ERR.log'
             print_info(filename)
         case 'NF':
-            filename = 'NF.log'
+            filename = 'controllers/NF.log'
             print_info(filename)
 
 
@@ -128,19 +129,22 @@ def get_question(filename):
     return question[0]
 
 
-def get_ok(answers, questions):
-    f1 = open("OK.log", "r")
-    lines = f1.readlines()
-    cur = 0
-    while cur < len(lines):
-        if lines[cur][0] == '-':
-            cur += 1
-            continue
-        else:
-            answers.append(lines[cur].split(" ")[1])
-            cur += 1
-            questions.append(lines[cur].split(" ")[1])
-            cur += 1
+def get_ok(tree, answers, questions):
+    root = tree.getroot()
+    answer = True
+    for log in root:
+        answers_arr = []
+        questions_arr = []
+        reply = log.findall("text")
+        for rep in reply:
+            if answer:
+                answers_arr.append(rep)
+            else:
+                questions_arr.append(rep)
+            answer = not answer
+        answers.append(answers_arr)
+        questions.append(questions_arr)
+
 
 
 def plug_dialog(questions, answers, question):
@@ -153,7 +157,8 @@ def automatic_testing():
     question_arr = []
     answers_arr = []
     # Получаем ответы и вопросы из файла успешного логирования
-    get_ok(answers_arr, question_arr)
+    tree = ET.parse("controllers/OK.log")
+    get_ok(tree, answers_arr, question_arr)
     # Меняем состояние работы на debug
     set_debug(True)
     # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем с ответами
@@ -164,7 +169,7 @@ def automatic_testing():
     return "Успешно пройдено {} из {} тестов!".format(res, q_len)
 
 
-def graph_verify():
+def graph_verify_try():
     n1 = Node(1, "Балл", "intent")
     n2 = Node(2, "Специальность", "intent")
     n3 = Node(3, "2020", "value")
@@ -199,28 +204,63 @@ def graph_verify():
                     + nodes[smgraph[j].end - 1].text)
 
 
-def window_testing():
-    layout = [
-        [sg.Button("Начать автоматическое тестирование")],
-        [sg.Button("Провести верификацию графа")],
-        [sg.Output(size=(100, 10), key="-Output-")],
-        [sg.Button("Назад")]
-    ]
-    window = sg.Window("Модуль тестирования", layout)
-    event, values = window.read()
-    while True:
-        event, values = window.read()
-        if event == "Начать автоматическое тестирование":
-            print(automatic_testing())
-        if event == "Провести верификацию графа":
-            print(graph_verify())
-        if event == "Закрыть" or event == sg.WIN_CLOSED:
-            break
-        if event == "Назад":
+def find_all_paths(graph, current_node, visited, path, paths):
+    visited[current_node] = True
+    path.append(current_node)
 
-            window_tree()
-            window.close()
-            break
-    window.close()
+    for neighbor in graph[current_node]:
+        if not visited[neighbor]:
+            find_all_paths(graph, neighbor, visited, path, paths)
+
+
+    paths.append(path.copy())
+
+    visited[current_node] = False
+    path.pop()
+
+
+def find_all_chains(edges):
+    graph = {}
+    for edge in edges:
+        if edge[0] not in graph:
+            graph[edge[0]] = []
+        if edge[1] not in graph:
+            graph[edge[1]] = []
+
+        graph[edge[0]].append(edge[1])
+        graph[edge[1]].append(edge[0])
+
+    visited = {node: False for node in graph}
+    path = []
+    paths = []
+
+    for node in graph:
+        find_all_paths(graph, node, visited, path, paths)
+
+    return paths
+
+
+def graph_verify(graph):
+    print("Верификация графа...")
+    nodes = graph.nodes
+    edges = list(graph.edges)
+
+    chains = find_all_chains(edges)
+    for chain in chains:
+        print(chain)
+
+
+def count_errors():
+    res = {}
+    logs = ET.parse("controllers/ERR.log").getroot()
+    for log in logs:
+        places = log.findall("place")
+        for place in places:
+            if place.text in res:
+                res[place.text] += 1
+            else:
+                res[place.text] = 1
+    return res
+
 
 
