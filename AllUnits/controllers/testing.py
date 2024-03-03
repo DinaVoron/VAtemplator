@@ -41,13 +41,15 @@ def send_log(text, intent_values, place):
 
 
 def print_info(filename):
-    f1 = open('controllers/temp.log', 'r+')
-    f2 = open(filename, 'r')
+    f1 = open("controllers/temp.log", "r+")
+    f2 = open(filename, "r")
     text = f2.read()
     f2.close()
     text = re.sub("\s*</?logs>\s*", "", text)
-    f2 = open(filename, 'w')
-    f2.write("<logs>\r\n" + text + "\r\n<log>\r\n" + f1.read() + "</log>\r\n" + "</logs>")
+    f2 = open(filename, "w")
+    f2.write("<logs>\r\n" + text + "\r\n<log>\r\n" + f1.read()
+             + "</log>\r\n"
+             + "</logs>")
     f1.truncate(0)
     f1.close()
     f2.close()
@@ -57,7 +59,8 @@ def intent_array(intents_values):
     intent_values_new = {}
     if intents_values is not None:
         for i in range(len(intents_values)):
-            intent_values_new[intents_values[i]["intent"]] = intents_values[i]["meaning"]
+            intent_values_new[intents_values[i]["intent"]] = (
+                intents_values)[i]["meaning"]
     return intent_values_new
 
 
@@ -77,12 +80,18 @@ def log_message(text, intents_values_dic, place):
         text_split[arr_end] = text_split[arr_end] + "</intent>"
         if intent_values[words] is not None:
             value_arr = str(intent_values[words]).split(" ")
-            arr_value_start = text_split_normal.index(morph.parse(str(value_arr[0]))[0].normal_form)
-            arr_value_end = text_split_normal.index(morph.parse(str(value_arr[len(value_arr) - 1]))[0].normal_form)
-            text_split[arr_value_start] = "<value>" + text_split[arr_value_start]
+            arr_value_start = text_split_normal.index(
+                morph.parse(str(value_arr[0]))[0].normal_form
+            )
+            arr_value_end = text_split_normal.index(
+                morph.parse(str(value_arr[len(value_arr) - 1]))[0].normal_form
+            )
+            text_split[arr_value_start] = ("<value>"
+                                           + text_split[arr_value_start])
             text_split[arr_value_end] = text_split[arr_value_end] + "</value>"
     res = res + " ".join(text_split) + "</text>"
-    return ("<date>" + str(date.today()) + "</date>" + "<time>" + str(datetime.datetime.now().strftime("%H:%M:%S"))
+    return ("<date>" + str(date.today()) + "</date>" + "<time>"
+            + str(datetime.datetime.now().strftime("%H:%M:%S"))
             + "</time>" + res + "<place>" + place + "</place>")
 
 
@@ -160,10 +169,13 @@ def automatic_testing():
     get_ok(tree, answers_arr, question_arr)
     # Меняем состояние работы на debug
     set_debug(True)
-    # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем с ответами
+    # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем
     q_len = len(question_arr)
     for i in range(q_len):
-        if plug_dialog(question_arr, answers_arr, question_arr[i]) == answers_arr[i]:
+        if plug_dialog(
+                question_arr,
+                answers_arr,
+                question_arr[i]) == answers_arr[i]:
             res += 1
     return "Успешно пройдено {} из {} тестов!".format(res, q_len)
 
