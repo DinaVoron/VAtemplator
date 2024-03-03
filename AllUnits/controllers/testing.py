@@ -9,10 +9,10 @@ import re
 
 
 class Node(object):
-    def __init__(self, id, text, type):
-        self.id = id
-        self.text = text
-        self.type = type
+    def __init__(self, node_id, node_text, node_type):
+        self.id = node_id
+        self.text = node_text
+        self.type = node_type
 
     def id(self):
         return self.id
@@ -22,10 +22,10 @@ class Node(object):
 
 
 class Link(object):
-    def __init__(self, start, end, type):
-        self.start = start
-        self.end = end
-        self.type = type
+    def __init__(self, link_start, link_end, link_type):
+        self.start = link_start
+        self.end = link_end
+        self.type = link_type
 
     def end(self):
         return self.end
@@ -82,7 +82,8 @@ def log_message(text, intents_values_dic, place):
             text_split[arr_value_start] = "<value>" + text_split[arr_value_start]
             text_split[arr_value_end] = text_split[arr_value_end] + "</value>"
     res = res + " ".join(text_split) + "</text>"
-    return "<date>" + str(date.today()) + "</date>" + "<time>" + str(datetime.datetime.now().strftime("%H:%M:%S")) + "</time>" + res + "<place>" + place + "</place>"
+    return ("<date>" + str(date.today()) + "</date>" + "<time>" + str(datetime.datetime.now().strftime("%H:%M:%S"))
+            + "</time>" + res + "<place>" + place + "</place>")
 
 
 def multi_split(input_string):
@@ -248,19 +249,18 @@ def graph_verify(graph):
     for chain in chains:
         print(chain)
 
-    # print(nodes)
-    # print(type(edges))
-    # for i in range(len(edges)):
-    #     edge = edges[i]
-    #     for j in range(i + 1, len(edges)):
-    #         if edges[j][0] == edge[1]:
-    #             print("Не хотите добавить вопрос с такими интентами?")
-    #             print(
-    #                 str(edges[i][0])
-    #                 + " "
-    #                 + str(edges[i][1])
-    #                 + " "
-    #                 + str(edges[j][1])
-    #             )
+
+def count_errors():
+    res = {}
+    logs = ET.parse("controllers/ERR.log").getroot()
+    for log in logs:
+        places = log.findall("place")
+        for place in places:
+            if place.text in res:
+                res[place.text] += 1
+            else:
+                res[place.text] = 1
+    return res
+
 
 
