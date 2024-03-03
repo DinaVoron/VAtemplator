@@ -103,14 +103,14 @@ def multi_split(input_string):
 
 def send_res(res):
     match res:
-        case 'OK':
-            filename = 'controllers/OK.log'
+        case "OK":
+            filename = "controllers/OK.log"
             print_info(filename)
-        case 'ERR':
-            filename = 'controllers/ERR.log'
+        case "ERR":
+            filename = "controllers/ERR.log"
             print_info(filename)
-        case 'NF':
-            filename = 'controllers/NF.log'
+        case "NF":
+            filename = "controllers/NF.log"
             print_info(filename)
 
 
@@ -118,7 +118,7 @@ def get_text_question(elem, question):
     for child in elem:
         get_text_question(child, question)
         if child.text is not None and child.text.find('\n'):
-            question[0] += child.text + ' '
+            question[0] += child.text + " "
 
 
 def get_question(filename):
@@ -144,7 +144,6 @@ def get_ok(tree, answers, questions):
             answer = not answer
         answers.append(answers_arr)
         questions.append(questions_arr)
-
 
 
 def plug_dialog(questions, answers, question):
@@ -211,7 +210,6 @@ def find_all_paths(graph, current_node, visited, path, paths):
     for neighbor in graph[current_node]:
         if not visited[neighbor]:
             find_all_paths(graph, neighbor, visited, path, paths)
-
 
     paths.append(path.copy())
 
