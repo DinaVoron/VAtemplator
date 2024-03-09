@@ -21,3 +21,6 @@ graph = graph_nlp_text(graph, text)
 
 
 import controllers.editor_tree
+import controllers.editor_graph
+import controllers.editor_testing
+import controllers.editor_data

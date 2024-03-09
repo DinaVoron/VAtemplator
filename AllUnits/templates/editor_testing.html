@@ -3,8 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    {% macro render_menu() %}
+        <nav>
+            <ul>
+                <li><a href="{{url_for('editor_tree')}}">Дерево</a></li>
+                <li><a href="{{url_for('editor_graph')}}">Граф</a></li>
+                <li><a href="{{url_for('editor_data')}}">Статистика</a></li>
+                <li><a href="{{url_for('editor_testing')}}">Тестирование</a></li>
+            </ul>
+        </nav>
+    {% endmacro %}
 </head>
 <body>
+    {{ render_menu() }}
     <p>Страница для тестирования</p>
 </body>
 </html>

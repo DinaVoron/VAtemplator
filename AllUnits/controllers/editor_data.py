@@ -2,10 +2,10 @@ from app import app, graph
 from flask import render_template
 
 
-@app.route('/graph', methods=['get', 'post'])
-def editor_graph():
+@app.route('/data', methods=['get', 'post'])
+def editor_data():
 
     html = render_template(
-        'editor_graph.html'
+        'editor_data.html'
     )
     return html
