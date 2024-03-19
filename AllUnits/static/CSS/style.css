@@ -1,0 +1,85 @@
+body {
+    font-family: "Gill Sans", sans-serif;
+}
+nav {
+    display: inline-block;
+}
+main {
+    padding-left: 4em;
+    display: inline-block;
+    vertical-align: top;
+}
+.logs {
+    display: flex;
+    gap: 1em;
+}
+.logs div {
+    padding: 0.5em;
+    border-radius: 1em;
+}
+.logs button {
+    border: 0px;
+    border-radius: 0.5em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+.logs__ok {
+    background-color: #EAFFF2;
+}
+.logs__ok button {
+    background-color: #B3EBDE;
+}
+.logs__ok button:hover{
+    background-color: #c7fff2;
+    cursor: pointer;
+}
+.logs__nf {
+    background-color: #FFEAEA;
+}
+.logs__nf button {
+    background-color: #f6baba;
+}
+.logs__nf button:hover {
+    background-color: #f6cece;
+    cursor: pointer;
+}
+.logs__err {
+    background-color: #8DF7FF;
+}
+.logs__err button {
+    background-color: #28BFCB;
+}
+.logs__err button:hover {
+    background-color: #3cd3df;
+    cursor: pointer;
+}
+article {
+    padding-bottom: 1em;
+    border-bottom: 1px solid gray;
+}
+.testing_button {
+    background: #16c3cf;
+    color: #ffffff;
+    border: 0px;
+    padding: 0.8em 1em;
+    border-radius: 0.4em;
+    font-size: 1em;
+}
+.testing_button:hover {
+    background: #2ad7e3;
+    cursor: pointer;
+}
+.manual_testing {
+    margin-top: 1em;
+}
+.test_result {
+    margin-top: 1em;
+}
+.answer {
+    margin-top: 1em;
+}
+.section__p {
+    background: #f5f5f5;
+    padding: 1em;
+    border-radius: 0.7em;
+}

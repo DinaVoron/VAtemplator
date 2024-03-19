@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="/static/CSS/style.css">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Статистика</title>
     {% macro render_menu() %}
         <nav>
             <ul>
@@ -13,9 +14,60 @@
             </ul>
         </nav>
     {% endmacro %}
+    {% macro render_errs() %}
+    <div>
+        {% for item in errs_per_scene %}
+        <div>
+            {{ item }}: {{ int(errs_per_scene[item]) }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endmacro %}
+    {% macro render_intents() %}
+    {% for i in range(len(intents)) %}
+    <section>
+        <p class="section__p">{{ intents[i] }}</p>
+    </section>
+    {% endfor %}
+    {% endmacro %}
 </head>
 <body>
     {{ render_menu() }}
-    <p>Страница для статистика</p>
+    <main>
+        <article>
+            <form action="{{ url_for('editor_data') }}">
+                <h4>Статистика работы</h4>
+                <section class="logs">
+                    <div class="logs__ok">
+                        <strong>Успех</strong><br><br>
+                        {{ success_amount }}/{{ all_amount }} диалога<br><br>
+                        <button value="open_ok" name="open_ok">Посмотреть логи</button>
+                    </div>
+                    <div class="logs__err">
+                        <strong>Провал</strong><br><br>
+                        {{ not_found_amount }}/{{ all_amount }} диалога<br><br>
+                        <button value="open_nf" name="open_nf">Посмотреть логи</button>
+                    </div>
+                    <div class="logs__nf">
+                        <strong>Ошибка</strong><br><br>
+                        {{ error_amount }}/{{ all_amount }} диалога<br><br>
+                        <button value="open_err" name="open_err">Посмотреть логи</button>
+                    </div>
+                </section>
+            </form>
+        </article>
+        <article>
+            <h4>Ошибки по сценам</h4>
+            {{ render_errs() }}
+        </article>
+        <article>
+            <h4>Среднее время работы</h4>
+            {{ time }} сек.
+        </article>
+        <article>
+            <h4>Возможный состав вопросов</h4>
+            {{ render_intents() }}
+        </article>
+    </main>
 </body>
 </html>

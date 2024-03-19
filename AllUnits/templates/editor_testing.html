@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="/static/CSS/style.css">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Тестирование</title>
     {% macro render_menu() %}
         <nav>
             <ul>
@@ -13,9 +14,57 @@
             </ul>
         </nav>
     {% endmacro %}
+    {% macro render_scenes() %}
+    <select name="scene">
+    {% for i in range(len(scenes)) %}
+        {% if scenes[i].name == selected_scene %}
+        <option value="{{ scenes[i].name }}" selected>{{ scenes[i].name }}</option>
+        {% else %}
+        <option value="{{ scenes[i].name }}">{{ scenes[i].name }}</option>
+        {% endif %}
+    {% endfor %}
+    </select>
+    {% endmacro %}
+    {% macro render_questions() %}
+    {% for i in range(len(questions)) %}
+    <section>
+        <label>
+            {{ questions[i] }}<br>
+            <input type="text" name="questions" value="{{ user_questions[i] }}" size="100">
+            {% if is_answer  %}
+            <div class="answer">Ответ: {{ answers[i] }}</div>
+            {% endif %}
+        </label>
+    </section>
+    {% endfor %}
+    {% endmacro %}
 </head>
 <body>
     {{ render_menu() }}
-    <p>Страница для тестирования</p>
+    <main>
+        <form action="{{ url_for('editor_testing') }}">
+            <article>
+                <h4>Ручное тестирование сцен</h4>
+                    <label>
+                        Выберите сцену для ручного тестирования
+                        {{ render_scenes() }}
+                    </label>
+                    <input type="submit" name="i" value="Выбрать">
+                    <p>Составьте вопросы:</p>
+                    {{ render_questions() }}
+                    <input type="submit" name="get_answers" value="Сгенерировать ответы" class="testing_button manual_testing">
+            </article>
+            <article>
+                <h4>Автоматическое тестирование</h4>
+                <input type="submit" name="test" value="Начать" class="testing_button">
+                {% if is_test %}
+                    <div class="test_result">{{ test_result }}</div>
+                {% endif %}
+            </article>
+            <article>
+                <h4>Ручное тестирование</h4>
+            </article>
+        </form>
+    </main>
 </body>
 </html>

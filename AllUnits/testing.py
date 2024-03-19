@@ -4,6 +4,7 @@ from datetime import date
 import datetime
 from tree import *
 import re
+import xml.etree.ElementTree as ET
 
 
 class Node(object):
@@ -136,21 +137,7 @@ def get_question(filename):
     return question[0]
 
 
-def get_ok(tree, answers, questions):
-    root = tree.getroot()
-    answer = True
-    for log in root:
-        answers_arr = []
-        questions_arr = []
-        reply = log.findall("text")
-        for rep in reply:
-            if answer:
-                answers_arr.append(rep)
-            else:
-                questions_arr.append(rep)
-            answer = not answer
-        answers.append(answers_arr)
-        questions.append(questions_arr)
+
 
 
 def plug_dialog(questions, answers, question):
@@ -158,24 +145,7 @@ def plug_dialog(questions, answers, question):
     return answers[index]
 
 
-def automatic_testing():
-    res = 0
-    question_arr = []
-    answers_arr = []
-    # Получаем ответы и вопросы из файла успешного логирования
-    tree = ET.parse("controllers/OK.log")
-    get_ok(tree, answers_arr, question_arr)
-    # Меняем состояние работы на debug
-    set_debug(True)
-    # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем
-    q_len = len(question_arr)
-    for i in range(q_len):
-        if plug_dialog(
-                question_arr,
-                answers_arr,
-                question_arr[i]) == answers_arr[i]:
-            res += 1
-    return "Успешно пройдено {} из {} тестов!".format(res, q_len)
+
 
 
 def graph_verify_try():
@@ -213,62 +183,6 @@ def graph_verify_try():
                     + nodes[smgraph[j].end - 1].text)
 
 
-def find_all_paths(graph, current_node, visited, path, paths):
-    visited[current_node] = True
-    path.append(current_node)
-
-    for neighbor in graph[current_node]:
-        if not visited[neighbor]:
-            find_all_paths(graph, neighbor, visited, path, paths)
-
-    paths.append(path.copy())
-
-    visited[current_node] = False
-    path.pop()
-
-
-def find_all_chains(edges):
-    graph = {}
-    for edge in edges:
-        if edge[0] not in graph:
-            graph[edge[0]] = []
-        if edge[1] not in graph:
-            graph[edge[1]] = []
-
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
-
-    visited = {node: False for node in graph}
-    path = []
-    paths = []
-
-    for node in graph:
-        find_all_paths(graph, node, visited, path, paths)
-
-    return paths
-
-
-def graph_verify(graph):
-    print("Верификация графа...")
-    nodes = graph.nodes
-    edges = list(graph.edges)
-
-    chains = find_all_chains(edges)
-    for chain in chains:
-        print(chain)
-
-
-def count_errors():
-    res = {}
-    logs = ET.parse("controllers/ERR.log").getroot()
-    for log in logs:
-        places = log.findall("place")
-        for place in places:
-            if place.text in res:
-                res[place.text] += 1
-            else:
-                res[place.text] = 1
-    return res
 
 
 
