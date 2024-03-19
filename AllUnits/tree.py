@@ -321,12 +321,11 @@ def main():
     graph = init_graph()
     graph = graph_nlp_text(graph, text)
 
-    window_tree(tree)
+    # window_tree(tree)
 
     cur_intents = ["pass", "one", "two", "three"]
-    # tree.start_conversation()
 
-    return 0
+    return tree
 
 
 if __name__ == "__main__":
