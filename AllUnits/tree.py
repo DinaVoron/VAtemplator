@@ -32,7 +32,7 @@ def take_command():
     try:
         print("Распознаем...")
         query = r.recognize_google(audio, language="ru-RU")
-        print("{query}\n")
+        print({query})
 
     except Exception as e:
         print(e)
@@ -201,6 +201,42 @@ class Scene:
             for child in self.children:
                 return child.to_scene_rec(scene_name)
 
+    # Поиск сцены по интентам (в виде строк), необходимо наличие всех в вопросе
+    def check_scene_rec(self, intents):
+        intents.sort()
+        for question in self.questions:
+            checklist = []
+            for word in question:
+                if isinstance(word, IntentTemplate):
+                    if word.name in intents:
+                        checklist.append(word.name)
+            # оставлены только уникальные интенты
+            checklist = list(set(checklist))
+            checklist.sort()
+            if checklist == intents:
+                return self.name
+        for child in self.children:
+            return child.check_scene_rec(intents)
+
+    def pass_to_children(self, intents):
+        intents.sort()
+        for pass_cond in self.pass_conditions:
+            checklist = []
+            for int in pass_cond:
+                if int in intents:
+                    checklist.append(int.name)
+            # оставлены только уникальные интенты
+            checklist = list(set(checklist))
+            checklist.sort()
+            if checklist == intents:
+                return self.name
+        for child in self.children:
+            return child.check_scene_rec(intents)
+
+
+
+
+
 
 class SceneTree:
     def __init__(self, root):
@@ -223,7 +259,7 @@ class SceneTree:
             scene = scene.conv_continue(cur_intents)
         return scene
 
-    def start_conversation(self):
+    def start_conversation_old(self):
         cur_intents = []
         new_intent = ''
         scene = self.root
@@ -238,6 +274,36 @@ class SceneTree:
             new_intent = input()
 
         return True
+# Диалог
+    def start_conversation(self, istext=True):
+        scene = self.root
+        print("Введите или задайте вопрос")
+        if istext:
+            question = input()
+        else:
+            question = take_command()
+
+        while question != "стоп":
+            intent_list_dictionary = scene.get_work_question(question)
+            if (intent_list_dictionary): # Если найдены шаблоны
+                # Отправить в граф
+                # Получить из графа
+                # Вернуть ответ
+                intents = []
+                for intent in intent_list_dictionary:
+                    intents.append(intent.get("intent"))
+                scene.pass_to_children(intents)
+            else:
+                # Уточняющий вопрос
+                pass
+
+            print("Введите или задайте вопрос")
+            if istext:
+                question = input()
+            else:
+                question = take_command()
+
+        return True
 
     def scene_add(self, parent_scene, name=None, children=None, pass_conditions=None, answer=None, questions=None,
                  theme=None):
@@ -245,6 +311,9 @@ class SceneTree:
                           questions=questions, theme=theme)
         parent_scene.add_child(new_scene)
         return new_scene
+
+    def find_scene(self, intents):
+        self.root.check_scene_rec(intents)
 
 
 def window_tree(tree):
@@ -320,6 +389,7 @@ def main():
 
     graph = init_graph()
     graph = graph_nlp_text(graph, text)
+    print(main_scene.check_scene_rec(["направление", "балл"]))
 
     # window_tree(tree)
 
@@ -330,3 +400,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    take_command()
