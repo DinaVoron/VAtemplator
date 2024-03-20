@@ -17,5 +17,44 @@
 <body>
     {{ render_menu() }}
     <p>Страница для дерева</p>
+    {% for scene in text_scenes %}
+        <p> {{scene}} </p>
+    {% endfor %}
+    <p> {{ all_scenes }} </p>
+    <p> Сейчас в сцене - {{ scene_name }} </p>
+    {% for stat in scene_stats %}
+        <p> {{stat}} </p>
+    {% endfor %}
+    <form action="" method="get">
+        <input type="hidden" name = go_to_scene value="1">
+        <input type="text" name = scene_name value="Имя сцены">
+        <input type="submit" value="Перейти в сцену">
+    </form>
+    <br>
+    <form action="" method="get">
+        <input type="hidden" name = write_question value="1">
+        <input type="text" name = question value="Поле для вопроса">
+        <input type="submit" value="Задать вопрос">
+    </form>
+    <form action="" method="get">
+        <input type="hidden" name = add_child_scene value="1">
+        <input type="text" name = child_scene_name> Имя сцены
+        <input type="submit" value="Добавить потомка">
+    </form>
+    {% if child_scene_name != None %}
+        <p> Успешно добавлена в потомки сцены {{ scene_name }} сцена {{ child_scene_name }}</p>
+    {% endif %}
+
+
+    <form action="" method="get">
+        <p> Добавление сцены</p>
+        <input type="hidden" name = add_scene value="1">
+        <br><input type="text" name = scene_name> Имя сцены
+        <br><input type="text" name = parent_scene_name> Имя родительской сцены
+        <br><input type="text" name = pass_conditions> Условия перехода
+        <br><input type="text" name = answer> Шаблон ответа
+        <br><input type="text" name = questions> Шаблоны вопросов
+        <br><input type="submit" value="Добавить сцену">
+    </form>
 </body>
 </html>
