@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import datetime
+from app import dialog_tree
 
 
 def get_ok_num():
@@ -98,6 +99,14 @@ def find_all_paths(graph, current_node, visited, path, paths):
     path.pop()
 
 
+def check_intent_tree(paths):
+    new_arr = []
+    for i in range(len(paths)):
+        if not dialog_tree.find_scene(paths[i]):
+            new_arr.append(paths[i])
+    return new_arr
+
+
 def find_all_chains(edges, intents):
     print("intents")
     print(intents)
@@ -119,6 +128,8 @@ def find_all_chains(edges, intents):
 
     for node in graph:
         find_all_paths(graph, node, visited, path, paths)
+
+    paths = check_intent_tree(paths)
 
     return paths
 
