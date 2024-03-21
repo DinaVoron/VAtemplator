@@ -96,10 +96,14 @@ class Scene:
     def print_pretty(self):
         print('---' * self.height, self.name, self.height)
 
+
     def print_children(self):
         self.print_scene()
         for child in self.children:
             child.print_children()
+
+    def get_pretty(self):
+        return ('---' * self.height + self.name + ', ' + str(self.height) + '\n')
 
     def print_pretty_children(self):
         child_counter = 0
@@ -110,6 +114,17 @@ class Scene:
         while child_counter < len(self.children):
             self.children[child_counter].print_pretty_children()
             child_counter += 1
+
+    def get_pretty_children(self, all_scenes):
+        child_counter = 0
+        while child_counter < len(self.children) / 2:
+            all_scenes = self.children[child_counter].get_pretty_children(all_scenes)
+            child_counter += 1
+        all_scenes += self.get_pretty()
+        while child_counter < len(self.children):
+            all_scenes = self.children[child_counter].get_pretty_children(all_scenes)
+            child_counter += 1
+        return all_scenes
 
     def set_height(self, height):
         self.height = height
@@ -199,7 +214,8 @@ class Scene:
             return self
         else:
             for child in self.children:
-                return child.to_scene_rec(scene_name)
+                if child.to_scene_rec(scene_name):
+                    return child.to_scene_rec(scene_name)
 
     # Поиск сцены по интентам (в виде строк), необходимо наличие всех в вопросе
     def check_scene_rec(self, intents):
@@ -258,6 +274,12 @@ class SceneTree:
         if scene.conv_continue(cur_intents):
             scene = scene.conv_continue(cur_intents)
         return scene
+
+    def get_pretty_nodes(self):
+        all_scenes = ''
+        all_scenes += self.root.get_pretty_children(all_scenes)
+        return all_scenes
+
 
     def start_conversation_old(self):
         cur_intents = []
@@ -375,17 +397,19 @@ def main():
                                    IntentValue("направление"), IntentTemplate("балл")]])
     sub1 = Scene(name="sub1", pass_conditions=[["one"]])
     sub2 = Scene(name="sub2", pass_conditions=[["two, three"]])
+    sub21 = Scene(name="sub21", pass_conditions=[["one"]])
     sub12 = Scene(name="sub12")
     tree = SceneTree(main_scene)
     main_scene.add_child(sub1)
     main_scene.add_child(sub2)
     sub1.add_child(sub12)
+    sub2.add_child(sub21)
     tree.set_height_tree()
-    main_scene.print_scene()
-    tree.print_nodes()
-    print("---")
-    tree.print_pretty_nodes()
-    main_scene.print_answer()
+    #main_scene.print_scene()
+    #tree.print_nodes()
+    #print("---")
+    #tree.print_pretty_nodes()
+    #main_scene.print_answer()
 
     graph = init_graph()
     graph = graph_nlp_text(graph, text)
@@ -395,9 +419,10 @@ def main():
 
     cur_intents = ["pass", "one", "two", "three"]
 
+    print(tree.get_pretty_nodes())
+
     return tree
 
 
 if __name__ == "__main__":
     main()
-    take_command()
