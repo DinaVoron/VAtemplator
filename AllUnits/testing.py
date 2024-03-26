@@ -1,4 +1,4 @@
-from debug import set_debug
+# from debug import set_debug
 import pymorphy3
 from datetime import date
 import datetime

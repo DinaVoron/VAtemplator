@@ -4,8 +4,6 @@ from models.dialog_model import (get_text_scenes, get_root, get_scene_name,
                                  find_scene_by_name, get_scene_everything,
                                  add_child)
 
-# import graph
-
 
 @app.route('/', methods=['get', 'post'])
 def editor_tree():
