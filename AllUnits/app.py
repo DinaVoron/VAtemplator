@@ -1,6 +1,8 @@
 from flask import Flask, session
 from graph import init_graph, graph_nlp_text
-from tree import main
+from pickler import unpickle, topickle
+from tree import SceneTree, Scene, IntentValue, IntentTemplate, main
+import pickle as pc
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -19,6 +21,8 @@ graph = init_graph()
 graph = graph_nlp_text(graph, text)
 
 dialog_tree = main()
+#dialog_tree = unpickle("pickle_test.PKL")
+#print(dialog_tree.print_pretty_nodes())
 
 
 
@@ -26,3 +30,4 @@ import controllers.editor_tree
 import controllers.editor_graph
 import controllers.editor_testing
 import controllers.editor_data
+import controllers.editor_dialog

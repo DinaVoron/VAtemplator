@@ -2,7 +2,7 @@ from app import app, graph
 from flask import render_template, request
 from models.dialog_model import (get_text_scenes, get_root, get_scene_name,
                                  find_scene_by_name, get_scene_everything,
-                                 add_child)
+                                 add_child, save_tree, add_scene)
 
 # import graph
 
@@ -34,6 +34,17 @@ def editor_tree():
             add_child(current_scene, child_scene)
     else:
         child_scene_name = None
+
+    if request.values.get('add_scene'):
+        add_name = request.values.get('scene_name')
+        add_parent = request.values.get('parent_scene_name')
+        add_pass = request.values.get('pass_conditions')
+        add_answer = request.values.get('answer')
+        add_questions = request.values.get('questions')
+        add_scene(name=add_name, parent=add_parent, pass_conditions=add_pass, answer=add_answer, questions=add_questions)
+
+    if request.values.get('save_tree'):
+        save_tree("pickle_test.PKL")
 
 
 

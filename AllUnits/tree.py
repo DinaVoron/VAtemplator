@@ -392,6 +392,11 @@ text = """
 """
 
 def main():
+    # Десериализация pickle
+    with open("pickle_test.PKL", "rb") as f:
+        tree = pc.load(f)
+
+    '''
     main_scene = Scene(name="main", answer=["a", "intent", "b"], pass_conditions=[["pass"]],
                        questions=[[IntentTemplate("направление"), "значение", IntentValue("направление"),
                                    IntentValue("направление"), IntentTemplate("балл")]])
@@ -410,16 +415,21 @@ def main():
     #print("---")
     #tree.print_pretty_nodes()
     #main_scene.print_answer()
+    '''
 
-    graph = init_graph()
-    graph = graph_nlp_text(graph, text)
-    print(main_scene.check_scene_rec(["направление", "балл"]))
+
+    # graph = init_graph()
+    # graph = graph_nlp_text(graph, text)
+    # print(main_scene.check_scene_rec(["направление", "балл"]))
 
     # window_tree(tree)
 
-    cur_intents = ["pass", "one", "two", "three"]
+    #cur_intents = ["pass", "one", "two", "three"]
 
     print(tree.get_pretty_nodes())
+    # Сериализация pickle
+    with open("pickle_test.PKL", "wb") as f:
+        pc.dump(tree, f)
 
     return tree
 
