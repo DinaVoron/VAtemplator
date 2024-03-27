@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="/static/CSS/tree_style.css">
     <meta charset="UTF-8">
     <title>Система управления навыками голосового помощника</title>
     {% macro render_menu() %}
@@ -10,6 +11,7 @@
                 <li><a href="{{url_for('editor_graph')}}">Граф</a></li>
                 <li><a href="{{url_for('editor_data')}}">Статистика</a></li>
                 <li><a href="{{url_for('editor_testing')}}">Тестирование</a></li>
+                <li><a href="{{url_for('editor_dialog')}}">Диалог</a></li>
             </ul>
         </nav>
     {% endmacro %}
@@ -22,6 +24,7 @@
     {% endfor %}
     <p> {{ all_scenes }} </p>
     <p> Сейчас в сцене - {{ scene_name }} </p>
+    <p> Порядок: потомки, переходы, ответ, вопросы </p>
     {% for stat in scene_stats %}
         <p> {{stat}} </p>
     {% endfor %}
@@ -52,9 +55,20 @@
         <br><input type="text" name = scene_name> Имя сцены
         <br><input type="text" name = parent_scene_name> Имя родительской сцены
         <br><input type="text" name = pass_conditions> Условия перехода
-        <br><input type="text" name = answer> Шаблон ответа
-        <br><input type="text" name = questions> Шаблоны вопросов
+        <br><textarea name = answer rows="4" cols="50"> </textarea> Шаблон ответа
+        <br><textarea name = questions rows="4" cols="50"> </textarea> Шаблоны вопросов
         <br><input type="submit" value="Добавить сцену">
     </form>
+    <form action="" method="get">
+        <p> Сохранение дерева</p>
+        <input type="hidden" name = save_tree value="1">
+        <br><input type="submit" value="Сохранить дерево">
+    </form>
+    <form action="" method="get">
+        <p> Удаление сцены (и ее потомков)!!!</p>
+        <input type="hidden" name = delete_scene value="1">
+        <br><input type="submit" value="Удалить сцену">
+    </form>
+
 </body>
 </html>

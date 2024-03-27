@@ -1,5 +1,5 @@
 from testing import *
-# import pickle as pc
+import pickle as pc
 # import PySimpleGUI as sg
 import pyttsx3
 import speech_recognition as sr
@@ -380,6 +380,11 @@ class SceneTree:
 
 
 def main():
+    # Десериализация pickle
+    with open("pickle_test.PKL", "rb") as f:
+        tree = pc.load(f)
+
+    '''
     main_scene = Scene(name="main", answer=["a", "intent", "b"], pass_conditions=[["pass"]],
                        questions=[[IntentTemplate("направление"), "значение", IntentValue("направление"),
                                    IntentValue("направление"), IntentTemplate("балл")]])
@@ -400,12 +405,18 @@ def main():
     # main_scene.print_answer()
 
     print(main_scene.check_scene_rec(["направление", "балл"]))
+    '''
+
+
 
     # window_tree(tree)
 
-    cur_intents = ["pass", "one", "two", "three"]
+    #cur_intents = ["pass", "one", "two", "three"]
 
     print(tree.get_pretty_nodes())
+    # Сериализация pickle
+    with open("pickle_test.PKL", "wb") as f:
+        pc.dump(tree, f)
 
     return tree
 

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Система управления навыками голосового помощника</title>
+    {% macro render_menu() %}
+        <nav>
+            <ul>
+                <li><a href="{{url_for('editor_tree')}}">Дерево</a></li>
+                <li><a href="{{url_for('editor_graph')}}">Граф</a></li>
+                <li><a href="{{url_for('editor_data')}}">Статистика</a></li>
+                <li><a href="{{url_for('editor_testing')}}">Тестирование</a></li>
+            </ul>
+        </nav>
+    {% endmacro %}
+</head>
+<body>
+    {{ render_menu() }}
+    <p>Страница для диалога</p>
+    <form action="" method="get">
+        <input type="hidden" name = write_question value="1">
+        <input type="text" name = question>
+        <input type="submit" value="Задать вопрос">
+    </form>
+</body>
+</html>
