@@ -20,26 +20,7 @@ def speak(audio):
     engine.runAndWait()
 
 
-def take_command():
-    r = sr.Recognizer()
 
-    with sr.Microphone() as source:
-
-        print("Слушаем...")
-        r.pause_threshold = 1
-        audio = r.listen(source)
-
-    try:
-        print("Распознаем...")
-        query = r.recognize_google(audio, language="ru-RU")
-        print({query})
-
-    except Exception as e:
-        print(e)
-        print("Unable to Recognize your voice.")
-        return "None"
-
-    return query
 
 
 class IntentTemplate:

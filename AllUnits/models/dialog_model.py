@@ -1,6 +1,8 @@
 from app import dialog_tree
 import tree
 import pickle as pc
+import speech_recognition as sr
+
 
 def get_scenes():
     res = []
@@ -95,3 +97,25 @@ def add_scene(name, parent, pass_conditions, answer, questions):
 def save_tree(file):
     with open(file, "wb") as f:
         pc.dump(dialog_tree, f)
+
+
+def take_command():
+    r = sr.Recognizer()
+
+    with sr.Microphone() as source:
+
+        print("Слушаем...")
+        r.pause_threshold = 1
+        audio = r.listen(source)
+
+    try:
+        print("Распознаем...")
+        query = r.recognize_google(audio, language="ru-RU")
+        print({query})
+
+    except Exception as e:
+        print(e)
+        print("Unable to Recognize your voice.")
+        return "Не распознано. Попробуйте еще раз."
+
+    return query

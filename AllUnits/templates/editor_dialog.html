@@ -19,8 +19,23 @@
     <p>Страница для диалога</p>
     <form action="" method="get">
         <input type="hidden" name = write_question value="1">
-        <input type="text" name = question>
+        <input type="text" id="quest" name = question>
         <input type="submit" value="Задать вопрос">
+
     </form>
+    <button onclick="voice_button()">Голос</button>
+    <script>
+        function voice_button() {
+            questElem = document.getElementById('quest');
+
+            fetch('/chat/voice')
+            .then(response => response.json())
+            .then(data => {
+                questElem.value = data.message;
+            })
+            .catch(error => console.error('Ошибка:', error));
+        }
+
+    </script>
 </body>
 </html>

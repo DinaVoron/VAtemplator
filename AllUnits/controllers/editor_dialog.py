@@ -1,8 +1,8 @@
 from app import app, graph
-from flask import render_template, request
+from flask import render_template, request, make_response, jsonify
 from models.dialog_model import (get_text_scenes, get_root, get_scene_name,
                                  find_scene_by_name, get_scene_everything,
-                                 add_child)
+                                 add_child, take_command)
 
 
 @app.route('/dialog', methods=['get', 'post'])
@@ -31,3 +31,8 @@ def editor_dialog():
         scene_stats=scene_stats,
     )
     return html
+
+@app.route("/chat/voice")
+def handle_chat_voice():
+    text = take_command()
+    return make_response(jsonify({'message': text}), 200)
