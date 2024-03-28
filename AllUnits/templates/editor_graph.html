@@ -1,21 +1,326 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+    <title>Система управления навыками голосового помощника</title>
     <meta charset="UTF-8">
-    <title>Title</title>
-    {% macro render_menu() %}
-        <nav>
-            <ul>
-                <li><a href="{{url_for('editor_tree')}}">Дерево</a></li>
-                <li><a href="{{url_for('editor_graph')}}">Граф</a></li>
-                <li><a href="{{url_for('editor_data')}}">Статистика</a></li>
-                <li><a href="{{url_for('editor_testing')}}">Тестирование</a></li>
-            </ul>
-        </nav>
-    {% endmacro %}
+
+    <link rel="stylesheet" href="static/css/style-main.css">
+    <link rel="stylesheet" href="static/css/style-graph.css">
 </head>
+
 <body>
-    {{ render_menu() }}
-    <p>Страница для графа</p>
+    <header>
+        заголовок (header)
+    </header>
+    <nav>
+        блок навигации (nav)
+
+        {% include '__block_tabs.html' %}
+    </nav>
+    <article>
+        левая часть основного содержания (article)
+
+        <div id="tabs">
+            <button class="tab-link" onclick="open_tab(event, 'main-tab')" id="default_open">Вкладка Main</button>
+            <button class="tab-link" onclick="open_tab(event, 'visible-tab')">Вкладка Visible</button>
+        </div>
+
+        <section class="tab-content main-tab">
+            элементы левой части основного содержания (section)
+
+            <h2>Содержание вкладки Main</h2>
+            <div class="container">
+                <div class="directory">
+                    <h3>Документы</h3>
+                    <ul class="file-list" id="document-list"></ul>
+                    <button class="button-update-document">Обновить "Документы"</button>
+                </div>
+                <div class="directory">
+                    <h3>Справочник</h3>
+                    <ul class="file-list" id="reference-list"></ul>
+                    <button class="button-update-reference">Обновить "Справочник"</button>
+                </div>
+            </div>
+            <button class="button-load-data">Загрузить</button>
+            <button class="button-test">Тестовый запрос</button>
+
+        </section>
+        <section class="tab-content visible-tab">
+            элементы левой части основного содержания (section)
+
+            <h2>Содержание вкладки Visible</h2>
+            <div id="graph-visible">
+                 <iframe style="width: 100%; height: 819px; border: none;">Не поддерживаются плавающие фреймы.</iframe>
+            </div>
+
+        </section>
+    </article>
+    <aside class="tab-content main-tab">
+        правая часть основного содержания (aside)
+
+        <div id="upload-document">
+            <h3>Загрузить файл</h3>
+            <input type="file" id="document-input" name="document-input">
+            <button class="button-upload-document">Загрузить</button>
+        </div>
+
+    </aside>
+    <footer class="tab-content main-tab">
+        нижняя часть страницы (footer)
+
+        <div class="container container-table" id="container-table"></div>
+
+    </footer>
+
+<!-- Функция переключения вкладок -->
+<script>
+    function open_tab(evt, tab_name) {
+        var contents = document.querySelectorAll('.tab-content');
+        contents.forEach(function(content) {
+            content.style.display = 'none';
+        });
+        if (tab_name === "visible-tab") {
+            fetch('/graph/visible_data')
+            .then(response => {
+                var blocks = document.querySelectorAll('.' + tab_name);
+                blocks.forEach(function(content) {
+                    content.style.display = 'block';
+                });
+
+                var iframe = document.querySelector("#graph-visible iframe");
+                iframe.src = "/static/graph.html";
+            })
+            .catch(error => console.error('Ошибка:', error));
+        } else {
+            var blocks = document.querySelectorAll('.' + tab_name);
+            blocks.forEach(function(content) {
+                content.style.display = 'block';
+            });
+        }
+    }
+    document.getElementById("default_open").click();
+</script>
+
+<!-- Кнопка (Button) -->
+<script>
+    document.querySelectorAll('.button-load-data').forEach(function(button) {
+        button.addEventListener('click', function() {
+            event_load_data();
+        });
+    });
+    document.querySelectorAll('.button-visible-data').forEach(function(button) {
+        button.addEventListener('click', function() {
+            event_visible_data();
+        });
+    });
+    document.querySelectorAll('.button-update-document').forEach(function(button) {
+        button.addEventListener('click', function() {
+            event_update_document();
+        });
+    });
+    document.querySelectorAll('.button-update-reference').forEach(function(button) {
+        button.addEventListener('click', function() {
+            event_update_reference();
+        });
+    });
+    document.querySelectorAll('.button-upload-document').forEach(function(button) {
+        button.addEventListener('click', function() {
+            event_upload_document();
+        });
+    });
+
+
+    document.querySelectorAll('.button-test').forEach(function(button) {
+        button.addEventListener('click', function() {
+            fetch('/graph/test')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => console.error('Ошибка:', error));
+        });
+    });
+</script>
+
+<!-- Событие (Event) -->
+<script>
+    function event_process_data(filename) {
+        fetch('/graph/process_data', {
+            method:  'POST',
+            headers: {'Content-Type': 'text/plain'},
+            body:    filename
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('container-table').innerHTML = "";
+            document.getElementById('container-table').appendChild(create_table(data));
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
+    function event_load_data() {
+        fetch('/graph/load_data', {
+            method:  'POST',
+            headers: {'Content-Type': 'application/json'},
+            body:    JSON.stringify({ table: get_table_data() })
+        })
+        .then(response => {
+            event_update_reference();
+            clear_table();
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
+    function event_delete_data(filename) {
+        fetch('/graph/delete_data', {
+            method:  'POST',
+            headers: {'Content-Type': 'text/plain'},
+            body:    filename[0]
+        })
+        .then(response => {
+            event_update_reference();
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
+
+    function event_update_document() {
+        fetch('/graph/update_document')
+        .then(response => response.json())
+        .then(data => {
+            var file_list = document.getElementById('document-list');
+            file_list.innerHTML = '';
+            if (data.length > 0) {
+                data.forEach(function(file) {
+                    var item_list = document.createElement('li');
+                    item_list.textContent = file;
+                    item_list.classList.add('file-item');
+                    item_list.addEventListener('dblclick', function() {
+                        event_process_data(file);
+                    });
+                    file_list.appendChild(item_list);
+                });
+            } else {
+                var item_list = document.createElement('li');
+                item_list.textContent = 'Нет документов.';
+                item_list.classList.add('file-item');
+                file_list.appendChild(item_list);
+            }
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
+    function event_update_reference() {
+        fetch('/graph/update_reference')
+        .then(response => response.json())
+        .then(data => {
+            var file_list = document.getElementById('reference-list');
+            file_list.innerHTML = '';
+            if (data.length > 0) {
+                data.forEach(function(file) {
+                    var item_list = document.createElement('li');
+                    var span = document.createElement('span');
+                    item_list.textContent = file[0] + "\t";
+                    span.textContent = "[" + file[1] + "]";
+                    item_list.classList.add('file-item');
+                    item_list.addEventListener('dblclick', function() {
+                        event_delete_data(file);
+                    });
+                    file_list.appendChild(item_list);
+                    item_list.appendChild(span);
+                });
+            } else {
+                var item_list = document.createElement('li');
+                item_list.textContent = 'Нет документов.';
+                item_list.classList.add('file-item');
+                file_list.appendChild(item_list);
+            }
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
+    function event_upload_document() {
+        var form = new FormData();
+        form.append('file', document.getElementById('document-input').files[0]);
+        fetch('/graph/upload_document', {
+            method: 'POST',
+            body:   form
+        })
+        .then(response => response.json())
+        .then(data => {
+            event_update_document();
+            console.log('Загрузка файла: ' + data.message);
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
+
+    event_update_document();
+    event_update_reference();
+</script>
+
+<!-- Вспомогательные функции (Get, Set, Is, Other) -->
+<script>
+    function get_table_data() {
+        var table = document.querySelector('table');
+        var data = [];
+        var rows = table.querySelectorAll('tbody tr');
+        rows.forEach(function(row) {
+            var row_data = {};
+            var cells = row.querySelectorAll('td');
+            cells.forEach(function(cell) {
+                var value = cell.textContent;
+                if (cell.hasAttribute('data-bool')) {
+                    value = cell.getAttribute('data-bool') === 'true';
+                }
+                row_data[cell.cellIndex] = value;
+            });
+            data.push(row_data);
+        });
+        return data;
+    }
+    function create_table(json_data) {
+        const table = document.createElement('table');
+        table.classList.add('no_text_select');
+        const thead = document.createElement('thead');
+        const tbody = document.createElement('tbody');
+        const thead_row = document.createElement('tr');
+        const tbody_obj = {};
+        Object.keys(json_data).forEach(function(key) {
+            const th = document.createElement('th');
+            th.textContent = key;
+            thead_row.appendChild(th);
+            Object.keys(json_data[key]).forEach(sub_key => {
+                if (!tbody_obj[sub_key]) {
+                    tbody_obj[sub_key] = [];
+                }
+                tbody_obj[sub_key].push(json_data[key][sub_key]);
+            });
+        });
+        thead.appendChild(thead_row);
+        Object.values(tbody_obj).forEach(function(row) {
+            const tbody_row = document.createElement('tr');
+            Object.values(row).forEach(function(value) {
+                const td = document.createElement('td');
+                td.textContent = value;
+                if (value === true || value === false) {
+                    td.addEventListener('click', function() {
+                        toggle_boolean_value(td);
+                    });
+                }
+                tbody_row.appendChild(td);
+            });
+            tbody.appendChild(tbody_row);
+        });
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        return table;
+    }
+    function clear_table() {
+        var table = document.getElementById('container-table');
+        table.innerHTML = '';
+    }
+    function toggle_boolean_value(cell) {
+        cell.textContent = cell.textContent === 'true' ? 'false' : 'true';
+    }
+</script>
+
 </body>
 </html>
+
+
+

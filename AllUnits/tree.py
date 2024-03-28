@@ -1,11 +1,11 @@
 from testing import *
 import pickle as pc
-import PySimpleGUI as sg
+# import PySimpleGUI as sg
 import pyttsx3
 import speech_recognition as sr
-from interface import *
-from graph import *
-import subprocess
+# from interface import *
+# from graph import *
+# import subprocess
 
 engine = pyttsx3.init("sapi5")
 voices = engine.getProperty("voices")
@@ -338,58 +338,46 @@ class SceneTree:
         self.root.check_scene_rec(intents)
 
 
-def window_tree(tree):
-    layout = [
-        [sg.TabGroup([[sg.Tab('Диалог', create_tab1_layout(), key='-TAB1-', background_color='#ffffff'),
-        sg.Tab('Тесты', create_tab2_layout(), key='-TAB2-', background_color='#ffffff'),
-        sg.Tab('Сеть', create_tab3_layout(), key='-TAB3-', background_color='#ffffff')]], tab_location='lefttop',
-                     background_color='#ffffff')]
-    ]
+# def window_tree(tree):
+#     layout = [
+#         [sg.TabGroup([[sg.Tab('Диалог', create_tab1_layout(), key='-TAB1-', background_color='#ffffff'),
+#         sg.Tab('Тесты', create_tab2_layout(), key='-TAB2-', background_color='#ffffff'),
+#         sg.Tab('Сеть', create_tab3_layout(), key='-TAB3-', background_color='#ffffff')]], tab_location='lefttop',
+#                      background_color='#ffffff')]
+#     ]
+#
+#     window = sg.Window("Demo", layout, background_color='#ffffff')
+#     # event, values = window.read()
+#
+#     while True:
+#         event, values = window.read()
+#         text_input = values[0]
+#         if event == "Вывести дерево":
+#             tree.print_pretty_nodes()
+#         if event == "Очистить":
+#             window["-Output-"].update('')
+#         if event == "Закрыть" or event == sg.WIN_CLOSED:
+#             break
+#         if event == "Найти интенты вопроса":
+#             print(tree.root.get_work_question(text_input))
+#         if event == "Перейти в сцену":
+#             cur_scene = tree.to_scene(text_input)
+#             print(cur_scene.name)
+#         if event == "Перейти к модулю тестирования":
+#             window.close()
+#             break
+#         if event == "ok_log":
+#             subprocess.Popen(["notepad", "controllers/OK.log"])
+#         if event == "nf_log":
+#             subprocess.Popen(["notepad", "controllers/NF.log"])
+#         if event == "err_log":
+#             subprocess.Popen(["notepad", "controllers/ERR.log"])
+#         if event == "autotest":
+#             window["-Output-autotest-"].update(automatic_testing())
+#
+#
+#     window.close()
 
-    window = sg.Window("Demo", layout, background_color='#ffffff')
-    # event, values = window.read()
-
-    while True:
-        event, values = window.read()
-        text_input = values[0]
-        if event == "Вывести дерево":
-            tree.print_pretty_nodes()
-        if event == "Очистить":
-            window["-Output-"].update('')
-        if event == "Закрыть" or event == sg.WIN_CLOSED:
-            break
-        if event == "Найти интенты вопроса":
-            print(tree.root.get_work_question(text_input))
-        if event == "Перейти в сцену":
-            cur_scene = tree.to_scene(text_input)
-            print(cur_scene.name)
-        if event == "Перейти к модулю тестирования":
-            window.close()
-            break
-        if event == "ok_log":
-            subprocess.Popen(["notepad", "controllers/OK.log"])
-        if event == "nf_log":
-            subprocess.Popen(["notepad", "controllers/NF.log"])
-        if event == "err_log":
-            subprocess.Popen(["notepad", "controllers/ERR.log"])
-        if event == "autotest":
-            window["-Output-autotest-"].update(automatic_testing())
-
-
-    window.close()
-
-
-text = """
-Проходной балл по направлению подготовки "Прикладная математика и информатика" в 2020 году составил 197 баллов.
-Проходной балл по направлению подготовки "Прикладная математика и информатика" в 2021 году составил 211 баллов.
-Проходной балл по направлению подготовки "Прикладная математика и информатика" в 2022 году составил 200 баллов.
-Проходной балл по направлению подготовки "Прикладная математика и информатика" в 2023 году составил 230 баллов.
-В 2020 году по направлению подготовки "Математика и компьютерные науки" проходной балл равен 190.
-В 2021 году по направлению подготовки "Математика и компьютерные науки" проходной балл равен 172.
-В 2022 году по направлению подготовки "Математика и компьютерные науки" проходной балл равен 204.
-В 2023 году по направлению подготовки "Математика и компьютерные науки" проходной балл равен 200.
-
-"""
 
 def main():
     # Десериализация pickle
@@ -410,17 +398,16 @@ def main():
     sub1.add_child(sub12)
     sub2.add_child(sub21)
     tree.set_height_tree()
-    #main_scene.print_scene()
-    #tree.print_nodes()
-    #print("---")
-    #tree.print_pretty_nodes()
-    #main_scene.print_answer()
+    # main_scene.print_scene()
+    # tree.print_nodes()
+    # print("---")
+    # tree.print_pretty_nodes()
+    # main_scene.print_answer()
+
+    print(main_scene.check_scene_rec(["направление", "балл"]))
     '''
 
 
-    # graph = init_graph()
-    # graph = graph_nlp_text(graph, text)
-    # print(main_scene.check_scene_rec(["направление", "балл"]))
 
     # window_tree(tree)
 
@@ -434,5 +421,5 @@ def main():
     return tree
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

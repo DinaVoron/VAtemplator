@@ -1,0 +1,29 @@
+<!-- block-tabs -->
+
+{% for tab in tabs %}
+    <div
+            class="tab {% if tab.id == 1 %}active-tab{% endif %}"
+            id="tab-{{ tab.id }}"
+            onclick="showContent({{ tab.id }})"
+    >
+        <img class="shadow" src="static/images/{{ tab.image }}">
+        <div class="caption-overlay">
+            <p>{{ tab.name }}</p>
+        </div>
+    </div>
+{% endfor %}
+    
+<script>
+    function showContent(id) {
+        var tabs = document.querySelectorAll('.tab');
+        var contents = document.querySelectorAll('.content > div');
+        tabs.forEach(function(tab) {
+            tab.classList.remove('active-tab');
+        });
+        contents.forEach(function(content) {
+            content.style.display = 'none';
+        });
+        document.getElementById('tab-' + id).classList.add('active-tab');
+        document.getElementById('content-' + id).style.display = 'block';
+    }
+</script>

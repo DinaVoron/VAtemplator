@@ -4,9 +4,9 @@ from models.editor_data_model import get_ok_num, get_err_num, get_nf_num
 from models.editor_data_model import count_errors, get_time, graph_verify
 import subprocess
 
+
 @app.route('/data', methods=['get', 'post'])
 def editor_data():
-
     success_amount = get_ok_num()
     not_found_amount = get_nf_num()
     error_amount = get_err_num()
