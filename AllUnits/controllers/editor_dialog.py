@@ -41,6 +41,15 @@ def editor_dialog():
     else:
         end_dialog = None
 
+    if request.values.get('rate_dialog'):
+        rating = request.values.get('rate_dialog')
+        if (rating == 1):
+            # Удовлетворительно
+            pass
+        else:
+            # Неудовлетворительно
+            pass
+
     html = render_template(
         'editor_dialog.html',
         text_scenes=text_scenes,
