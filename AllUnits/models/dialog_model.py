@@ -1,6 +1,8 @@
-from app import dialog_tree
+from app import dialog_tree, graph
 import tree
 import pickle as pc
+import speech_recognition as sr
+
 
 def get_scenes():
     res = []
@@ -95,3 +97,58 @@ def add_scene(name, parent, pass_conditions, answer, questions):
 def save_tree(file):
     with open(file, "wb") as f:
         pc.dump(dialog_tree, f)
+
+
+def take_command():
+    r = sr.Recognizer()
+
+    with sr.Microphone() as source:
+
+        print("Слушаем...")
+        r.pause_threshold = 1
+        audio = r.listen(source)
+
+    try:
+        print("Распознаем...")
+        query = r.recognize_google(audio, language="ru-RU")
+        print({query})
+
+    except Exception as e:
+        print(e)
+        print("Unable to Recognize your voice.")
+        return "Не распознано. Попробуйте еще раз."
+
+    return query
+
+# Текст вопроса - текст ответа
+def ask_question(current_scene, question_text):
+    question_intent_dict = current_scene.get_work_question(question_text)
+    if (question_intent_dict):
+        question_intent_dict = graph.search(question_intent_dict)
+    answer = current_scene.give_answer(question_intent_dict)
+    return answer
+
+
+def intent_dict_to_list(intent_dict):
+    intent_list = []
+    if (not intent_dict):
+        intent_dict = []
+    for intent in intent_dict:
+        int_name = intent.get("intent")
+        intent_list.append(int_name)
+    return intent_list
+
+# Переход к следующей сцене (возможен переход сразу через несколько)
+def pass_scene(cur_scene, cur_intents_list):
+    new_scene_name = cur_scene.pass_to_children(cur_intents_list)
+    return new_scene_name
+
+# Ответ, новая сцена, словарь интентов и значений, лист интентов
+def dialog(current_scene, question_text):
+    answer = ask_question(current_scene, question_text)
+    question_intent_dict = current_scene.get_work_question(question_text)
+    if (question_intent_dict):
+        question_intent_dict = graph.search(question_intent_dict)
+    intent_list = intent_dict_to_list(question_intent_dict)
+    new_scene_name = pass_scene(current_scene, intent_list)
+    return [answer, new_scene_name, question_intent_dict, intent_list]

@@ -4,20 +4,9 @@
     <link rel="stylesheet" href="/static/CSS/tree_style.css">
     <meta charset="UTF-8">
     <title>Система управления навыками голосового помощника</title>
-    {% macro render_menu() %}
-        <nav>
-            <ul>
-                <li><a href="{{url_for('editor_tree')}}">Дерево</a></li>
-                <li><a href="{{url_for('editor_graph')}}">Граф</a></li>
-                <li><a href="{{url_for('editor_data')}}">Статистика</a></li>
-                <li><a href="{{url_for('editor_testing')}}">Тестирование</a></li>
-                <li><a href="{{url_for('editor_dialog')}}">Диалог</a></li>
-            </ul>
-        </nav>
-    {% endmacro %}
 </head>
 <body>
-    {{ render_menu() }}
+    {% include '__block_tabs.html' %}
     <p>Страница для дерева</p>
     {% for scene in text_scenes %}
         <p> {{scene}} </p>
@@ -28,18 +17,13 @@
     {% for stat in scene_stats %}
         <p> {{stat}} </p>
     {% endfor %}
-    <form action="" method="get">
+    <form method="get">
         <input type="hidden" name = go_to_scene value="1">
         <input type="text" name = scene_name value="Имя сцены">
         <input type="submit" value="Перейти в сцену">
     </form>
     <br>
-    <form action="" method="get">
-        <input type="hidden" name = write_question value="1">
-        <input type="text" name = question value="Поле для вопроса">
-        <input type="submit" value="Задать вопрос">
-    </form>
-    <form action="" method="get">
+    <form method="get">
         <input type="hidden" name = add_child_scene value="1">
         <input type="text" name = child_scene_name> Имя сцены
         <input type="submit" value="Добавить потомка">
@@ -49,7 +33,7 @@
     {% endif %}
 
 
-    <form action="" method="get">
+    <form method="get">
         <p> Добавление сцены</p>
         <input type="hidden" name = add_scene value="1">
         <br><input type="text" name = scene_name> Имя сцены
@@ -59,12 +43,12 @@
         <br><textarea name = questions rows="4" cols="50"> </textarea> Шаблоны вопросов
         <br><input type="submit" value="Добавить сцену">
     </form>
-    <form action="" method="get">
+    <form method="get">
         <p> Сохранение дерева</p>
         <input type="hidden" name = save_tree value="1">
         <br><input type="submit" value="Сохранить дерево">
     </form>
-    <form action="" method="get">
+    <form method="get">
         <p> Удаление сцены (и ее потомков)!!!</p>
         <input type="hidden" name = delete_scene value="1">
         <br><input type="submit" value="Удалить сцену">

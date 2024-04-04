@@ -20,26 +20,7 @@ def speak(audio):
     engine.runAndWait()
 
 
-def take_command():
-    r = sr.Recognizer()
 
-    with sr.Microphone() as source:
-
-        print("Слушаем...")
-        r.pause_threshold = 1
-        audio = r.listen(source)
-
-    try:
-        print("Распознаем...")
-        query = r.recognize_google(audio, language="ru-RU")
-        print({query})
-
-    except Exception as e:
-        print(e)
-        print("Unable to Recognize your voice.")
-        return "None"
-
-    return query
 
 
 class IntentTemplate:
@@ -142,6 +123,23 @@ class Scene:
         answer += ' '
         print(answer)
 
+    # intents_dicts - лист словарей
+    def give_answer(self, intents_dicts):
+        answer = ''
+        for ans in self.answer:
+            if isinstance(ans, IntentTemplate):
+                for intent in intents_dicts:
+                    if intent.get("intent") == ans.name:
+                        answer += ' ' + intent.get("intent")
+            elif isinstance(ans, IntentValue):
+                for intent in intents_dicts:
+                    if intent.get("intent") == ans.name:
+                        answer += ' ' + intent.get("meaning")
+            else:
+                answer += ' ' + ans
+
+        return answer
+
     def send_intents(self, intents_and_values):
         # Отправка интентов в семантическую сеть
         pass
@@ -217,7 +215,7 @@ class Scene:
                 if child.to_scene_rec(scene_name):
                     return child.to_scene_rec(scene_name)
 
-    # Поиск сцены по интентам (в виде строк), необходимо наличие всех в вопросе
+    # Поиск сцены по интентам в вопросах(в виде строк), необходимо наличие всех в вопросе
     def check_scene_rec(self, intents):
         intents.sort()
         for question in self.questions:
@@ -234,6 +232,7 @@ class Scene:
         for child in self.children:
             return child.check_scene_rec(intents)
 
+# Поиск сцены по интентам и переходам
     def pass_to_children(self, intents):
         intents.sort()
         for pass_cond in self.pass_conditions:
@@ -247,7 +246,7 @@ class Scene:
             if checklist == intents:
                 return self.name
         for child in self.children:
-            return child.check_scene_rec(intents)
+            return child.pass_to_children(intents)
 
 
 
@@ -413,7 +412,7 @@ def main():
 
     #cur_intents = ["pass", "one", "two", "three"]
 
-    print(tree.get_pretty_nodes())
+    # print(tree.get_pretty_nodes())
     # Сериализация pickle
     with open("pickle_test.PKL", "wb") as f:
         pc.dump(tree, f)
