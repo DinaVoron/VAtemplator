@@ -3,22 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Система управления навыками голосового помощника</title>
-    {% macro render_menu() %}
-        <nav>
-            <ul>
-                <li><a href="{{url_for('editor_tree')}}">Дерево</a></li>
-                <li><a href="{{url_for('editor_graph')}}">Граф</a></li>
-                <li><a href="{{url_for('editor_data')}}">Статистика</a></li>
-                <li><a href="{{url_for('editor_testing')}}">Тестирование</a></li>
-            </ul>
-        </nav>
-    {% endmacro %}
 </head>
 <body>
-    {{ render_menu() }}
+    {% include '__block_tabs.html' %}
     <p>Страница для диалога</p>
-    <form action="" method="get">
+    <form method="get">
         <input type="hidden" name = write_question value="1">
+        <input type="hidden" name = prev_scene value= {{scene_name}}>
         <input type="text" id="quest" name = question>
         <input type="submit" value="Задать вопрос">
 
@@ -37,5 +28,24 @@
         }
 
     </script>
+    <form method="get">
+        <input type="hidden" name = end_dialog value="1">
+        <input type="submit" value="Закончить диалог">
+
+    </form>
+    {% if end_dialog != None %}
+        <form method="get">
+        <input type="hidden" name = rate_dialog value="1">
+        <input type="submit" value="Всё понравилось">
+        </form>
+        <form method="get">
+        <input type="hidden" name = rate_dialog value="2">
+        <input type="submit" value="Неудовлетворительно">
+        </form>
+    {% endif %}
+
+    <p>{{ scene_name }}</p>
+    <p> {{ answer }}</p>
+
 </body>
 </html>
