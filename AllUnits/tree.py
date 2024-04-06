@@ -326,10 +326,12 @@ class SceneTree:
 
         return True
 
-    def scene_add(self, parent_scene, name=None, children=None, pass_conditions=None, answer=None, questions=None,
-                 theme=None):
-        new_scene = Scene(name=name, children=children, pass_conditions=pass_conditions, answer=answer,
-                          questions=questions, theme=theme)
+    def scene_add(self, parent_scene, name = None, children = None,
+                  pass_conditions = None, answer = None, questions = None,
+                  theme = None):
+        new_scene = Scene(name = name, children = children,
+                          pass_conditions = pass_conditions, answer = answer,
+                          questions = questions, theme = theme)
         parent_scene.add_child(new_scene)
         return new_scene
 
@@ -380,7 +382,7 @@ class SceneTree:
 
 def main():
     # Десериализация pickle
-    with open("pickle_test.PKL", "rb") as f:
+    with open("save_files/pickle_test.PKL", "rb") as f:
         tree = pc.load(f)
 
     '''
@@ -414,7 +416,7 @@ def main():
 
     # print(tree.get_pretty_nodes())
     # Сериализация pickle
-    with open("pickle_test.PKL", "wb") as f:
+    with open("save_files/pickle_test.PKL", "wb") as f:
         pc.dump(tree, f)
 
     return tree
