@@ -1,4 +1,5 @@
 from app import dialog_tree, graph
+from models.editor_data_model import send_log
 import tree
 import pickle as pc
 import speech_recognition as sr
@@ -120,6 +121,7 @@ def take_command():
 
     return query
 
+
 # Текст вопроса - текст ответа
 def ask_question(current_scene, question_text):
     question_intent_dict = current_scene.get_work_question(question_text)
@@ -138,15 +140,19 @@ def intent_dict_to_list(intent_dict):
         intent_list.append(int_name)
     return intent_list
 
+
 # Переход к следующей сцене (возможен переход сразу через несколько)
 def pass_scene(cur_scene, cur_intents_list):
     new_scene_name = cur_scene.pass_to_children(cur_intents_list)
     return new_scene_name
 
+
 # Ответ, новая сцена, словарь интентов и значений, лист интентов
 def dialog(current_scene, question_text):
     answer = ask_question(current_scene, question_text)
     question_intent_dict = current_scene.get_work_question(question_text)
+    send_log(question_text, question_intent_dict, current_scene.name)
+    send_log(answer, False, current_scene.name)
     if (question_intent_dict):
         question_intent_dict = graph.search(question_intent_dict)
     intent_list = intent_dict_to_list(question_intent_dict)

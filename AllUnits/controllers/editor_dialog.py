@@ -5,6 +5,8 @@ from models.dialog_model import (get_text_scenes, get_root, get_scene_name,
                                  add_child, take_command, pass_scene,
                                  intent_dict_to_list, ask_question, dialog)
 
+from models.editor_data_model import send_res
+
 
 @app.route('/dialog', methods=['get', 'post'])
 def editor_dialog():
@@ -42,12 +44,12 @@ def editor_dialog():
         end_dialog = None
 
     if request.values.get('rate_dialog'):
-        rating = request.values.get('rate_dialog')
-        if (rating == 1):
-            # Удовлетворительно
+        rating = int(request.values.get('rate_dialog'))
+        if rating == 1:
+            send_res("OK")
             pass
         else:
-            # Неудовлетворительно
+            send_res("ERR")
             pass
 
     html = render_template(

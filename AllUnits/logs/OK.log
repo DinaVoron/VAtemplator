@@ -53,11 +53,31 @@
 
 <date>2024-02-14</date><time>01:50:49</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
 
-</log>
-<log>
+</log>
+
+<log>
+
 <date>2024-02-14</date><time>01:50:49</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
 
 <date>2024-02-14</date><time>01:50:51</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
 
-</log><log><date>2024-02-14</date><time>01:50:49</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place><date>2024-02-14</date><time>01:50:51</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place></log>
+</log>
+
+<log>
+
+<date>2024-02-14</date><time>01:50:49</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
+
+<date>2024-02-14</date><time>01:50:51</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
+
+</log>
+<log>
+<date>2024-04-04</date><time>15:36:59</time><text>хороший вопрос</text><place>main</place>
+
+<date>2024-04-04</date><time>15:36:59</time><text> a intent b</text><place>main</place>
+
+<date>2024-04-04</date><time>15:37:12</time><text>задаем доп вопрос</text><place>main</place>
+
+<date>2024-04-04</date><time>15:37:12</time><text> a intent b</text><place>main</place>
+
+</log>
 </logs>
