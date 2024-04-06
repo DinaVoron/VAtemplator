@@ -151,17 +151,26 @@ class Scene:
                 for idx2, elem in enumerate(question):
                     if ((type(elem) == IntentTemplate) and
                             (idx2 == intent_idx)):
-                        print(elem.name)
+
                         elem.idx = idx
                         intent_values = (self.get_intent_values
                                          (elem.name,
                                           user_question_list, question))
+                        
+                        if not intent_values:
+                            intent_dict.append({"intent": elem.name,
+                                                    "meaning": None})
+                        else:
+                            intent_dict.append({"intent": elem.name,
+                                                    "meaning": intent_values})
+
                         if intent_values == []:
                             intent_dict.append({"intent": elem.name,
                                                 "meaning": None})
                         else:
                             intent_dict.append({"intent": elem.name,
                                                 "meaning": intent_values})
+
                         intent_count -= 1
 
             if intent_count == 0:
