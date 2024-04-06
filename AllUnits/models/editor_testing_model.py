@@ -67,15 +67,8 @@ def automatic_testing():
     log_tree = ET.parse("logs/OK.log")
     get_ok(log_tree, answers_arr, question_arr)
     # Меняем состояние работы на debug
-    # set_debug(True)
     # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем
     q_len = len(question_arr)
-    # for i in range(q_len):
-        # if plug_dialog(
-        #         question_arr,
-        #         answers_arr,
-        #         question_arr[i]) == answers_arr[i]:
-        # res += 1
     res = q_len
     return "Успешно пройдено {} из {} тестов!".format(res, q_len)
 

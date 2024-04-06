@@ -39,48 +39,48 @@ def get_time():
     amount = 0
     logs = ET.parse("logs/OK.log").getroot()
     for log in logs:
-        times = log.findall('time')
+        times = log.findall("time")
         i = 1
         while i < len(times):
             time1 = datetime.datetime.strptime(
                 times[i - 1].text,
-                '%H:%M:%S'
+                "%H:%M:%S"
             )
             time2 = datetime.datetime.strptime(
                 times[i].text,
-                '%H:%M:%S'
+                "%H:%M:%S"
             )
             time += (time2 - time1).seconds
             amount += 1
             i += 2
     logs = ET.parse("logs/ERR.log").getroot()
     for log in logs:
-        times = log.findall('time')
+        times = log.findall("time")
         i = 1
         while i < len(times):
             time1 = datetime.datetime.strptime(
                 times[i - 1].text,
-                '%H:%M:%S'
+                "%H:%M:%S"
             )
             time2 = datetime.datetime.strptime(
                 times[i].text,
-                '%H:%M:%S'
+                "%H:%M:%S"
             )
             time += (time2 - time1).seconds
             amount += 1
             i += 2
     logs = ET.parse("logs/NF.log").getroot()
     for log in logs:
-        times = log.findall('time')
+        times = log.findall("time")
         i = 1
         while i < len(times):
             time1 = datetime.datetime.strptime(
                 times[i - 1].text,
-                '%H:%M:%S'
+                "%H:%M:%S"
             )
             time2 = datetime.datetime.strptime(
                 times[i].text,
-                '%H:%M:%S'
+                "%H:%M:%S"
             )
             time += (time2 - time1).seconds
             amount += 1
@@ -144,8 +144,6 @@ def graph_verify(graph):
     intents = graph.list_intent_text
 
     chains = find_all_chains(edges, intents)
-    # for chain in chains:
-    #     print(chain)
     return chains
 
 
@@ -216,7 +214,7 @@ def print_info(filename):
     f2 = open(filename, "r")
     text = f2.read()
     f2.close()
-    text = re.sub("\s*</?logs>\s*", "", text)
+    text = re.sub("\\s*</?logs>\\s*", "", text)
     f2 = open(filename, "w")
     f2.write("<logs>\r\n" + text + "\r\n<log>\r\n" + f1.read()
              + "</log>\r\n"
