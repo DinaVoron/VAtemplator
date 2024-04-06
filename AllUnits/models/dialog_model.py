@@ -165,23 +165,21 @@ class Scene:
                 if type(elem) == IntentTemplate:
                     intent_count += 1
             for idx, user_word in enumerate(user_question_list):
-                if user_word in global_intents:
-                    intent_idx = idx
-                    for idx2, elem in enumerate(question):
-                        if ((type(elem) == IntentTemplate) and
-                                (idx2 == intent_idx)):
-                            print(elem.name)
-                            elem.idx = idx
-                            intent_values = (self.get_intent_values
-                                             (elem.name,
-                                              user_question_list, question))
-                            if not intent_values:
-                                intent_dict.append({"intent": elem.name,
+                intent_idx = idx
+                for idx2, elem in enumerate(question):
+                    if ((type(elem) == IntentTemplate) and
+                            (idx2 == intent_idx)):
+                        elem.idx = idx
+                        intent_values = (self.get_intent_values
+                                         (elem.name,
+                                          user_question_list, question))
+                        if not intent_values:
+                            intent_dict.append({"intent": elem.name,
                                                     "meaning": None})
-                            else:
-                                intent_dict.append({"intent": elem.name,
+                        else:
+                            intent_dict.append({"intent": elem.name,
                                                     "meaning": intent_values})
-                            intent_count -= 1
+                        intent_count -= 1
 
             if intent_count == 0:
                 return intent_dict
