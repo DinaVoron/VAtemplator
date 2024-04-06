@@ -175,7 +175,7 @@ class Scene:
                             intent_values = (self.get_intent_values
                                              (elem.name,
                                               user_question_list, question))
-                            if intent_values == []:
+                            if not intent_values:
                                 intent_dict.append({"intent": elem.name,
                                                     "meaning": None})
                             else:
