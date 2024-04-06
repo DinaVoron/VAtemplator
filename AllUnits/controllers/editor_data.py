@@ -5,7 +5,7 @@ from models.editor_data_model import count_errors, get_time, graph_verify
 import subprocess
 
 
-@app.route('/data', methods=['get', 'post'])
+@app.route("/data", methods=["get", "post"])
 def editor_data():
     success_amount = get_ok_num()
     not_found_amount = get_nf_num()
@@ -28,7 +28,7 @@ def editor_data():
     intents = graph_verify(graph)
 
     html = render_template(
-        'editor_data.html',
+        "editor_data.html",
         success_amount=success_amount,
         not_found_amount=not_found_amount,
         error_amount=error_amount,
