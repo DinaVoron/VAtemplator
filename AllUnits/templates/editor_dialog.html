@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="/static/CSS/tree_style.css">
     <meta charset="UTF-8">
     <title>Система управления навыками голосового помощника</title>
 </head>
 <body>
     {% include '__block_tabs.html' %}
     <p>Страница для диалога</p>
+    <div class = "chat">
+        <p style="color: skyblue"> {{ question_text }} </p>
+        <p style="color: green"> {{ answer }}</p>
+    </div>
     <form method="get">
         <input type="hidden" name = write_question value="1">
         <input type="hidden" name = prev_scene value= {{scene_name}}>
@@ -45,7 +50,6 @@
     {% endif %}
 
     <p>{{ scene_name }}</p>
-    <p> {{ answer }}</p>
 
 </body>
 </html>

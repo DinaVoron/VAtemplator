@@ -1,6 +1,6 @@
 from app import dialog_tree
-from dialog_model import IntentTemplate
-from dialog_model import IntentValue
+from models.dialog_model import IntentTemplate
+from models.dialog_model import IntentValue
 import xml.etree.ElementTree as ET
 
 

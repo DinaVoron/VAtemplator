@@ -6,3 +6,37 @@ textarea {
 nav {
     display: inline-block;
 }
+
+.tree_print {
+    width: 33%;
+    border: 1px solid black;
+}
+
+.scene_print {
+    width: 33%;
+    border: 1px solid black;
+}
+
+.scene_options {
+    width: 33%;
+    border: 1px solid black;
+}
+
+.super_flex {
+    display: flex;
+}
+
+p.user_text {
+    style = "color: blue";
+}
+
+p.answer_text {
+    style = "color: green";
+}
+
+.chat {
+    width: 300px;
+    height: 200px;
+    border: 1px solid #ccc;
+    padding: 5px;
+}

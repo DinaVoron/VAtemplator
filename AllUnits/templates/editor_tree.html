@@ -8,15 +8,21 @@
 <body>
     {% include '__block_tabs.html' %}
     <p>Страница для дерева</p>
+    <div class = "super_flex">
+    <div class = "tree_print">
     {% for scene in text_scenes %}
         <p> {{scene}} </p>
     {% endfor %}
+    </div>
+    <div class = "scene_print">
     <p> {{ all_scenes }} </p>
     <p> Сейчас в сцене - {{ scene_name }} </p>
     <p> Порядок: потомки, переходы, ответ, вопросы </p>
     {% for stat in scene_stats %}
         <p> {{stat}} </p>
     {% endfor %}
+    </div>
+    <div class = "scene_options">
     <form method="get">
         <input type="hidden" name = go_to_scene value="1">
         <input type="text" name = scene_name value="Имя сцены">
@@ -44,14 +50,15 @@
         <br><input type="submit" value="Добавить сцену">
     </form>
     <form method="get">
-        <p> Сохранение дерева</p>
-        <input type="hidden" name = save_tree value="1">
-        <br><input type="submit" value="Сохранить дерево">
-    </form>
-    <form method="get">
         <p> Удаление сцены (и ее потомков)!!!</p>
         <input type="hidden" name = delete_scene value="1">
         <br><input type="submit" value="Удалить сцену">
+    </form>
+    </div>
+    </div>
+    <form method="get">
+        <input type="hidden" name = save_tree value="1">
+        <br><input type="submit" value="Сохранить дерево">
     </form>
 
 </body>

@@ -10,6 +10,7 @@ from models.editor_data_model import send_res
 
 @app.route("/dialog", methods=["get", "post"])
 def editor_dialog():
+    question_text = ""
     all_scenes = get_text_scenes(dialog_tree = dialog_tree)
     text_scenes = all_scenes.split('\n')
     # Если сцена не выбрана
@@ -28,8 +29,8 @@ def editor_dialog():
         current_scene = find_scene_by_name(scene_name,
                                            dialog_tree = dialog_tree)
         scene_stats = get_scene_everything(current_scene)
-        question = request.values.get("question")
-        all_list = dialog(current_scene, question)
+        question_text = request.values.get("question")
+        all_list = dialog(current_scene, question_text)
         answer = all_list[0]
         scene_name = all_list[1]
         current_scene = find_scene_by_name(scene_name,
@@ -63,6 +64,7 @@ def editor_dialog():
         scene_stats=scene_stats,
         end_dialog=end_dialog,
         answer = answer,
+        question_text = question_text,
     )
     return html
 
