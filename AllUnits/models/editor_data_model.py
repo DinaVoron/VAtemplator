@@ -1,7 +1,6 @@
 import xml.etree.ElementTree as ET
 import datetime
 import pymorphy3
-# from app import dialog_tree
 from datetime import date
 import re
 
