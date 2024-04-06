@@ -1,5 +1,6 @@
 from app import dialog_tree
-#import tree
+from dialog_model import IntentTemplate
+from dialog_model import IntentValue
 import xml.etree.ElementTree as ET
 
 
@@ -23,9 +24,9 @@ def get_questions(node):
         intents = []
         values = []
         for item in question:
-            if isinstance(item, tree.IntentTemplate):
+            if isinstance(item, IntentTemplate):
                 intents.append(item.name)
-            if isinstance(item, tree.IntentValue):
+            if isinstance(item, IntentValue):
                 values.append(item.name)
 
         question_text = "c интентами " + ", ".join(intents)
