@@ -1,6 +1,6 @@
 from app import dialog_tree
-from dialog_model import IntentTemplate
-from dialog_model import IntentValue
+from models.dialog_model import IntentTemplate
+from models.dialog_model import IntentValue
 import xml.etree.ElementTree as ET
 
 
@@ -61,7 +61,6 @@ def get_ok(log_tree, answers, questions):
 
 
 def automatic_testing():
-    res = 0
     question_arr = []
     answers_arr = []
     # Получаем ответы и вопросы из файла успешного логирования

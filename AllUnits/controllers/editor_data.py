@@ -1,4 +1,4 @@
-from app import app, graph
+from app import app, graph, dialog_tree
 from flask import render_template, request
 from models.editor_data_model import get_ok_num, get_err_num, get_nf_num
 from models.editor_data_model import count_errors, get_time, graph_verify
@@ -25,7 +25,7 @@ def editor_data():
     if request.values.get("open_nf"):
         subprocess.Popen(["notepad", "logs/NF.log"])
 
-    intents = graph_verify(graph)
+    intents = graph_verify(dialog_tree, graph)
 
     html = render_template(
         "editor_data.html",

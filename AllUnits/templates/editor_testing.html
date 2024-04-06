@@ -4,7 +4,9 @@
     <link rel="stylesheet" href="/static/CSS/style.css">
     <meta charset="UTF-8">
     <title>Тестирование</title>
+    {% macro render_menu() %}
     {% include "__block_tabs.html" %}
+    {% endmacro %}
     {% macro render_scenes() %}
     <select name="scene">
     {% for i in range(len(scenes)) %}

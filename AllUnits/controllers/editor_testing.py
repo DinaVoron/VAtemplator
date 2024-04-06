@@ -12,10 +12,9 @@ def editor_testing():
     selected_scene = dialog_tree.root.name
     question_arr = get_questions(dialog_tree.root)
     answers = []
-    for i in range(len(question_arr)):
-        answers.append("")
     user_questions = []
     for i in range(len(question_arr)):
+        answers.append("")
         user_questions.append("")
     scenes = get_scenes()
     is_test = False
@@ -25,52 +24,33 @@ def editor_testing():
     if "scene" in session and session["scene"] is not None:
         if request.values.get("scene") is None:
             selected_scene = session["scene"]
-            question_arr = get_questions(dialog_tree.root)
-            user_questions = request.values.getlist("questions")
-            answers = user_questions
         elif session["scene"] != request.values.get("scene"):
             selected_scene = request.values.get("scene")
-            question_arr = get_questions(get_scene_by_name(
-                dialog_tree.root,
-                selected_scene
-            ))
             session["scene"] = selected_scene
-        elif request.values.get("get_answers"):
-            is_answer = True
-            selected_scene = session["scene"]
-            question_arr = get_questions(get_scene_by_name(
-                dialog_tree.root,
-                selected_scene
-            ))
-            user_questions = request.values.getlist("questions")
-            answers = []
-            for i in range(len(user_questions)):
-                answer = get_scene_answer(get_scene_by_name(
-                    dialog_tree.root,
-                    selected_scene
-                ), user_questions[i])
-                answers.append(answer)
         else:
             selected_scene = session["scene"]
-            question_arr = get_questions(get_scene_by_name(
-                dialog_tree.root,
-                selected_scene
-            ))
-            user_questions = request.values.getlist("questions")
-            if request.values.get("test"):
-                answers = []
-                for i in range(len(user_questions)):
-                    answer = get_scene_answer(get_scene_by_name(
-                        dialog_tree.root,
-                        selected_scene
-                    ), user_questions[i])
-                    answers.append(answer)
+        user_questions = request.values.getlist("questions")
     else:
         session["scene"] = dialog_tree.root.name
 
     if request.values.get("test"):
         is_test = True
         test_result = automatic_testing()
+
+    if request.values.get("get_answers"):
+        is_answer = True
+        answers = []
+        for i in range(len(user_questions)):
+            answer = get_scene_answer(get_scene_by_name(
+                dialog_tree.root,
+                selected_scene
+            ), user_questions[i])
+            answers.append(answer)
+
+    question_arr = get_questions(get_scene_by_name(
+        dialog_tree.root,
+        selected_scene
+    ))
 
     html = render_template(
         "editor_testing.html",
