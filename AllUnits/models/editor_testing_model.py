@@ -1,5 +1,5 @@
 from app import dialog_tree
-import tree
+#import tree
 import xml.etree.ElementTree as ET
 
 
