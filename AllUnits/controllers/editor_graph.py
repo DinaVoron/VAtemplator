@@ -16,7 +16,8 @@ def editor_graph():
     return html
 
 
-# Определение вспомогательной запросов "Граф знаний / Семантическая сеть / Справочный граф"
+# Определение вспомогательных запросов
+# "Граф знаний / Семантическая сеть / Справочный граф"
 @app.route('/graph/process_data', methods=['POST'])
 def process_data():
     global document
@@ -63,11 +64,14 @@ def handle_upload_document():
 @app.route("/graph/test")
 def test():
     req = [{
-        "intent": "подготовка", "meaning": ["прикладной математика информатика"]
+        "intent": "подготовка",
+        "meaning": ["прикладной математика информатика"]
     }, {
-        "intent": "балл", "meaning": None
+        "intent": "балл", 
+        "meaning": None
     }, {
-        "intent": "год", "meaning": ["2020", "2022"]
+        "intent": "год",
+        "meaning": ["2020", "2022"]
     }]
     return graph.search(req)
 
@@ -80,7 +84,9 @@ def upload_document():
         return "Файл не выбран", 400
     if file:
         filename = secure_filename(file.filename)
-        file.save(os.path.join(current_app.config["UPLOAD_FOLDER_DOCUMENTS"], filename))
+        file.save(
+            os.path.join(current_app.config["UPLOAD_FOLDER_DOCUMENTS"],
+            filename))
         return "Файл успешно загружен", 200
 
 
@@ -90,7 +96,10 @@ def get_documents():
 
 def parsing_json(json_data):
     df = pd.DataFrame(columns=[
-        'index', 'layer', 'text', 'lemma', 'pos', 'con_index', 'con_dep', 'f_type', 'f_intent', 'f_value'
+        'index', 'layer', 'text',
+        'lemma', 'pos', 'con_index',
+        'con_dep', 'f_type', 'f_intent',
+        'f_value'
     ])
     for row in json_data['table']:
         values = [v.split(',') for v in row.values()]
