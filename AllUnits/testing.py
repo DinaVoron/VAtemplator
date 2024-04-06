@@ -34,30 +34,6 @@ class Link(object):
         return self.start
 
 
-def print_info(filename):
-    f1 = open("controllers/temp.log", "r+")
-    f2 = open(filename, "r")
-    text = f2.read()
-    f2.close()
-    text = re.sub("\s*</?logs>\s*", "", text)
-    f2 = open(filename, "w")
-    f2.write("<logs>\r\n" + text + "\r\n<log>\r\n" + f1.read()
-             + "</log>\r\n"
-             + "</logs>")
-    f1.truncate(0)
-    f1.close()
-    f2.close()
-
-
-
-
-
-
-
-
-
-
-
 def get_text_question(elem, question):
     for child in elem:
         get_text_question(child, question)

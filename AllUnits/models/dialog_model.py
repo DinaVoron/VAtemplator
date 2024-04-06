@@ -152,6 +152,7 @@ def dialog(current_scene, question_text):
     answer = ask_question(current_scene, question_text)
     question_intent_dict = current_scene.get_work_question(question_text)
     send_log(question_text, question_intent_dict, current_scene.name)
+    send_log(answer, False, current_scene.name)
     if (question_intent_dict):
         question_intent_dict = graph.search(question_intent_dict)
     intent_list = intent_dict_to_list(question_intent_dict)

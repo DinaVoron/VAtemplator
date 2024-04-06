@@ -150,11 +150,13 @@ def graph_verify(graph):
 
 
 def send_log(text, intent_values, place):
-    f = open("controllers/temp.log", "a+", encoding="utf-8")
+    f = open("logs/temp.log", "a+", encoding="utf-8")
     f.write(log_message(text, intent_values, place) + "\r\n")
 
 
 def log_message(text, intents_values_dic, place):
+    if not intents_values_dic:
+        intents_values_dic = []
     morph = pymorphy3.MorphAnalyzer()
     intent_values = intent_array(intents_values_dic)
     res = "<text>"
@@ -210,7 +212,7 @@ def multi_split(input_string):
 
 
 def print_info(filename):
-    f1 = open("controllers/temp.log", "r+")
+    f1 = open("logs/temp.log", "r+")
     f2 = open(filename, "r")
     text = f2.read()
     f2.close()
@@ -223,14 +225,15 @@ def print_info(filename):
     f1.close()
     f2.close()
 
+
 def send_res(res):
     match res:
         case "OK":
-            filename = "controllers/OK.log"
+            filename = "logs/OK.log"
             print_info(filename)
         case "ERR":
-            filename = "controllers/ERR.log"
+            filename = "logs/ERR.log"
             print_info(filename)
         case "NF":
-            filename = "controllers/NF.log"
+            filename = "logs/NF.log"
             print_info(filename)
