@@ -33,57 +33,37 @@ def count_errors():
     return res
 
 
+def get_time_one_log(logs):
+    result_time = 0
+    for log in logs:
+        times = log.findall("time")
+        i = 1
+        while i < len(times):
+            time1 = datetime.datetime.strptime(
+                times[i - 1].text,
+                "%H:%M:%S"
+            )
+            time2 = datetime.datetime.strptime(
+                times[i].text,
+                "%H:%M:%S"
+            )
+            result_time += (time2 - time1).seconds
+            i += 2
+    return result_time
+
+
 def get_time():
     time = 0
     amount = 0
     logs = ET.parse("logs/OK.log").getroot()
-    for log in logs:
-        times = log.findall("time")
-        i = 1
-        while i < len(times):
-            time1 = datetime.datetime.strptime(
-                times[i - 1].text,
-                "%H:%M:%S"
-            )
-            time2 = datetime.datetime.strptime(
-                times[i].text,
-                "%H:%M:%S"
-            )
-            time += (time2 - time1).seconds
-            amount += 1
-            i += 2
+    time += get_time_one_log(logs)
+    amount += len(logs)
     logs = ET.parse("logs/ERR.log").getroot()
-    for log in logs:
-        times = log.findall("time")
-        i = 1
-        while i < len(times):
-            time1 = datetime.datetime.strptime(
-                times[i - 1].text,
-                "%H:%M:%S"
-            )
-            time2 = datetime.datetime.strptime(
-                times[i].text,
-                "%H:%M:%S"
-            )
-            time += (time2 - time1).seconds
-            amount += 1
-            i += 2
+    time += get_time_one_log(logs)
+    amount += len(logs)
     logs = ET.parse("logs/NF.log").getroot()
-    for log in logs:
-        times = log.findall("time")
-        i = 1
-        while i < len(times):
-            time1 = datetime.datetime.strptime(
-                times[i - 1].text,
-                "%H:%M:%S"
-            )
-            time2 = datetime.datetime.strptime(
-                times[i].text,
-                "%H:%M:%S"
-            )
-            time += (time2 - time1).seconds
-            amount += 1
-            i += 2
+    time += get_time_one_log(logs)
+    amount += len(logs)
     return round(time/amount, 2)
 
 
@@ -101,7 +81,7 @@ def find_all_paths(graph, current_node, visited, path, paths):
     path.pop()
 
 
-def check_intent_tree(paths):
+def check_intent_tree(dialog_tree, paths):
     new_arr = []
     for i in range(len(paths)):
         if not dialog_tree.find_scene(paths[i]):
@@ -109,7 +89,7 @@ def check_intent_tree(paths):
     return new_arr
 
 
-def find_all_chains(edges, intents):
+def find_all_chains(dialog_tree, edges, intents):
     print("intents")
     print(intents)
     graph = {}
@@ -131,18 +111,18 @@ def find_all_chains(edges, intents):
     for node in graph:
         find_all_paths(graph, node, visited, path, paths)
 
-    paths = check_intent_tree(paths)
+    paths = check_intent_tree(dialog_tree, paths)
 
     return paths
 
 
-def graph_verify(graph):
+def graph_verify(dialog_tree, graph):
     print("Верификация графа...")
     nodes = graph.nodes
     edges = list(graph.edges)
     intents = graph.list_intent_text
 
-    chains = find_all_chains(edges, intents)
+    chains = find_all_chains(dialog_tree, edges, intents)
     return chains
 
 

@@ -61,13 +61,11 @@ def get_ok(log_tree, answers, questions):
 
 
 def automatic_testing():
-    res = 0
     question_arr = []
     answers_arr = []
     # Получаем ответы и вопросы из файла успешного логирования
     log_tree = ET.parse("logs/OK.log")
     get_ok(log_tree, answers_arr, question_arr)
-    # Меняем состояние работы на debug
     # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем
     q_len = len(question_arr)
     res = q_len

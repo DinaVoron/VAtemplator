@@ -5,14 +5,7 @@
     <meta charset="UTF-8">
     <title>Статистика</title>
     {% macro render_menu() %}
-        <nav>
-            <ul>
-                <li><a href="{{url_for('editor_tree')}}">Дерево</a></li>
-                <li><a href="{{url_for('editor_graph')}}">Граф</a></li>
-                <li><a href="{{url_for('editor_data')}}">Статистика</a></li>
-                <li><a href="{{url_for('editor_testing')}}">Тестирование</a></li>
-            </ul>
-        </nav>
+    {% include "__block_tabs.html" %}
     {% endmacro %}
     {% macro render_errs() %}
     <div>
@@ -30,6 +23,13 @@
     </section>
     {% endfor %}
     {% endmacro %}
+    {% macro render_log_block(state_name, amount, state) %}
+    <div class="logs__{{ state }}">
+        <strong>{{ state_name }}</strong><br><br>
+        {{ amount }}/{{ all_amount }} диалога<br><br>
+        <button value="open_{{ state }}" name="open_{{ state }}">Посмотреть логи</button>
+    </div>
+    {% endmacro %}
 </head>
 <body>
     {{ render_menu() }}
@@ -38,21 +38,9 @@
             <form action="{{ url_for('editor_data') }}">
                 <h4>Статистика работы</h4>
                 <section class="logs">
-                    <div class="logs__ok">
-                        <strong>Успех</strong><br><br>
-                        {{ success_amount }}/{{ all_amount }} диалога<br><br>
-                        <button value="open_ok" name="open_ok">Посмотреть логи</button>
-                    </div>
-                    <div class="logs__err">
-                        <strong>Провал</strong><br><br>
-                        {{ not_found_amount }}/{{ all_amount }} диалога<br><br>
-                        <button value="open_nf" name="open_nf">Посмотреть логи</button>
-                    </div>
-                    <div class="logs__nf">
-                        <strong>Ошибка</strong><br><br>
-                        {{ error_amount }}/{{ all_amount }} диалога<br><br>
-                        <button value="open_err" name="open_err">Посмотреть логи</button>
-                    </div>
+                    {{ render_log_block("Успех", success_amount, "ok") }}
+                    {{ render_log_block("Ошибка", not_found_amount, "nf") }}
+                    {{ render_log_block("Провал", error_amount, "err") }}
                 </section>
             </form>
         </article>

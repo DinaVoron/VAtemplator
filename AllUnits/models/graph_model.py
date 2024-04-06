@@ -3,7 +3,6 @@ import pandas as pd
 import spacy
 import networkx as nx
 from pyvis.network import Network
-
 from models.module.graph_element import GraphNode, GraphEdge
 from models.module.graph_nlp import ClusterType, create_clusters
 
