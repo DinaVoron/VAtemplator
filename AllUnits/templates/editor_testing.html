@@ -4,16 +4,7 @@
     <link rel="stylesheet" href="/static/CSS/style.css">
     <meta charset="UTF-8">
     <title>Тестирование</title>
-    {% macro render_menu() %}
-        <nav>
-            <ul>
-                <li><a href="{{url_for('editor_tree')}}">Дерево</a></li>
-                <li><a href="{{url_for('editor_graph')}}">Граф</a></li>
-                <li><a href="{{url_for('editor_data')}}">Статистика</a></li>
-                <li><a href="{{url_for('editor_testing')}}">Тестирование</a></li>
-            </ul>
-        </nav>
-    {% endmacro %}
+    {% include "__block_tabs.html" %}
     {% macro render_scenes() %}
     <select name="scene">
     {% for i in range(len(scenes)) %}

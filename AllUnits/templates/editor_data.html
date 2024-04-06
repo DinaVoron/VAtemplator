@@ -4,16 +4,7 @@
     <link rel="stylesheet" href="/static/CSS/style.css">
     <meta charset="UTF-8">
     <title>Статистика</title>
-    {% macro render_menu() %}
-        <nav>
-            <ul>
-                <li><a href="{{url_for('editor_tree')}}">Дерево</a></li>
-                <li><a href="{{url_for('editor_graph')}}">Граф</a></li>
-                <li><a href="{{url_for('editor_data')}}">Статистика</a></li>
-                <li><a href="{{url_for('editor_testing')}}">Тестирование</a></li>
-            </ul>
-        </nav>
-    {% endmacro %}
+    {% include "__block_tabs.html" %}
     {% macro render_errs() %}
     <div>
         {% for item in errs_per_scene %}
@@ -30,6 +21,11 @@
     </section>
     {% endfor %}
     {% endmacro %}
+    {% macro render_log_block(state_name, amount, state) %}
+        <strong>state</strong><br><br>
+        {{ amount }}/{{ all_amount }} диалога<br><br>
+        <button value="open_{{ state }}" name="open_{{ state }}">Посмотреть логи</button>
+    {% endmacro %}
 </head>
 <body>
     {{ render_menu() }}
@@ -39,6 +35,7 @@
                 <h4>Статистика работы</h4>
                 <section class="logs">
                     <div class="logs__ok">
+                        {{ render_log_block(Успех, success_amount, ok) }}
                         <strong>Успех</strong><br><br>
                         {{ success_amount }}/{{ all_amount }} диалога<br><br>
                         <button value="open_ok" name="open_ok">Посмотреть логи</button>
