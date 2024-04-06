@@ -134,24 +134,6 @@ class Scene:
 
         return answer
 
-    def conv_continue(self, cur_intents):
-        str_int = " ".join(cur_intents)
-        send_log(str_int, self.name)
-        weights_list = []
-        for idx, condition in enumerate(self.pass_conditions):
-            children_weight = 0
-            for part_condition in condition:
-                if part_condition in cur_intents:
-                    children_weight += 1
-            weights_list.append(children_weight)
-
-        scene_index = weights_list.index(max(weights_list))
-        if max(weights_list) == 0:
-            return False
-        else:
-            send_log("answer", self.children[scene_index].name)
-            send_res("OK")
-            return self.children[scene_index]
 
     # Обработка вопроса пользователя
     # Пока intent всегда перед значением
@@ -165,23 +147,22 @@ class Scene:
                 if type(elem) == IntentTemplate:
                     intent_count += 1
             for idx, user_word in enumerate(user_question_list):
-                if user_word in global_intents:
-                    intent_idx = idx
-                    for idx2, elem in enumerate(question):
-                        if ((type(elem) == IntentTemplate) and
-                                (idx2 == intent_idx)):
-                            print(elem.name)
-                            elem.idx = idx
-                            intent_values = (self.get_intent_values
-                                             (elem.name,
-                                              user_question_list, question))
-                            if intent_values == []:
-                                intent_dict.append({"intent": elem.name,
-                                                    "meaning": None})
-                            else:
-                                intent_dict.append({"intent": elem.name,
-                                                    "meaning": intent_values})
-                            intent_count -= 1
+                intent_idx = idx
+                for idx2, elem in enumerate(question):
+                    if ((type(elem) == IntentTemplate) and
+                            (idx2 == intent_idx)):
+                        print(elem.name)
+                        elem.idx = idx
+                        intent_values = (self.get_intent_values
+                                         (elem.name,
+                                          user_question_list, question))
+                        if intent_values == []:
+                            intent_dict.append({"intent": elem.name,
+                                                "meaning": None})
+                        else:
+                            intent_dict.append({"intent": elem.name,
+                                                "meaning": intent_values})
+                        intent_count -= 1
 
             if intent_count == 0:
                 return intent_dict
@@ -259,61 +240,10 @@ class SceneTree:
     def set_height_tree(self):
         self.root.set_height_all(0)
 
-    def conv_rec(self, cur_intents, scene):
-        if scene.conv_continue(cur_intents):
-            scene = scene.conv_continue(cur_intents)
-        return scene
-
     def get_pretty_nodes(self):
         all_scenes = ""
         all_scenes += self.root.get_pretty_children(all_scenes)
         return all_scenes
-
-
-    def start_conversation_old(self):
-        cur_intents = []
-        scene = self.root
-        print("Введите intent:")
-        new_intent = input()
-        while new_intent != "stop":
-            cur_intents.append(new_intent)
-            scene = self.conv_rec(cur_intents, scene)
-            scene.print_scene()
-            print("Введите intent:")
-            new_intent = input()
-
-        return True
-
-    # Диалог
-    def start_conversation(self, istext = True):
-        scene = self.root
-        print("Введите или задайте вопрос")
-        if istext:
-            question = input()
-        else:
-            question = take_command()
-
-        while question != "стоп":
-            intent_list_dictionary = scene.get_work_question(question)
-            if (intent_list_dictionary): # Если найдены шаблоны
-                # Отправить в граф
-                # Получить из графа
-                # Вернуть ответ
-                intents = []
-                for intent in intent_list_dictionary:
-                    intents.append(intent.get("intent"))
-                scene.pass_to_children(intents)
-            else:
-                # Уточняющий вопрос
-                pass
-
-            print("Введите или задайте вопрос")
-            if istext:
-                question = input()
-            else:
-                question = take_command()
-
-        return True
 
     def scene_add(self, parent_scene, name = None, children = None,
                   pass_conditions = None, answer = None, questions = None,
@@ -355,9 +285,8 @@ def main():
     # print("---")
     # tree.print_pretty_nodes()
     # main_scene.print_answer()
-
-    print(main_scene.check_scene_rec(["направление", "балл"]))
     '''
+
 
     # Сериализация pickle
     with open("save_files/pickle_test.PKL", "wb") as f:
@@ -413,22 +342,20 @@ def add_scene(name, parent, pass_conditions, answer, questions):
     pass_condition = []
     pass_conditions_list = pass_conditions.split(' ')
     for word in pass_conditions_list:
-        if word == '|':
+        if word == "|":
             pass_conditions_normal.append(pass_condition)
             pass_condition = []
         else:
             pass_condition.append(word)
     pass_conditions_normal.append(pass_condition)
 
-    # Ответ - лист слов до ввода графа,
-    # todo: отделить интенты и значения от слов
     answer = answer.split()
 
     # Вопросы - аналогично условиям перехода, IT - следующее слово будет...
     # объектом интента, IV - аналогично значение
     questions_normal = []
     question = []
-    questions_list = questions.split(' ')
+    questions_list = questions.split(" ")
     next_intent = False
     next_value = False
     for word in questions_list:
@@ -439,12 +366,12 @@ def add_scene(name, parent, pass_conditions, answer, questions):
             question.append(tree.IntentValue(word))
             next_value = False
         else:
-            if word == '|':
+            if word == "|":
                 questions_normal.append(question)
                 question = []
-            elif word == 'IT':
+            elif word == "IT":
                 next_intent = True
-            elif word == 'IV':
+            elif word == "IV":
                 next_value = True
             else:
                 question.append(word)
@@ -459,7 +386,7 @@ def add_scene(name, parent, pass_conditions, answer, questions):
     return to_add
 
 
-def save_tree(file):
+def save_tree(file, dialog_tree):
     with open(file, "wb") as f:
         pc.dump(dialog_tree, f)
 
@@ -489,7 +416,7 @@ def take_command():
 # Текст вопроса - текст ответа
 def ask_question(current_scene, question_text):
     question_intent_dict = current_scene.get_work_question(question_text)
-    if (question_intent_dict):
+    if question_intent_dict:
         question_intent_dict = graph.search(question_intent_dict)
     answer = current_scene.give_answer(question_intent_dict)
     return answer
@@ -497,7 +424,7 @@ def ask_question(current_scene, question_text):
 
 def intent_dict_to_list(intent_dict):
     intent_list = []
-    if (not intent_dict):
+    if not intent_dict:
         intent_dict = []
     for intent in intent_dict:
         int_name = intent.get("intent")
@@ -517,7 +444,7 @@ def dialog(current_scene, question_text):
     question_intent_dict = current_scene.get_work_question(question_text)
     send_log(question_text, question_intent_dict, current_scene.name)
     send_log(answer, False, current_scene.name)
-    if (question_intent_dict):
+    if question_intent_dict:
         question_intent_dict = graph.search(question_intent_dict)
     intent_list = intent_dict_to_list(question_intent_dict)
     new_scene_name = pass_scene(current_scene, intent_list)
