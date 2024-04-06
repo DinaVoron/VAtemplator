@@ -47,7 +47,7 @@ def editor_tree():
                   questions = add_questions)
 
     if request.values.get("save_tree"):
-        save_tree("pickle_test.PKL", dialog_tree = dialog_tree)
+        save_tree("save_files/pickle_test.PKL", dialog_tree = dialog_tree)
 
     html = render_template(
         "editor_tree.html",
