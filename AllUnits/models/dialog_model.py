@@ -164,7 +164,7 @@ class Scene:
                             intent_dict.append({"intent": elem.name,
                                                     "meaning": intent_values})
 
-                        if intent_values == []:
+                        if not intent_values:
                             intent_dict.append({"intent": elem.name,
                                                 "meaning": None})
                         else:
