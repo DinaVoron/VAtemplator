@@ -561,8 +561,8 @@ def pass_scene(cur_scene, intent_list):
 def dialog(current_scene, question_text, graph):
     answer = ask_question(current_scene, question_text, graph)
     question_intent_dict = current_scene.get_work_question(question_text)
-    # send_log(question_text, question_intent_dict, current_scene.name)
-    send_log(answer, False, current_scene.name)
+    send_log("question", question_text, question_intent_dict, current_scene.name)
+    send_log("answer", answer, False, current_scene.name)
     if question_intent_dict:
         question_intent_dict = graph.search(question_intent_dict)
     intent_list = intent_dict_to_list(question_intent_dict)
