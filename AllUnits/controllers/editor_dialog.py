@@ -11,35 +11,25 @@ from models.editor_data_model import send_res
 @app.route("/dialog", methods=["get", "post"])
 def editor_dialog():
     question_text = ""
-    all_scenes = get_text_scenes(dialog_tree = dialog_tree)
-    text_scenes = all_scenes.split('\n')
-    # Если сцена не выбрана
-    if request.values.get("go_to_scene"):
-        scene_name = (request.values.get("scene_name"))
-        current_scene = find_scene_by_name(scene_name,
-                                           dialog_tree = dialog_tree)
-        if current_scene is None:
-            scene_name = None
-            scene_stats = None
-        else:
-            scene_stats = get_scene_everything(current_scene)
-        answer = None
-    elif request.values.get("write_question"):
+
+    if request.values.get("write_question"):
         scene_name = request.values.get("prev_scene")
         current_scene = find_scene_by_name(scene_name,
                                            dialog_tree = dialog_tree)
-        scene_stats = get_scene_everything(current_scene)
         question_text = request.values.get("question")
-        all_list = dialog(current_scene, question_text)
+        all_list = dialog(current_scene, question_text, graph)
         answer = all_list[0]
-        scene_name = all_list[1]
+        scene_name = all_list[1] # None - почему?
         current_scene = find_scene_by_name(scene_name,
                                            dialog_tree = dialog_tree)
+        if current_scene is None:
+            scene_name = request.values.get("prev_scene")
+            current_scene = find_scene_by_name(scene_name,
+                                               dialog_tree=dialog_tree)
 
     else:
         current_scene = get_root(dialog_tree=dialog_tree)
         scene_name = get_scene_name(current_scene)
-        scene_stats = get_scene_everything(current_scene)
         answer = None
 
     if request.values.get("end_dialog"):
@@ -58,10 +48,8 @@ def editor_dialog():
 
     html = render_template(
         "editor_dialog.html",
-        text_scenes=text_scenes,
         current_scene=current_scene,
         scene_name=scene_name,
-        scene_stats=scene_stats,
         end_dialog=end_dialog,
         answer = answer,
         question_text = question_text,

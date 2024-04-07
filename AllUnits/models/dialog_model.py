@@ -1,4 +1,4 @@
-# from app import graph
+from models.graph_model import Graph
 from models.editor_data_model import send_log
 import pickle as pc
 import speech_recognition as sr
@@ -28,13 +28,15 @@ class IntentValue:
 
 class Scene:
     def __init__(self, name = None, children = None, pass_conditions = None,
-                 answer = None, questions = None, theme = None):
+                 answer = None, questions = None,
+                 clarifying_question = None, theme = None):
         self.name = name
         self.children = []
         self.pass_conditions = []
         self.height = 0
         self.answer = answer
         self.questions = []
+        self.clarifying_question = clarifying_question
         self.theme = theme
         if children is not None:
             for child in children:
@@ -51,6 +53,9 @@ class Scene:
 
     def set_name(self, name):
         self.name = name
+
+    def set_clarifying_question(self, clarifying_question):
+        self.clarifying_question = clarifying_question
 
     def add_child(self, node):
         assert isinstance(node, Scene)
@@ -124,11 +129,11 @@ class Scene:
             if isinstance(ans, IntentTemplate):
                 for intent in intents_dicts:
                     if intent.get("intent") == ans.name:
-                        answer += ' ' + intent.get("intent")
+                        answer += ' ' + str(intent.get("intent"))
             elif isinstance(ans, IntentValue):
                 for intent in intents_dicts:
                     if intent.get("intent") == ans.name:
-                        answer += ' ' + intent.get("meaning")
+                        answer += ' ' + str(intent.get("meaning"))
             else:
                 answer += " " + ans
 
@@ -163,13 +168,6 @@ class Scene:
                         else:
                             intent_dict.append({"intent": elem.name,
                                                     "meaning": intent_values})
-
-                        if not intent_values:
-                            intent_dict.append({"intent": elem.name,
-                                                "meaning": None})
-                        else:
-                            intent_dict.append({"intent": elem.name,
-                                                "meaning": intent_values})
 
                         intent_count -= 1
 
@@ -217,20 +215,28 @@ class Scene:
             return child.check_scene_rec(intents)
 
 # Поиск сцены по интентам и переходам
-    def pass_to_children(self, intents):
-        intents.sort()
+    def pass_to_children(self, key_words):
+        key_words.sort()
+        pass_count = 0
         for pass_cond in self.pass_conditions:
+            pass_count += 1
             checklist = []
             for int in pass_cond:
-                if int in intents:
-                    checklist.append(int.name)
+                if int in key_words:
+                    checklist.append(int)
             # оставлены только уникальные интенты
             checklist = list(set(checklist))
             checklist.sort()
-            if checklist == intents:
-                return self.name
+            print(checklist)
+            print(key_words)
+            # Переход в потомка с соответствующим номером
+            if (checklist == key_words and checklist != []):
+                print(self.children[pass_count-1].name)
+
+                return self.children[pass_count-1].name
         for child in self.children:
-            return child.pass_to_children(intents)
+            #print('bbb' + str(self.name))
+            return child.pass_to_children(key_words)
 
 
 class SceneTree:
@@ -256,10 +262,12 @@ class SceneTree:
 
     def scene_add(self, parent_scene, name = None, children = None,
                   pass_conditions = None, answer = None, questions = None,
-                  theme = None):
+                  clarifying_question = None, theme = None):
         new_scene = Scene(name = name, children = children,
                           pass_conditions = pass_conditions, answer = answer,
-                          questions = questions, theme = theme)
+                          questions = questions,
+                          clarifying_question = clarifying_question,
+                          theme = theme)
         parent_scene.add_child(new_scene)
         return new_scene
 
@@ -273,29 +281,33 @@ def main():
         tree = pc.load(f)
 
     '''
-    main_scene = Scene(name="main", answer=["a", "intent", "b"], 
-    pass_conditions=[["pass"]],
+    main_scene = Scene(name = "main", answer=["на",
+                                              IntentTemplate("направление"),
+                                              IntentValue("направление"),
+                                              IntentTemplate("балл"),
+                                              IntentValue("балл")],
+                       pass_conditions=[["направление", "балл"]],
                        questions=[[IntentTemplate("направление"), 
-                       "значение", IntentValue("направление"),
-                                   IntentValue("направление"), 
-                                   IntentTemplate("балл")]])
-    sub1 = Scene(name="sub1", pass_conditions=[["one"]])
+                       IntentValue("направление"), "имеет",
+                                   IntentTemplate("балл")]],
+                       clarifying_question = ["Не найден ответ в main"])
+    sub1 = Scene(name="sub1", pass_conditions=[["переход"]], answer=["на",
+                                              IntentTemplate("Курс"),
+                                              IntentValue("Курс"),
+                                              IntentTemplate("балл"),
+                                              IntentValue("балл")],
+                 questions=[["Какой", IntentTemplate("балл"),
+                                              IntentValue("балл"),
+                                              IntentTemplate("Курс"),
+                                              IntentValue("Курс")]])
     sub2 = Scene(name="sub2", pass_conditions=[["two, three"]])
     sub21 = Scene(name="sub21", pass_conditions=[["one"]])
-    sub12 = Scene(name="sub12")
     tree = SceneTree(main_scene)
     main_scene.add_child(sub1)
     main_scene.add_child(sub2)
-    sub1.add_child(sub12)
     sub2.add_child(sub21)
     tree.set_height_tree()
-    # main_scene.print_scene()
-    # tree.print_nodes()
-    # print("---")
-    # tree.print_pretty_nodes()
-    # main_scene.print_answer()
     '''
-
 
     # Сериализация pickle
     with open("save_files/pickle_test.PKL", "wb") as f:
@@ -305,7 +317,7 @@ def main():
 
 
 
-def get_scenes():
+def get_scenes(dialog_tree):
     res = []
     get_scene(dialog_tree.root, res)
     return res
@@ -331,11 +343,66 @@ def find_scene_by_name(name, dialog_tree):
     return dialog_tree.to_scene(name)
 
 def get_scene_everything(current_scene):
+    # Потомки
+    children_return = []
+    children = current_scene.children
+    if children is not None:
+        for child in children:
+            children_return.append(child.name)
+    else:
+        children_return = None
+    # Переходы
+    pass_conditions_return = current_scene.pass_conditions
+    # Ответ
+    answer = current_scene.answer
+    answer_return = []
+    if answer is not None:
+        for word in answer:
+            if isinstance(word, IntentTemplate):
+                answer_return.append("Шаблон интента: " + str(word.name))
+            elif isinstance(word, IntentValue):
+                answer_return.append("Шаблон значения интента: " + str(word.name))
+            else:
+                answer_return.append(word)
+    else:
+        answer_return = None
+    # Вопросы
+    questions = current_scene.questions
+    questions_return = []
+    if questions is not None:
+        for question in questions:
+            question_normal = []
+            for word in question:
+                if isinstance(word, IntentTemplate):
+                    question_normal.append("Шаблон интента: " + str(word.name))
+                elif isinstance(word, IntentValue):
+                    question_normal.append(
+                        "Шаблон значения интента: " + str(word.name))
+                else:
+                    question_normal.append(word)
+            questions_return.append(question_normal)
+    else:
+        questions_return = None
+    # Уточняющий вопрос
+    clarifying_question = current_scene.clarifying_question
+    clarifying_question_return = []
+    if clarifying_question is not None:
+        for word in clarifying_question:
+            if isinstance(word, IntentTemplate):
+                clarifying_question_return.append("Шаблон интента: " + str(word.name))
+            elif isinstance(word, IntentValue):
+                clarifying_question_return.append("Шаблон значения интента: " + str(word.name))
+            else:
+                clarifying_question_return.append(word)
+    else:
+        clarifying_question_return = None
+
     stats = [
-        current_scene.children,
-        current_scene.pass_conditions,
-        current_scene.answer,
-        current_scene.questions
+        children_return,
+        pass_conditions_return,
+        answer_return,
+        questions_return,
+        clarifying_question_return
     ]
     return stats
 
@@ -345,7 +412,7 @@ def add_child(current_scene, child_scene, dialog_tree):
     dialog_tree.set_height_tree()
 
 
-def add_scene(name, parent, pass_conditions, answer, questions):
+def add_scene(name, parent, pass_conditions, answer, questions, clarifying_question, dialog_tree):
     # Условия перехода пока одной строкой с разделением |
     pass_conditions_normal = []
     pass_condition = []
@@ -358,7 +425,25 @@ def add_scene(name, parent, pass_conditions, answer, questions):
             pass_condition.append(word)
     pass_conditions_normal.append(pass_condition)
 
-    answer = answer.split()
+    # Шаблон ответа
+    answer_list = answer.split(" ")
+    answer_normal = []
+    next_intent = False
+    next_value = False
+    for word in answer_list:
+        if next_intent:
+            answer_normal.append(IntentTemplate(word))
+            next_intent = False
+        elif next_value:
+            answer_normal.append(IntentValue(word))
+            next_value = False
+        else:
+            if word == "IT":
+                next_intent = True
+            elif word == "IV":
+                next_value = True
+            else:
+                answer_normal.append(word)
 
     # Вопросы - аналогично условиям перехода, IT - следующее слово будет...
     # объектом интента, IV - аналогично значение
@@ -369,10 +454,10 @@ def add_scene(name, parent, pass_conditions, answer, questions):
     next_value = False
     for word in questions_list:
         if next_intent:
-            question.append(tree.IntentTemplate(word))
+            question.append(IntentTemplate(word))
             next_intent = False
         elif next_value:
-            question.append(tree.IntentValue(word))
+            question.append(IntentValue(word))
             next_value = False
         else:
             if word == "|":
@@ -386,8 +471,30 @@ def add_scene(name, parent, pass_conditions, answer, questions):
                 question.append(word)
     questions_normal.append(question)
 
-    to_add = tree.Scene(name=name, pass_conditions=pass_conditions_normal,
-                        answer=answer, questions=questions_normal)
+    # Уточняющий вопрос
+    clarifying_question_list = clarifying_question.split(" ")
+    clarifying_question_normal = []
+    next_intent = False
+    next_value = False
+    for word in clarifying_question_list:
+        if next_intent:
+            clarifying_question_normal.append(IntentTemplate(word))
+            next_intent = False
+        elif next_value:
+            clarifying_question_normal.append(IntentValue(word))
+            next_value = False
+        else:
+            if word == "IT":
+                next_intent = True
+            elif word == "IV":
+                next_value = True
+            else:
+                clarifying_question_normal.append(word)
+
+
+    to_add = Scene(name = name, pass_conditions = pass_conditions_normal,
+                        answer = answer_normal, questions = questions_normal,
+                        clarifying_question = clarifying_question_normal)
     parent_scene = dialog_tree.to_scene(parent)
     parent_scene.add_child(to_add)
     dialog_tree.set_height_tree()
@@ -423,11 +530,13 @@ def take_command():
 
 
 # Текст вопроса - текст ответа
-def ask_question(current_scene, question_text):
+def ask_question(current_scene, question_text, graph):
     question_intent_dict = current_scene.get_work_question(question_text)
     if question_intent_dict:
         question_intent_dict = graph.search(question_intent_dict)
-    answer = current_scene.give_answer(question_intent_dict)
+        answer = current_scene.give_answer(question_intent_dict)
+    else:
+        answer = ""
     return answer
 
 
@@ -442,19 +551,21 @@ def intent_dict_to_list(intent_dict):
 
 
 # Переход к следующей сцене (возможен переход сразу через несколько)
-def pass_scene(cur_scene, cur_intents_list):
-    new_scene_name = cur_scene.pass_to_children(cur_intents_list)
+def pass_scene(cur_scene, intent_list):
+    new_scene_name = cur_scene.pass_to_children(intent_list)
+    print(new_scene_name)
     return new_scene_name
 
 
 # Ответ, новая сцена, словарь интентов и значений, лист интентов
-def dialog(current_scene, question_text):
-    answer = ask_question(current_scene, question_text)
+def dialog(current_scene, question_text, graph):
+    answer = ask_question(current_scene, question_text, graph)
     question_intent_dict = current_scene.get_work_question(question_text)
     send_log("question", question_text, question_intent_dict, current_scene.name)
     send_log("answer", answer, False, current_scene.name)
     if question_intent_dict:
         question_intent_dict = graph.search(question_intent_dict)
     intent_list = intent_dict_to_list(question_intent_dict)
+    # print(intent_list)
     new_scene_name = pass_scene(current_scene, intent_list)
     return [answer, new_scene_name, question_intent_dict, intent_list]
