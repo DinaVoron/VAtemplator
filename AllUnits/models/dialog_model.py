@@ -280,34 +280,32 @@ def main():
     with open("save_files/pickle_test.PKL", "rb") as f:
         tree = pc.load(f)
 
-    '''
-    main_scene = Scene(name = "main", answer=["на",
-                                              IntentTemplate("направление"),
-                                              IntentValue("направление"),
-                                              IntentTemplate("балл"),
-                                              IntentValue("балл")],
-                       pass_conditions=[["направление", "балл"]],
-                       questions=[[IntentTemplate("направление"), 
-                       IntentValue("направление"), "имеет",
-                                   IntentTemplate("балл")]],
-                       clarifying_question = ["Не найден ответ в main"])
-    sub1 = Scene(name="sub1", pass_conditions=[["переход"]], answer=["на",
-                                              IntentTemplate("Курс"),
-                                              IntentValue("Курс"),
-                                              IntentTemplate("балл"),
-                                              IntentValue("балл")],
-                 questions=[["Какой", IntentTemplate("балл"),
-                                              IntentValue("балл"),
-                                              IntentTemplate("Курс"),
-                                              IntentValue("Курс")]])
-    sub2 = Scene(name="sub2", pass_conditions=[["two, three"]])
-    sub21 = Scene(name="sub21", pass_conditions=[["one"]])
-    tree = SceneTree(main_scene)
-    main_scene.add_child(sub1)
-    main_scene.add_child(sub2)
-    sub2.add_child(sub21)
-    tree.set_height_tree()
-    '''
+    # main_scene = Scene(name = "main", answer=["на",
+    #                                           IntentTemplate("направление"),
+    #                                           IntentValue("направление"),
+    #                                           IntentTemplate("балл"),
+    #                                           IntentValue("балл")],
+    #                    pass_conditions=[["направление", "балл"]],
+    #                    questions=[[IntentTemplate("направление"),
+    #                    IntentValue("направление"), "имеет",
+    #                                IntentTemplate("балл")]],
+    #                    clarifying_question = ["Не найден ответ в main"])
+    # sub1 = Scene(name="sub1", pass_conditions=[["переход"]], answer=["на",
+    #                                           IntentTemplate("курс"),
+    #                                           IntentValue("курс"),
+    #                                           IntentTemplate("балл"),
+    #                                           IntentValue("балл")],
+    #              questions=[["Какой", IntentTemplate("балл"),
+    #                                           "у",
+    #                                           IntentTemplate("курс"),
+    #                                           IntentValue("курс")]])
+    # sub2 = Scene(name="sub2", pass_conditions=[["two, three"]])
+    # sub21 = Scene(name="sub21", pass_conditions=[["one"]])
+    # tree = SceneTree(main_scene)
+    # main_scene.add_child(sub1)
+    # main_scene.add_child(sub2)
+    # sub2.add_child(sub21)
+    # tree.set_height_tree()
 
     # Сериализация pickle
     with open("save_files/pickle_test.PKL", "wb") as f:

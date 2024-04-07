@@ -1,51 +1,20 @@
-<logs>
-
-<answer><date>2024-04-07</date><time>17:39:33</time><text> a intent b</text><place>main</place></answer>
-
-</log>
-
+<logs>
 <log>
 
-<date>2024-04-06</date><time>17:35:06</time><text>aaa</text><place>main</place>
+<question><date>2024-04-07</date><time>22:19:17</time><intent>направление</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><place>main</place></question>
 
-<date>2024-04-06</date><time>17:35:06</time><text> a intent b</text><place>main</place>
+<answer><date>2024-04-07</date><time>22:19:17</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
 
-<date>2024-04-06</date><time>21:16:42</time><text>aaa</text><place>main</place>
+</log>
+<log>
 
-<date>2024-04-06</date><time>21:16:42</time><text> a intent b</text><place>main</place>
+<question><date>2024-04-07</date><time>23:15:55</time><intent>направление</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><place>main</place></question>
 
-<date>2024-04-06</date><time>22:07:58</time><text>aaa</text><place>main</place>
+<answer><date>2024-04-07</date><time>23:15:55</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
 
-<date>2024-04-06</date><time>22:07:58</time><text> a intent b</text><place>main</place>
+<question><date>2024-04-07</date><time>23:16:00</time><text>какой</text><intent>балл</intent><text>у</text><intent>курс</intent><value>3</value><place>sub1</place></question>
 
-<date>2024-04-06</date><time>22:17:38</time><text>aaa</text><place>main</place>
+<answer><date>2024-04-07</date><time>23:16:00</time><text> на курс ['3'] балл None</text><place>sub1</place></answer>
 
-<date>2024-04-06</date><time>22:17:38</time><text> a intent b</text><place>main</place>
-
-<date>2024-04-06</date><time>22:18:34</time><text>aaa</text><place>main</place>
-
-<date>2024-04-06</date><time>22:18:34</time><text> a intent b</text><place>main</place>
-
-<date>2024-04-06</date><time>22:18:38</time><text>aaa</text><place>main</place>
-
-<date>2024-04-06</date><time>22:18:38</time><text> a intent b</text><place>main</place>
-
-<date>2024-04-06</date><time>22:19:23</time><text>aaa</text><place>main</place>
-
-<date>2024-04-06</date><time>22:19:24</time><text> a intent b</text><place>main</place>
-
-<date>2024-04-06</date><time>22:22:14</time><text>aaa</text><place>main</place>
-
-<date>2024-04-06</date><time>22:22:14</time><text> a intent b</text><place>main</place>
-
-<date>2024-04-06</date><time>22:23:15</time><text>aaa</text><place>main</place>
-
-<date>2024-04-06</date><time>22:23:15</time><text> a intent b</text><place>main</place>
-
-<date>2024-04-06</date><time>22:23:54</time><text>aaa</text><place>main</place>
-
-<date>2024-04-06</date><time>22:23:54</time><text> a intent b</text><place>main</place>
-
-</log>
-
+</log>
 </logs>

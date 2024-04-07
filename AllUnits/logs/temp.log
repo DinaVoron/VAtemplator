@@ -1,1 +1,18 @@
-
+<question><date>2024-04-07</date><time>23:17:05</time><intent>направление</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><text /><place>main</place></question>
+<answer><date>2024-04-07</date><time>23:17:05</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
+<question><date>2024-04-07</date><time>23:17:05</time><intent>направление</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><text /><place>main</place></question>
+<answer><date>2024-04-07</date><time>23:17:05</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
+<question><date>2024-04-07</date><time>23:17:05</time><text>какой</text><intent>балл</intent><text>у</text><intent>курс</intent><value>3</value><text /><place>sub1</place></question>
+<answer><date>2024-04-07</date><time>23:17:06</time><text> на курс ['3'] балл None</text><place>sub1</place></answer>
+<question><date>2024-04-07</date><time>23:18:46</time><intent>направление</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><text /><place>main</place></question>
+<answer><date>2024-04-07</date><time>23:18:47</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
+<question><date>2024-04-07</date><time>23:18:47</time><intent>направление</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><text /><place>main</place></question>
+<answer><date>2024-04-07</date><time>23:18:47</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
+<question><date>2024-04-07</date><time>23:18:47</time><text>какой</text><intent>балл</intent><text>у</text><intent>курс</intent><value>3</value><text /><place>sub1</place></question>
+<answer><date>2024-04-07</date><time>23:18:47</time><text> на курс ['3'] балл None</text><place>sub1</place></answer>
+<question><date>2024-04-07</date><time>23:19:20</time><intent>направление</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><text /><place>main</place></question>
+<answer><date>2024-04-07</date><time>23:19:20</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
+<question><date>2024-04-07</date><time>23:19:21</time><intent>направление</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><text /><place>main</place></question>
+<answer><date>2024-04-07</date><time>23:19:21</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
+<question><date>2024-04-07</date><time>23:19:21</time><text>какой</text><intent>балл</intent><text>у</text><intent>курс</intent><value>3</value><text /><place>sub1</place></question>
+<answer><date>2024-04-07</date><time>23:19:21</time><text> на курс ['3'] балл None</text><place>sub1</place></answer>
