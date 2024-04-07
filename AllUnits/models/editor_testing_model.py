@@ -52,22 +52,21 @@ def get_ok(log_tree, answers, questions):
         for question in questions_tree:
             question_text = ""
             for elem in question:
-                question_text += elem.text + " "
+                if (elem.tag != "place"
+                        and elem.tag != "time"
+                        and elem.tag != "date"):
+                    question_text += elem.text + " "
             questions_arr.append(question_text)
         answers_tree = log.findall("answer")
         for answer in answers_tree:
             answer_text = ""
             for elem in answer:
-                answer_text += elem.text + " "
-            answers_arr.append(question_text)
+                if elem.tag == "text":
+                    answer_text += elem.text + " "
+            answers_arr.append(answer_text)
 
         answers.append(answers_arr)
         questions.append(questions_arr)
-
-    print("answers")
-    print(answers)
-    print("questions")
-    print(questions)
 
 
 def automatic_testing():
@@ -79,8 +78,6 @@ def automatic_testing():
     # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем
     q_len = len(question_arr)
     res = q_len
-    print(answers_arr)
-    print(question_arr)
     return "Успешно пройдено {} из {} тестов!".format(res, q_len)
 
 

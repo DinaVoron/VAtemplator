@@ -150,16 +150,17 @@ def log_message(text, intents_values_dic, place):
         text_split[arr_start] = "<intent>" + text_split[arr_start]
         text_split[arr_end] = text_split[arr_end] + "</intent>"
         if intent_values[words] is not None:
-            value_arr = str(intent_values[words]).split(" ")
-            arr_value_start = text_split_normal.index(
-                morph.parse(str(value_arr[0]))[0].normal_form
-            )
-            arr_value_end = text_split_normal.index(
-                morph.parse(str(value_arr[len(value_arr) - 1]))[0].normal_form
-            )
-            text_split[arr_value_start] = ("<value>"
-                                           + text_split[arr_value_start])
-            text_split[arr_value_end] = text_split[arr_value_end] + "</value>"
+            for intent in intent_values[words]:
+                value_arr = str(intent).split(" ")
+                arr_value_start = text_split_normal.index(
+                    morph.parse(str(value_arr[0]))[0].normal_form
+                )
+                arr_value_end = text_split_normal.index(
+                    morph.parse(str(value_arr[len(value_arr) - 1]))[0].normal_form
+                )
+                text_split[arr_value_start] = ("<value>"
+                                               + text_split[arr_value_start])
+                text_split[arr_value_end] = text_split[arr_value_end] + "</value>"
 
     res = "<text>" + " ".join(text_split) + "</text>"
     return ("<date>" + str(date.today()) + "</date>" + "<time>"
