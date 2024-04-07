@@ -24,12 +24,13 @@ def count_errors():
     res = {}
     logs = ET.parse("logs/ERR.log").getroot()
     for log in logs:
-        places = log.findall("place")
-        for place in places:
+        answers = log.findall("answer")
+        for answer in answers:
+            place = answer.find("place")
             if place.text in res:
-                res[place.text] += 0.5
+                res[place.text] += 1
             else:
-                res[place.text] = 0.5
+                res[place.text] = 1
     return res
 
 
@@ -322,9 +323,4 @@ def log_message_try(rep_type, text, intents_values_dic, place):
     place_tree = ET.SubElement(rep, "place")
     place_tree.text = place
 
-    print(bytes.decode(ET.tostring(rep, encoding='utf-8')))
-
     return bytes.decode(ET.tostring(rep, encoding='utf-8'))
-
-
-log_message_try("answer", "почему", [], "main")

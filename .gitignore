@@ -1,3 +1,5 @@
 /AllUnits/__pycache__/*
 /AllUnits/.idea/*
 /AllUnits/venv/*
+/AllUnits/controllers/__pycache__/*
+/AllUnits/models/__pycache__/*
