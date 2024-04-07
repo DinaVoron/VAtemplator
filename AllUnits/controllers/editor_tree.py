@@ -41,10 +41,13 @@ def editor_tree():
         add_pass = request.values.get("pass_conditions")
         add_answer = request.values.get("answer")
         add_questions = request.values.get("questions")
+        add_clarifying_question = request.values.get("clarifying_question")
         add_scene(name = add_name, parent = add_parent,
                   pass_conditions = add_pass,
                   answer = add_answer,
-                  questions = add_questions)
+                  questions = add_questions,
+                  clarifying_question = add_clarifying_question
+                  )
 
     if request.values.get("save_tree"):
         save_tree("save_files/pickle_test.PKL", dialog_tree = dialog_tree)
