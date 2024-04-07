@@ -71,7 +71,7 @@
 
 </log>
 <log>
-<date>2024-04-04</date><time>15:36:59</time><text>хороший вопрос</text><place>main</place>
+<date>2024-04-04</date><time>15:36:59</time><text><value>хороший</value> вопрос</text><place>main</place>
 
 <date>2024-04-04</date><time>15:36:59</time><text> a intent b</text><place>main</place>
 

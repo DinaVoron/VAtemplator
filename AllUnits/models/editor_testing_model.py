@@ -49,26 +49,28 @@ def get_ok(log_tree, answers, questions):
     for log in root:
         answers_arr = []
         questions_arr = []
-        reply = log.findall("text")
-        for rep in reply:
-            if answer:
-                answers_arr.append(rep)
+        reps = log.findall("text")
+        for rep in reps:
+            if not answer:
+                answers_arr.append(rep.text)
             else:
-                questions_arr.append(rep)
+                questions_arr.append(rep.text)
             answer = not answer
         answers.append(answers_arr)
         questions.append(questions_arr)
 
 
 def automatic_testing():
-    question_arr = []
     answers_arr = []
+    question_arr = []
     # Получаем ответы и вопросы из файла успешного логирования
     log_tree = ET.parse("logs/OK.log")
     get_ok(log_tree, answers_arr, question_arr)
     # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем
     q_len = len(question_arr)
     res = q_len
+    print(answers_arr)
+    print(question_arr)
     return "Успешно пройдено {} из {} тестов!".format(res, q_len)
 
 

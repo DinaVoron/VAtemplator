@@ -126,9 +126,9 @@ def graph_verify(dialog_tree, graph):
     return chains
 
 
-def send_log(text, intent_values, place):
+def send_log(rep_type, text, intent_values, place):
     f = open("logs/temp.log", "a+", encoding="utf-8")
-    f.write(log_message(text, intent_values, place) + "\r\n")
+    f.write(log_message_try(rep_type, text, intent_values, place) + "\r\n")
 
 
 def log_message(text, intents_values_dic, place):
@@ -136,7 +136,6 @@ def log_message(text, intents_values_dic, place):
         intents_values_dic = []
     morph = pymorphy3.MorphAnalyzer()
     intent_values = intent_array(intents_values_dic)
-    res = "<text>"
     text_split = multi_split(text)
     text_split_normal = []
     for word in text_split:
@@ -158,7 +157,8 @@ def log_message(text, intents_values_dic, place):
             text_split[arr_value_start] = ("<value>"
                                            + text_split[arr_value_start])
             text_split[arr_value_end] = text_split[arr_value_end] + "</value>"
-    res = res + " ".join(text_split) + "</text>"
+
+    res = "<text>" + " ".join(text_split) + "</text>"
     return ("<date>" + str(date.today()) + "</date>" + "<time>"
             + str(datetime.datetime.now().strftime("%H:%M:%S"))
             + "</time>" + res + "<place>" + place + "</place>")
@@ -214,3 +214,110 @@ def send_res(res):
         case "NF":
             filename = "logs/NF.log"
             print_info(filename)
+
+
+def log_message_try(type, text, intents_values_dic, place):
+
+    rep = ET.Element(type)
+    date_tree = ET.SubElement(rep, "date")
+    date_tree.text = str(date.today())
+    time = ET.SubElement(rep, "time")
+    time.text = str(datetime.datetime.now().strftime("%H:%M:%S"))
+
+    if not intents_values_dic:
+        intents_values_dic = []
+    morph = pymorphy3.MorphAnalyzer()
+    intent_values = intent_array(intents_values_dic)
+    text_split = multi_split(text)
+    text_split_normal = []
+    text_split_indexes = []
+    for word in text_split:
+        text_split_normal.append(morph.parse(word)[0].normal_form)
+        text_split_indexes.append("")
+    for words in intent_values:
+        new_words = words.split(" ")
+        if len(new_words) == 1:
+            arr_start_end = text_split_normal.index(new_words[0])
+            text_split_indexes[arr_start_end] = "intent"
+        else:
+            arr_start = text_split_normal.index(new_words[0])
+            arr_end = text_split_normal.index(new_words[len(new_words) - 1])
+            text_split_indexes[arr_start] = "intent_start"
+            text_split_indexes[arr_end] = "intent_end"
+
+        if intent_values[words] is not None:
+            value_arr = str(intent_values[words]).split(" ")
+            if len(value_arr) == 1:
+                arr_value_start_end = text_split_normal.index(
+                    morph.parse(str(value_arr[0]))[0].normal_form
+                )
+                text_split_indexes[arr_value_start_end] = "value"
+            else:
+                arr_value_start = text_split_normal.index(
+                    morph.parse(str(value_arr[0]))[0].normal_form
+                )
+                arr_value_end = text_split_normal.index(
+                    morph.parse(str(value_arr[len(value_arr) - 1]))[0].normal_form
+                )
+                text_split_indexes[arr_value_start] = "value_start"
+                text_split_indexes[arr_value_end] = "value_end"
+
+
+    index = 0
+    while index < len(text_split):
+        text_arr = []
+
+        if text_split_indexes[index] == "value_start":
+            text_arr.append(text_split[index])
+            last_index = index + 1
+            while (last_index < len(text_split_indexes)
+                   and text_split_indexes[last_index] != "value_end"):
+                text_arr.append(text_split[last_index])
+                last_index += 1
+            text_arr.append(text_split[last_index])
+            value = ET.SubElement(rep, "value")
+            value.text = " ".join(text_arr)
+            index = last_index + 1
+            continue
+
+        if text_split_indexes[index] == "value":
+            value = ET.SubElement(rep, "value")
+            value.text = text_split[index]
+            index += 1
+            continue
+
+        if text_split_indexes[index] == "":
+            text_arr.append(text_split[index])
+            last_index = index + 1
+            while (last_index < len(text_split_indexes)
+                   and text_split_indexes[last_index] == ""):
+                text_arr.append(text_split[last_index])
+                last_index += 1
+            text = ET.SubElement(rep, "text")
+            text.text = " ".join(text_arr)
+            index = last_index
+            continue
+
+        if text_split_indexes[index] == "intent":
+            intent = ET.SubElement(rep, "intent")
+            intent.text = text_split[index]
+            index += 1
+            continue
+
+        if text_split_indexes[index] == "intent_start":
+            text_arr.append(text_split[index])
+            last_index = index + 1
+            while (last_index < len(text_split_indexes)
+                   and text_split_indexes[last_index] != "intent_end"):
+                text_arr.append(text_split[last_index])
+                last_index += 1
+            text_arr.append(text_split[last_index])
+            intent = ET.SubElement(rep, "intent")
+            intent.text = " ".join(text_arr)
+            index = last_index + 1
+            continue
+
+    place_tree = ET.SubElement(rep, "place")
+    place_tree.text = place
+
+    return ET.dump(rep)
