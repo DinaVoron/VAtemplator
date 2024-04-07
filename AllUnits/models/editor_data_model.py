@@ -64,6 +64,8 @@ def get_time():
     logs = ET.parse("logs/NF.log").getroot()
     time += get_time_one_log(logs)
     amount += len(logs)
+    if amount == 0:
+        return 0
     return round(time/amount, 2)
 
 
@@ -216,9 +218,9 @@ def send_res(res):
             print_info(filename)
 
 
-def log_message_try(type, text, intents_values_dic, place):
+def log_message_try(rep_type, text, intents_values_dic, place):
 
-    rep = ET.Element(type)
+    rep = ET.Element(rep_type)
     date_tree = ET.SubElement(rep, "date")
     date_tree.text = str(date.today())
     time = ET.SubElement(rep, "time")
@@ -320,4 +322,9 @@ def log_message_try(type, text, intents_values_dic, place):
     place_tree = ET.SubElement(rep, "place")
     place_tree.text = place
 
-    return ET.dump(rep)
+    print(bytes.decode(ET.tostring(rep, encoding='utf-8')))
+
+    return bytes.decode(ET.tostring(rep, encoding='utf-8'))
+
+
+log_message_try("answer", "почему", [], "main")
