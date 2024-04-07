@@ -1,83 +1,8 @@
 <logs>
-<log>
-
-<date>2024-02-14</date><time>01:50:07</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
-
-<date>2024-02-14</date><time>01:50:08</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
-
-</log>
-
-<log>
-
-<date>2024-02-14</date><time>01:50:08</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
-
-<date>2024-02-14</date><time>01:50:09</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
-
-</log>
-
-<log>
-
-<date>2024-02-14</date><time>01:50:10</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
-
-<date>2024-02-14</date><time>01:50:11</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
-
-</log>
-
-<log>
-
-<date>2024-02-14</date><time>01:50:11</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
-
-<date>2024-02-14</date><time>01:50:12</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
-
-</log>
-
-<log>
-
-<date>2024-02-14</date><time>01:50:45</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
-
-<date>2024-02-14</date><time>01:50:46</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
-
-</log>
-
-<log>
-
-<date>2024-02-14</date><time>01:50:46</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
-
-<date>2024-02-14</date><time>01:50:48</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
-
-</log>
-
-<log>
-
-<date>2024-02-14</date><time>01:50:48</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
-
-<date>2024-02-14</date><time>01:50:49</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
-
-</log>
-
-<log>
-
-<date>2024-02-14</date><time>01:50:49</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
-
-<date>2024-02-14</date><time>01:50:51</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
-
-</log>
-
-<log>
-
-<date>2024-02-14</date><time>01:50:49</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
-
-<date>2024-02-14</date><time>01:50:51</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
-
-</log>
 <log>
-<date>2024-04-04</date><time>15:36:59</time><text>хороший вопрос</text><place>main</place>
+<question><date>2024-04-07</date><time>17:39:33</time><text>как</text><place>main</place></question>
 
-<date>2024-04-04</date><time>15:36:59</time><text> a intent b</text><place>main</place>
-
-<date>2024-04-04</date><time>15:37:12</time><text>задаем доп вопрос</text><place>main</place>
-
-<date>2024-04-04</date><time>15:37:12</time><text> a intent b</text><place>main</place>
+<answer><date>2024-04-07</date><time>17:39:33</time><text> a intent b</text><place>main</place></answer>
 
 </log>
 </logs>

@@ -1,31 +1,15 @@
 <logs>
 <log>
 
-<date>2024-02-14</date><time>01:50:07</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030ed</place>
+<question><date>2024-04-07</date><time>17:39:27</time><text>почему</text><place>main</place></question>
 
-<date>2024-02-14</date><time>01:50:08</time><text><value>210</value> <intent>баллов</intent></text><place>2030ed</place>
-
-</log>
-
-<log>
-
-<date>2024-02-14</date><time>01:50:07</time><text><intent>Средний балл</intent> по <intent>специальности</intent> <value>программной инженерии</value> в <value>2020</value> <intent>году</intent></text><place>2030edk</place>
-
-<date>2024-02-14</date><time>01:50:08</time><text><value>210</value> <intent>баллов</intent></text><place>2030edk</place>
-
-</log>
-
-<log>
-
-<date>2024-04-04</date><time>15:35:27</time><text>какой-то</text><place>main</place>
-
-<date>2024-04-04</date><time>15:35:28</time><text> a intent b</text><place>main</place>
+<answer><date>2024-04-07</date><time>17:39:27</time><text> a intent b</text><place>main</place></answer>
 
 </log>
 <log>
-<date>2024-04-04</date><time>15:41:05</time><text>аывамвып</text><place>main</place>
+<question><date>2024-04-07</date><time>17:39:39</time><text>зачем</text><place>main</place></question>
 
-<date>2024-04-04</date><time>15:41:05</time><text> a intent b</text><place>main</place>
+<answer><date>2024-04-07</date><time>17:39:39</time><text> a intent b</text><place>main</place></answer>
 
 </log>
 </logs>
