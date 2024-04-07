@@ -1,6 +1,8 @@
-from app import dialog_tree
+from app import dialog_tree, graph
 from models.dialog_model import IntentTemplate
 from models.dialog_model import IntentValue
+from models.dialog_model import find_scene_by_name, ask_question
+from models.dialog_model import dialog
 import xml.etree.ElementTree as ET
 
 
@@ -62,7 +64,11 @@ def get_ok(log_tree, answers, questions):
             answer_text = ""
             for elem in answer:
                 if elem.tag == "text":
-                    answer_text += elem.text + " "
+                    if elem.text is None:
+                        answer_text += ""
+                    else:
+                        answer_text += elem.text + " "
+            answer_text = answer_text[0: len(answer_text) - 1]
             answers_arr.append(answer_text)
 
         answers.append(answers_arr)
@@ -76,8 +82,32 @@ def automatic_testing():
     log_tree = ET.parse("logs/OK.log")
     get_ok(log_tree, answers_arr, question_arr)
     # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем
+
+
+    input_answers = []
+    for question_session in question_arr:
+        scene = dialog_tree.root
+        input_answers.append([])
+        input_answers_end = len(input_answers) - 1
+        for question in question_session:
+            dialog_all = dialog(scene, question, graph)
+            answer = dialog_all[0]
+            input_answers[input_answers_end].append(answer)
+            scene = find_scene_by_name(dialog_all[1], dialog_tree)
+
+
+    print(input_answers)
+    print(answers_arr)
+
+    res = len(question_arr)
     q_len = len(question_arr)
-    res = q_len
+
+    for i in range(len(answers_arr)):
+        for j in range(len(answers_arr[i])):
+            if answers_arr[i][j] != input_answers[i][j]:
+                res -= 1
+                break
+
     return "Успешно пройдено {} из {} тестов!".format(res, q_len)
 
 
