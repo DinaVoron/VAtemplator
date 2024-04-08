@@ -4,6 +4,7 @@ from models.editor_testing_model import get_scenes, get_questions
 from models.editor_testing_model import get_scene_by_name
 from models.editor_testing_model import automatic_testing
 from models.editor_testing_model import get_scene_answer
+import subprocess
 
 
 @app.route("/testing", methods=["get", "post"])
@@ -20,6 +21,10 @@ def editor_testing():
     is_test = False
     test_result = ""
     is_answer = False
+
+    if request.values.get("open_test"):
+        subprocess.Popen(["notepad", "logs/test.log"])
+        is_test = True
 
     if "scene" in session and session["scene"] is not None:
         if request.values.get("scene") is None:

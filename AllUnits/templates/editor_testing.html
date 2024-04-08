@@ -51,11 +51,16 @@
                 <h4>Автоматическое тестирование</h4>
                 <input type="submit" name="test" value="Начать" class="testing_button">
                 {% if is_test %}
-                    <div class="test_result">{{ test_result }}</div>
+                    <div class="test_result">{{ test_result }}</div><br>
+                    <button value="open_test" name="open_test" class="testing_button">Посмотреть диалоги</button>
                 {% endif %}
             </article>
             <article>
                 <h4>Ручное тестирование</h4>
+                <div class="frame-div">
+                    <iframe src="{{ url_for('editor_dialog') }}" class="iframe">
+                    </iframe>
+                </div>
             </article>
         </form>
     </main>
