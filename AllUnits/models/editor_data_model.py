@@ -336,3 +336,9 @@ def log_message_try(rep_type, text, intents_values_dic, place):
     place_tree.text = place
 
     return bytes.decode(ET.tostring(rep, encoding='utf-8'))
+
+
+def clean_logs():
+    f1 = open("logs/temp.log", "r+")
+    f1.truncate(0)
+    f1.close()
