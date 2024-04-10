@@ -235,7 +235,6 @@ class Scene:
 
                 return self.children[pass_count-1].name
         for child in self.children:
-            #print('bbb' + str(self.name))
             return child.pass_to_children(key_words)
 
 
@@ -280,32 +279,35 @@ def main():
     with open("save_files/pickle_test.PKL", "rb") as f:
         tree = pc.load(f)
 
-    # main_scene = Scene(name = "main", answer=["на",
-    #                                           IntentTemplate("направление"),
-    #                                           IntentValue("направление"),
-    #                                           IntentTemplate("балл"),
-    #                                           IntentValue("балл")],
-    #                    pass_conditions=[["направление", "балл"]],
-    #                    questions=[[IntentTemplate("направление"),
-    #                    IntentValue("направление"), "имеет",
-    #                                IntentTemplate("балл")]],
-    #                    clarifying_question = ["Не найден ответ в main"])
-    # sub1 = Scene(name="sub1", pass_conditions=[["переход"]], answer=["на",
-    #                                           IntentTemplate("курс"),
-    #                                           IntentValue("курс"),
-    #                                           IntentTemplate("балл"),
-    #                                           IntentValue("балл")],
-    #              questions=[["Какой", IntentTemplate("балл"),
-    #                                           "у",
-    #                                           IntentTemplate("курс"),
-    #                                           IntentValue("курс")]])
-    # sub2 = Scene(name="sub2", pass_conditions=[["two, three"]])
-    # sub21 = Scene(name="sub21", pass_conditions=[["one"]])
-    # tree = SceneTree(main_scene)
-    # main_scene.add_child(sub1)
-    # main_scene.add_child(sub2)
-    # sub2.add_child(sub21)
-    # tree.set_height_tree()
+    '''
+    main_scene = Scene(name = "main", answer=["На",
+                                               IntentTemplate("срок"),
+                                               IntentValue("срок"),
+                                               IntentTemplate("приём"),
+                                               IntentValue("приём")],
+                        pass_conditions=[["срок", "прием"]],
+                        questions=[["Какой", IntentTemplate("срок"),
+                                    IntentTemplate("приём"),
+                                    IntentTemplate("подготовка"),
+                                    IntentValue("подготовка")]],
+                        clarifying_question = ["Не найден ответ в main"])
+    sub1 = Scene(name="sub1", pass_conditions=[["переход"]], answer=["на",
+                                               IntentTemplate("курс"),
+                                               IntentValue("курс"),
+                                               IntentTemplate("балл"),
+                                               IntentValue("балл")],
+                  questions=[["Какой", IntentTemplate("балл"),
+                                               "у",
+                                               IntentTemplate("курс"),
+                                                IntentValue("курс")]])
+    sub2 = Scene(name="sub2", pass_conditions=[["two, three"]])
+    sub21 = Scene(name="sub21", pass_conditions=[["one"]])
+    tree = SceneTree(main_scene)
+    main_scene.add_child(sub1)
+    main_scene.add_child(sub2)
+    sub2.add_child(sub21)
+    tree.set_height_tree()
+    '''
 
     # Сериализация pickle
     with open("save_files/pickle_test.PKL", "wb") as f:
@@ -505,6 +507,22 @@ def save_tree(file, dialog_tree):
         pc.dump(dialog_tree, f)
 
 
+def find_parent(current_scene, find_scene):
+    if current_scene.children is not None:
+        if scene in current_scene.children:
+            return current_scene
+        else:
+            for child in current_scene.children:
+                find_parent(child, find_scene)
+
+
+def delete_scene(scene_name, dialog_tree):
+    scene = find_scene_by_name(scene_name, dialog_tree)
+    parent = find_parent(current_scene = dialog_tree.root, find_scene = scene)
+    if parent is not None:
+        parent.children.remove(scene)
+
+
 def take_command():
     r = sr.Recognizer()
 
@@ -530,12 +548,19 @@ def take_command():
 # Текст вопроса - текст ответа
 def ask_question(current_scene, question_text, graph):
     question_intent_dict = current_scene.get_work_question(question_text)
+    send_log("question", question_text, question_intent_dict,
+             current_scene.name)
     if question_intent_dict:
+        print("question_intent_dict")
+        print(question_intent_dict)
         question_intent_dict = graph.search(question_intent_dict)
+        print("new_question_dict")
+        print(question_intent_dict)
         answer = current_scene.give_answer(question_intent_dict)
     else:
         answer = ""
-    return answer
+    to_return = [answer, question_intent_dict]
+    return to_return
 
 
 def intent_dict_to_list(intent_dict):
@@ -551,15 +576,15 @@ def intent_dict_to_list(intent_dict):
 # Переход к следующей сцене (возможен переход сразу через несколько)
 def pass_scene(cur_scene, intent_list):
     new_scene_name = cur_scene.pass_to_children(intent_list)
-    print(new_scene_name)
     return new_scene_name
 
 
 # Ответ, новая сцена, словарь интентов и значений, лист интентов
 def dialog(current_scene, question_text, graph):
-    answer = ask_question(current_scene, question_text, graph)
-    question_intent_dict = current_scene.get_work_question(question_text)
-    send_log("question", question_text, question_intent_dict, current_scene.name)
+    answer_and_intents = ask_question(current_scene, question_text, graph)
+    answer = answer_and_intents[0]
+    question_intent_dict = answer_and_intents[1]
+    #question_intent_dict = current_scene.get_work_question(question_text)
     send_log("answer", answer, False, current_scene.name)
     if question_intent_dict:
         question_intent_dict = graph.search(question_intent_dict)
