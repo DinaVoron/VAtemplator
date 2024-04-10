@@ -548,6 +548,8 @@ def take_command():
 # Текст вопроса - текст ответа
 def ask_question(current_scene, question_text, graph):
     question_intent_dict = current_scene.get_work_question(question_text)
+    send_log("question", question_text, question_intent_dict,
+             current_scene.name)
     if question_intent_dict:
         print("question_intent_dict")
         print(question_intent_dict)
@@ -583,7 +585,6 @@ def dialog(current_scene, question_text, graph):
     answer = answer_and_intents[0]
     question_intent_dict = answer_and_intents[1]
     #question_intent_dict = current_scene.get_work_question(question_text)
-    send_log("question", question_text, question_intent_dict, current_scene.name)
     send_log("answer", answer, False, current_scene.name)
     if question_intent_dict:
         question_intent_dict = graph.search(question_intent_dict)
