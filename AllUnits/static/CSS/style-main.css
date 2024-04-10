@@ -1,24 +1,44 @@
 :root {
     /* Основные цвета */
-    --main_color_1:			#F0F4EF; /* + */
-    --main_color_2:			#0D1821; /* + */
-    --main_color_3:			#D6C153; /* + */
-    --main_color_4:			#D2E0A2; /* + */
-    --main_color_5:			#344966; /* + */
-    --main_color_6:			#B4CDED; /* + */
+    --color_main_1:	#0D1821;
+    --color_main_2:	#F0F4EF;
+    --color_main_3:	#D6C153;
+    --color_main_4:	#D2E0A2;
+    --color_main_5:	#344966;
+    --color_main_6:	#B4CDED;
 
-    /* Тень */
-    --offset-x:				3px;
-    --offset-y:				1px;
-    --blur-radius:			5px;
-    --spread-radius:		0px;
+
+    --color_background_1:	var(--color_main_1);	/* Основной цвет Menu */
+    --color_background_2:	var(--color_main_2);
+
+    --color_text_1:			var(--color_main_1);	/* Основной цвет текста */
+    --color_text_2:			var(--color_main_2);	/* Цвет текста в меню */
+
+    --color_icon_1:			var(--color_main_1);	/* Основной цвет иконок */
+    --color_icon_2:			var(--color_main_2);	/* Цвет иконок в меню */
+
+    --color_button_1:		var(--color_main_5);
+    --color_button_2:		var(--color_main_6);
+
+
+
+	/* Размеры текста */
+	--font_family:		Inter, sans-serif;
+
+	--font_size_h1:		24px; /* 1.6em */
+	--font_size_medium:	14px;
+	--font_size_small:	10px;
+
 
     /* Размер */
     --width-tabs:			80px;
     --height-tabs:			100%;
 
-    --width-graph-article: 	400px; // calc(100% - var(--width-tabs));
+    --width-graph-article: 	400px;
     --height-graph-article: 100%;
+
+    --width-graph-aside:	calc(100% - var(--width-tabs) - var(--width-graph-article));
+    --height-graph-aside: 	100%;
 }
 
 html {
@@ -41,8 +61,8 @@ body .no_text_select {
 	user-select:			none;
 }
 body .shadow {
-	-webkit-box-shadow:		var(--offset-x) var(--offset-y) var(--blur-radius) var(--spread-radius) rgba(0,0,0,.75);
-	-moz-box-shadow:		var(--offset-x) var(--offset-y) var(--blur-radius) var(--spread-radius) rgba(0,0,0,.75);
-	-o-box-shadow:			var(--offset-x) var(--offset-y) var(--blur-radius) var(--spread-radius) rgba(0,0,0,.75);
-	box-shadow:				var(--offset-x) var(--offset-y) var(--blur-radius) var(--spread-radius) rgba(0,0,0,.75);
+	-webkit-box-shadow:		3px 1px 5px 0px rgba(0,0,0,.75);
+	-moz-box-shadow:		3px 1px 5px 0px rgba(0,0,0,.75);
+	-o-box-shadow:			3px 1px 5px 0px rgba(0,0,0,.75);
+	box-shadow:				3px 1px 5px 0px rgba(0,0,0,.75);
 }

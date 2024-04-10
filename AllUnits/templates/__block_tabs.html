@@ -3,37 +3,37 @@
 <nav class="no_text_select text_style_tabs">
     <div data-href="{{url_for('editor_tree')}}"
          onclick="window.location.href = this.getAttribute('data-href');"
-         class="tab-elem {% if current_page == 'editor_tree' %}active{% endif %}"
+         class="tab {% if current_page == 'editor_tree' %}active{% endif %}"
     >
-        <div class="tab tab-editor-tree"></div>
-        <p class="tab">Сценарий</p>
+        <div id="tab-editor-tree"></div>
+        <p>Сценарий</p>
     </div>
     <div data-href="{{url_for('editor_graph')}}"
          onclick="window.location.href = this.getAttribute('data-href');"
-         class="tab-elem {% if current_page == 'editor_graph' %}active{% endif %}"
+         class="tab {% if current_page == 'editor_graph' %}active{% endif %}"
     >
-        <div class="tab tab-editor-graph"></div>
-        <p class="tab">Модель ПО</p>
+        <div id="tab-editor-graph"></div>
+        <p>Модель ПО</p>
     </div>
     <div data-href="{{url_for('editor_testing')}}"
          onclick="window.location.href = this.getAttribute('data-href');"
-         class="tab-elem {% if current_page == 'editor_testing' %}active{% endif %}"
+         class="tab {% if current_page == 'editor_testing' %}active{% endif %}"
     >
-        <div class="tab tab-editor-testing"></div>
-        <p class="tab">Тестирование</p>
+        <div id="tab-editor-testing"></div>
+        <p>Тестирование</p>
     </div>
     <div data-href="{{url_for('editor_data')}}"
          onclick="window.location.href = this.getAttribute('data-href');"
-         class="tab-elem {% if current_page == 'editor_data' %}active{% endif %}"
+         class="tab {% if current_page == 'editor_data' %}active{% endif %}"
     >
-        <div class="tab tab-editor-data"></div>
-        <p class="tab">Аналитика</p>
+        <div id="tab-editor-data"></div>
+        <p>Аналитика</p>
     </div>
     <div data-href="{{url_for('editor_dialog')}}"
          onclick="window.location.href = this.getAttribute('data-href');"
-         class="tab-elem {% if current_page == 'editor_dialog' %}active{% endif %}"
+         class="tab {% if current_page == 'editor_dialog' %}active{% endif %}"
     >
-        <div class="tab tab-editor-dialog"></div>
-        <p class="tab">Чат</p>
+        <div id="tab-editor-dialog"></div>
+        <p>Чат</p>
     </div>
 </nav>

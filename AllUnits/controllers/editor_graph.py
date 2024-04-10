@@ -8,42 +8,42 @@ document = None
 
 
 # Определение страницы "Граф знаний / Семантическая сеть / Справочный граф"
-@app.route('/graph', methods=['get', 'post'])
+@app.route("/graph", methods=["get", "post"])
 def editor_graph():
     html = render_template(
-        'editor_graph.html',
-        current_page='editor_graph',
+        "editor_graph.html",
+        current_page="editor_graph",
     )
     return html
 
 
 # Определение вспомогательных запросов
 # "Граф знаний / Семантическая сеть / Справочный граф"
-@app.route('/graph/process_data', methods=['POST'])
+@app.route("/graph/process_data", methods=["POST"])
 def process_data():
     global document
-    document, clusters = graph.process_data(request.data.decode('utf-8'))
+    document, clusters = graph.process_data(request.data.decode("utf-8"))
     return make_response(clusters.to_json(), 200)
 
 
-@app.route('/graph/load_data', methods=['POST'])
+@app.route("/graph/load_data", methods=["POST"])
 def load_data():
     global document
     graph.load_data(document, parsing_json(request.json))
-    return make_response('', 200)
+    return make_response("", 200)
 
 
-@app.route('/graph/delete_data', methods=['POST'])
+@app.route("/graph/delete_data", methods=["POST"])
 def delete_data():
-    graph.delete_data(request.data.decode('utf-8'))
-    graph.remove_document(request.data.decode('utf-8'))
-    return make_response('', 200)  # 400
+    graph.delete_data(request.data.decode("utf-8"))
+    graph.remove_document(request.data.decode("utf-8"))
+    return make_response("", 200)  # 400
 
 
-@app.route('/graph/visible_data')
+@app.route("/graph/visible_data")
 def visible_data():
     graph.visible()
-    return make_response('', 200)
+    return make_response("", 200)
 
 
 @app.route("/graph/update_document")
@@ -97,24 +97,24 @@ def get_documents():
 
 def parsing_json(json_data):
     df = pd.DataFrame(columns=[
-        'index', 'layer', 'text',
-        'lemma', 'pos', 'con_index',
-        'con_dep', 'f_type', 'f_intent',
-        'f_value'
+        "index", "layer", "text",
+        "lemma", "pos", "con_index",
+        "con_dep", "f_type", "f_intent",
+        "f_value"
     ])
-    for row in json_data['table']:
-        values = [v.split(',') for v in row.values()]
+    for row in json_data["table"]:
+        values = [v.split(",") for v in row.values()]
         data = {
-            'index': [int(val) for val in values[0]],
-            'layer': int(values[1][0]),
-            'text': [val for val in values[2]],
-            'lemma': [val for val in values[3]],
-            'pos': [val for val in values[4]],
-            'con_index': int(values[5][0]) if values[5][0] else None,
-            'con_dep': values[6][0],
-            'f_type': values[7][0],
-            'f_intent': values[8][0] == 'true',
-            'f_value': values[9][0] == 'true'
+            "index": [int(val) for val in values[0]],
+            "layer": int(values[1][0]),
+            "text": [val for val in values[2]],
+            "lemma": [val for val in values[3]],
+            "pos": [val for val in values[4]],
+            "con_index": int(values[5][0]) if values[5][0] else None,
+            "con_dep": values[6][0],
+            "f_type": values[7][0],
+            "f_intent": values[8][0] == "true",
+            "f_value": values[9][0] == "true"
         }
         df = df._append(data, ignore_index=True)
     return df
