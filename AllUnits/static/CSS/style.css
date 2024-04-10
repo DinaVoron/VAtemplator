@@ -30,23 +30,23 @@ main {
     background-color: #c7fff2;
     cursor: pointer;
 }
-.logs__nf {
+.logs__err {
     background-color: #FFEAEA;
 }
-.logs__nf button {
+.logs__err button {
     background-color: #f6baba;
 }
-.logs__nf button:hover {
+.logs__err button:hover {
     background-color: #f6cece;
     cursor: pointer;
 }
-.logs__err {
+.logs__nf {
     background-color: #8DF7FF;
 }
-.logs__err button {
+.logs__nf button {
     background-color: #28BFCB;
 }
-.logs__err button:hover {
+.logs__nf button:hover {
     background-color: #3cd3df;
     cursor: pointer;
 }
@@ -79,4 +79,18 @@ article {
     background: #f5f5f5;
     padding: 1em;
     border-radius: 0.7em;
+}
+.frame-div {
+    width    : 400px;
+    height   : 420px;
+    overflow : hidden;
+    position : relative;
+}
+.iframe
+{
+    position : absolute;
+    top      : -120px;
+    width    : 400px;
+    height   : 555px;
+    border-width: 0px;
 }

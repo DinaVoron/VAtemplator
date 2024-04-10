@@ -44,8 +44,8 @@
                 <h4>Статистика работы</h4>
                 <section class="logs">
                     {{ render_log_block("Успех", success_amount, "ok") }}
-                    {{ render_log_block("Ошибка", not_found_amount, "nf") }}
-                    {{ render_log_block("Провал", error_amount, "err") }}
+                    {{ render_log_block("Ошибка", error_amount, "err") }}
+                    {{ render_log_block("Провал", not_found_amount, "nf") }}
                 </section>
             </form>
         </article>
