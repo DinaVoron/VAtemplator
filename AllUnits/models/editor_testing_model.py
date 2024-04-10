@@ -76,6 +76,8 @@ def get_ok(log_tree, answers, questions):
 
 
 def automatic_testing():
+    f1 = open("logs/test.log", "r+")
+    f1.truncate(0)
     answers_arr = []
     question_arr = []
     # Получаем ответы и вопросы из файла успешного логирования
@@ -95,19 +97,21 @@ def automatic_testing():
             input_answers[input_answers_end].append(answer)
             scene = find_scene_by_name(dialog_all[1], dialog_tree)
 
-
-    print(input_answers)
-    print(answers_arr)
-
     res = len(question_arr)
     q_len = len(question_arr)
 
     for i in range(len(answers_arr)):
         for j in range(len(answers_arr[i])):
             if answers_arr[i][j] != input_answers[i][j]:
+                f1.write(question_arr[i][j] + "\r\n")
+                f1.write("Правильный ответ:" + "\r\n")
+                f1.write(answers_arr[i][j] + "\r\n")
+                f1.write("Полученный ответ:" + "\r\n")
+                f1.write(input_answers[i][j] + "\r\n")
                 res -= 1
                 break
 
+    f1.close()
     return "Успешно пройдено {} из {} тестов!".format(res, q_len)
 
 

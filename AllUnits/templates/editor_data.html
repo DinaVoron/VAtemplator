@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="/static/CSS/style.css">
     <meta charset="UTF-8">
     <title>Статистика</title>
+
+    <link rel="stylesheet" href="static/css/style-main.css">
+    <link rel="stylesheet" href="static/css/style-tabs.css">
+
+    <link rel="stylesheet" href="/static/CSS/style.css">
+
     {% macro render_menu() %}
     {% include "__block_tabs.html" %}
     {% endmacro %}
@@ -25,8 +30,8 @@
     {% endmacro %}
     {% macro render_log_block(state_name, amount, state) %}
     <div class="logs__{{ state }}">
-        <strong>{{ state_name }}</strong><br><br>
-        {{ amount }}/{{ all_amount }} диалога<br><br>
+        {{ state_name }}<br><br>
+        {{ amount }}/{{ all_amount }} диалогов<br><br>
         <button value="open_{{ state }}" name="open_{{ state }}">Посмотреть логи</button>
     </div>
     {% endmacro %}
@@ -39,8 +44,8 @@
                 <h4>Статистика работы</h4>
                 <section class="logs">
                     {{ render_log_block("Успех", success_amount, "ok") }}
-                    {{ render_log_block("Ошибка", error_amount, "err") }}
                     {{ render_log_block("Провал", not_found_amount, "nf") }}
+                    {{ render_log_block("Ошибка", error_amount, "err") }}
                 </section>
             </form>
         </article>

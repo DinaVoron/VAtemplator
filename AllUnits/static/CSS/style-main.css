@@ -1,32 +1,36 @@
 :root {
     /* Основные цвета */
-    --main_color_1:			#e30800; /* + */
-    --main_color_2:			#eb4131; /* + */
-    --main_color_3:			#eaea73; /* + */
-    --main_color_4:			#f3f1db; /* + */
-    --main_color_5:			#f2f0ec; /* + */
-    /* Темные цвета */
-    --dark_color_1:			#060606; /* + */
-    --dark_color_2:			#262a32; /* + */
-    --dark_color_3:			#5a5e6d; /* + */
-    --dark_color_4:			#989ab3; /* + */
-    --dark_color_5:			#f8f8f8; /* + */
-    /* Дополнительные цвета */
-    --additional_color_1:	#806db5;
-    --additional_color_2:	#d36ea2;
-    --additional_color_3:	#f6aea2;
-    --additional_color_4:	#f8ecbf;
-    --additional_color_5:	#f8efe7;
+    --main_color_1:			#F0F4EF; /* + */
+    --main_color_2:			#0D1821; /* + */
+    --main_color_3:			#D6C153; /* + */
+    --main_color_4:			#D2E0A2; /* + */
+    --main_color_5:			#344966; /* + */
+    --main_color_6:			#B4CDED; /* + */
 
     /* Тень */
     --offset-x:				3px;
     --offset-y:				1px;
     --blur-radius:			5px;
     --spread-radius:		0px;
+
+    /* Размер */
+    --width-tabs:			80px;
+    --height-tabs:			100%;
+
+    --width-graph-article: 	400px; // calc(100% - var(--width-tabs));
+    --height-graph-article: 100%;
 }
 
-body {
+html {
 	width:					100%;
+	height:					100%;
+	margin:					0;
+}
+body {
+    display: flex;
+    flex-wrap: wrap;
+	width:					100%;
+	height:					100%;
 	margin:					0;
 }
 body .no_text_select {
@@ -41,25 +45,4 @@ body .shadow {
 	-moz-box-shadow:		var(--offset-x) var(--offset-y) var(--blur-radius) var(--spread-radius) rgba(0,0,0,.75);
 	-o-box-shadow:			var(--offset-x) var(--offset-y) var(--blur-radius) var(--spread-radius) rgba(0,0,0,.75);
 	box-shadow:				var(--offset-x) var(--offset-y) var(--blur-radius) var(--spread-radius) rgba(0,0,0,.75);
-}
-
-.container {
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-	margin: auto;
-	margin-top: 0;
-}
-.container .tabs {
-	width:					16%;
-    border-right:			1px solid #ccc;
-	padding-right:			20px;
-	box-sizing:				border-box;
-    background:				var(--dark_color_4);
-}
-.container .content {
-	width:					84%;
-	padding-left:			20px;
-	box-sizing:				border-box;
-    background:				var(--dark_color_3);
 }

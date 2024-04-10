@@ -1,7 +1,29 @@
-.container .directory {
+article {
+	width: 				var(--width-graph-article);
+	height: 			var(--height-graph-article);
+
+}
+
+footer {
+	width: 				100%;
+	height:				0px;
+}
+
+#update-directory {
+	width: 				1.6em;
+	height:				1.6em;
+	background-color: 	var(--main_color_2);
+
+	-webkit-mask: url(../images/frame-sync.svg) no-repeat center;
+	mask: url(../images/frame-sync.svg) no-repeat center;
+	mask-size: contain;
+}
+
+
+/*.container .directory {
 }
 .container .directory_contents {
-}
+}*/
 
 
 /*

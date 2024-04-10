@@ -158,11 +158,14 @@ def log_message(text, intents_values_dic, place):
                     morph.parse(str(value_arr[0]))[0].normal_form
                 )
                 arr_value_end = text_split_normal.index(
-                    morph.parse(str(value_arr[len(value_arr) - 1]))[0].normal_form
+                    morph.parse(str(
+                        value_arr[len(value_arr) - 1]
+                    ))[0].normal_form
                 )
                 text_split[arr_value_start] = ("<value>"
                                                + text_split[arr_value_start])
-                text_split[arr_value_end] = text_split[arr_value_end] + "</value>"
+                text_split[arr_value_end] = (text_split[arr_value_end]
+                                             + "</value>")
 
     res = "<text>" + " ".join(text_split) + "</text>"
     return ("<date>" + str(date.today()) + "</date>" + "<time>"
@@ -272,11 +275,12 @@ def log_message_try(rep_type, text, intents_values_dic, place):
                         morph.parse(str(value_arr[0]))[0].normal_form
                     )
                     arr_value_end = text_split_normal.index(
-                        morph.parse(str(value_arr[len(value_arr) - 1]))[0].normal_form
+                        morph.parse(str(
+                            value_arr[len(value_arr) - 1])
+                        )[0].normal_form
                     )
                     text_split_indexes[arr_value_start] = "value_start"
                     text_split_indexes[arr_value_end] = "value_end"
-
 
     index = 0
     while index < len(text_split):
@@ -336,3 +340,9 @@ def log_message_try(rep_type, text, intents_values_dic, place):
     place_tree.text = place
 
     return bytes.decode(ET.tostring(rep, encoding='utf-8'))
+
+
+def clean_logs():
+    f1 = open("logs/temp.log", "r+")
+    f1.truncate(0)
+    f1.close()

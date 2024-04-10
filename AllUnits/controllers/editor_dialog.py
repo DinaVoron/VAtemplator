@@ -5,12 +5,15 @@ from models.dialog_model import (get_text_scenes, get_root, get_scene_name,
                                  add_child, take_command, pass_scene,
                                  intent_dict_to_list, ask_question, dialog)
 
-from models.editor_data_model import send_res
+from models.editor_data_model import send_res, clean_logs
 
 
 @app.route("/dialog", methods=["get", "post"])
 def editor_dialog():
     question_text = ""
+
+    if len(request.args) == 0:
+        clean_logs()
 
     if request.values.get("write_question"):
         scene_name = request.values.get("prev_scene")
@@ -48,6 +51,8 @@ def editor_dialog():
 
     html = render_template(
         "editor_dialog.html",
+        current_page='editor_dialog',
+
         current_scene=current_scene,
         scene_name=scene_name,
         end_dialog=end_dialog,
