@@ -21,14 +21,14 @@
                 <h1>Справочник</h1>
                 <div id="update-directory" onclick="event_update_directory();"></div>
             </div>
-            <div>
+            <div class="button">
                 <label for="upload-document">Загрузить документ</label>
                 <input type="file" id="upload-document" name="upload-document" onchange="event_upload_document();" style="display: none;">
             </div>
         </section>
         <section class="no_text_select">
             <ul class="file-list" id="document-list"></ul>
-            <div id="visible-graph" onclick="event_visible_graph();">Обновить граф</div>
+            <div class="button" onclick="event_visible_graph();">Обновить граф</div>
         </section>
     </article>
 
@@ -40,8 +40,10 @@
             </iframe>
         </section>
         <section id="table" class="no_text_select">
-            <button onclick="event_load_data();">Загрузить данные</button>
-            <button onclick="event_cancel();">Отмена</button>
+            <div>
+                <div class="button" onclick="event_load_data();">Загрузить данные</div>
+                <div class="button" onclick="event_cancel();">Отмена</div>
+            </div>
             <table> </table>
         </section>
     </aside>
@@ -71,31 +73,15 @@
                 file_list = document.getElementById('document-list');
                 file_list.innerHTML = '';
 
-                var json_result = {};
-
+                let json_merged = [];
                 if (json_1.length > 0 && json_2.length > 0) {
-                    var json_merged = json_1.concat(json_2);
-
-                    json_merged.sort();
-                    json_merged.forEach(function(item) {
-                        if (json_1.includes(item) && json_2.includes(item)) {
-                            json_result[item] = 0;
-                        } else if (json_1.includes(item)) {
-                            json_result[item] = 1;
-                        } else {
-                            json_result[item] = 2;
-                        }
-                    });
+                    json_merged = json_1.concat(json_2);
+                    json_merged = [...new Set(json_merged)];
                 } else {
                      if (json_1.length > 0) {
-                        json_1.forEach(function(item) {
-                            json_result[item] = 1;
-                        });
-                     } else
-                     if (json_2.length > 0) {
-                        json_1.forEach(function(item) {
-                            json_result[item] = 2;
-                        });
+                        json_merged = json_1;
+                     } else if (json_2.length > 0) {
+                        json_merged = json_2;
                      } else {
                         var item_list = document.createElement('li');
                         item_list.textContent = 'Нет документов.';
@@ -104,37 +90,40 @@
                         return;
                      }
                 }
+                json_merged.sort();
 
-                for (var item in json_result) {
-                    (function(item) {
-                        var item_list = document.createElement('li');
-                        item_list.textContent = item + ': ' + json_result[item];
-                        item_list.classList.add('file-item');
+                json_merged.forEach(function(item) {
+                    var item_list = document.createElement('li');
+                    item_list.classList.add('file-item');
 
-                        item_list.addEventListener('dblclick', function() {
+                    var item_p = document.createElement('p');
+                    var item_div_1 = document.createElement('div');
+                    var item_div_2 = document.createElement('div');
+
+                    item_p.textContent = item;
+
+                    if (json_1.includes(item)) {
+                        item_div_1.classList.add("elem-load");
+
+                        item_div_1.addEventListener('click', function() {
                             event_process_data(item);
                             swap_display("table");
                         });
+                    }
+                    if (json_2.includes(item)) {
+                        item_div_2.classList.add("elem-delete");
 
-                        file_list.appendChild(item_list);
-                    })(item);
-                }
-            }
-
-
-                /*
-                        var item_list = document.createElement('li');
-                        var span = document.createElement('span');
-                        item_list.textContent = file[0] + "\t";
-                        span.textContent = "[" + file[1] + "]";
-                        item_list.classList.add('file-item');
-                        item_list.addEventListener('dblclick', function() {
-                            event_delete_data(file);
-
+                        item_div_2.addEventListener('click', function() {
+                            event_delete_data(item);
                         });
-                        file_list.appendChild(item_list);
-                        item_list.appendChild(span);
-                */
+                    }
+
+                    item_list.appendChild(item_p);
+                    item_list.appendChild(item_div_1);
+                    item_list.appendChild(item_div_2);
+                    file_list.appendChild(item_list);
+                });
+            }
         }
 
         function event_upload_document() {
@@ -165,10 +154,6 @@
             })
             .catch(error => console.error('Ошибка:', error));
         }
-
-        event_update_directory();
-        event_visible_graph();
-        swap_display('graph-visible');
     </script>
 
     <!-- Событие (Event) :: Обработка данных -->
@@ -205,7 +190,7 @@
             fetch('/graph/delete_data', {
                 method:  'POST',
                 headers: {'Content-Type': 'text/plain'},
-                body:    filename[0]
+                body:    filename
             })
             .then(response => {
                 event_update_directory();
@@ -291,6 +276,12 @@
                 document.getElementById("table").style.display =         "block";
             }
         }
+    </script>
+
+    <script>
+        event_update_directory();
+        event_visible_graph();
+        swap_display('graph-visible');
     </script>
 
 </body>

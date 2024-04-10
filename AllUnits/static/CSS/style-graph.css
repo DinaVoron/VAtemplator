@@ -1,63 +1,122 @@
 article {
-	width: 				var(--width-graph-article);
-	height: 			var(--height-graph-article);
-
+    background-color: 	color-mix(in srgb, var(--color_background_1) 10%, transparent);
+    border-radius: 		8px;
+    box-sizing: 		border-box;
+    width: 				calc(var(--width-graph-article) - 16px);
+    height: 			calc(var(--height-graph-article) - 8px);
+    margin:				4px 8px;
+    padding:			4px 8px;
 }
 
-footer {
-	width: 				100%;
-	height:				0px;
+article section > div {
+    display: 			flex;
 }
 
-#update-directory {
-	width: 				1.6em;
-	height:				1.6em;
-	background-color: 	var(--main_color_2);
-
-	-webkit-mask: url(../images/frame-sync.svg) no-repeat center;
-	mask: url(../images/frame-sync.svg) no-repeat center;
-	mask-size: contain;
+article div > h1 {
+    color: 				var(--color_text_1);
+    font-size:			var(--font_size_h1);
+    font-weight: 		bold;
+    margin: 			5px 0;
+    padding: 			0;
+    text-align: 		justify;
 }
 
+article div > div#update-directory {
+    background-color: 	var(--color_icon_1);
+    width: 				1.6em;
+    height:				1.6em;
+    margin: 			5px;
 
-/*.container .directory {
-}
-.container .directory_contents {
-}*/
-
-
-/*
-. .tabs .tab {
-	position:				relative;
-    padding:				2.5%;
-	opacity:				.6;
-	transition:				opacity .3s ease-in;
-}
-.container .tabs .tab img {
-	width:					100%;
-	height:					auto;
-	border-radius:			5px
+    -webkit-mask: 		url(../images/frame-sync.svg) no-repeat center;
+    mask: 				url(../images/frame-sync.svg) no-repeat center;
+    mask-size: 			contain;
 }
 
-.container .tabs .tab .caption-overlay {
-	width:					100%;
-	height:					40%;
-	background-color:		rgba(168, 168, 168, .3);
-	text-align:				center;
-	border-radius:			5px;
-	position:				absolute;
-	bottom:					2.5%;
-	text-decoration:		none;
-	color:					#000;
-	opacity:				0;
-	transition:				opacity .4s ease-in
+article ul.file-list {
+    list-style:			none;
+    max-height:			600px;
+    overflow-y:			auto;
+    margin:				20px 0;
+    padding:			0;
+    border-top:			1px solid color-mix(in srgb, var(--color_main_1) 40%, transparent);
 }
-.container .tabs .active-tab {
-	background-color:		#f0f0f0;
+
+article ul.file-list .file-item {
+    display:			flex;
+    align-items:		center;
+    padding:			8px;
+    border-bottom:		1px solid color-mix(in srgb, var(--color_main_1) 40%, transparent);
 }
-.container .tabs .tab:hover {
-	opacity:				1;
+
+article ul.file-list .file-item p {
+    margin:				0;
+    padding-left:		10px;
+    padding-right:		20px;
 }
-.container .tabs .tab:hover .caption-overlay {
-	opacity:				.9
-}*/
+
+article ul.file-list .file-item div {
+    width:				20px;
+    height:				20px;
+    margin-left:		auto;
+    margin-right:		5px;
+}
+
+article ul.file-list .file-item div + div {
+    margin-left:		5px;
+    margin-right:		5px;
+}
+
+article ul.file-list .file-item div.elem-load {
+    background-color: 	var(--color_main_3);
+    -webkit-mask: 		url(../images/frame-point.svg) no-repeat center;
+    mask: 				url(../images/frame-point.svg) no-repeat center;
+    mask-size: 			contain;
+    transition:			background-image 0.2s ease;
+}
+
+article ul.file-list .file-item div.elem-load:hover {
+    background-color:	transparent;
+    -webkit-mask: 		none;
+    mask: 				none;
+    background-image:	url(../images/frame-graph.svg);
+    background-size:	contain;
+}
+
+article ul.file-list .file-item div.elem-delete {
+    background-image:	url(../images/frame-cancel.svg);
+    background-size: 	contain;
+}
+
+aside {
+    border-radius: 		8px;
+    box-sizing: 		border-box;
+	width: 				calc(var(--width-graph-aside)  - 16px);
+	height: 			calc(var(--height-graph-aside) - 8px);
+	margin:				4px 8px;
+    box-sizing: 		border-box;
+}
+
+aside section#graph-visible {
+	width:				100%;
+	height:				100%;
+    margin: 			0;
+    padding: 			0;
+}
+
+div.button {
+    display:			inline-block;
+    padding:			5px 20px;
+    border:				1px solid var(--color_button_1);
+    background-color:	var(--color_button_1);
+    color:				var(--color_text_2);
+    font-size:			var(--font_size_medium);
+    font-weight:		bold;
+    border-radius:		5px;
+    cursor:				pointer;
+    transition:			all 0.3s ease;
+}
+
+div.button:hover {
+    background-color:	color-mix(in srgb, var(--color_button_1) 60%, var(--color_button_2));
+    border-color:		color-mix(in srgb, var(--color_button_1) 60%, var(--color_button_2));
+}

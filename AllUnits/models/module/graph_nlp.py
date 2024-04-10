@@ -21,20 +21,20 @@ class Token:
     # f_type        enum    Тип кластера
 
     def __init__(self, elem_str, cluster_type=ClusterType.Null):
-        self.p_index     = [elem_str.i]
-        self.p_text      = [elem_str.text]
+        self.p_index = [elem_str.i]
+        self.p_text = [elem_str.text]
         self.p_con_index = [elem_str.head.i]
-        self.p_con_dep   = [elem_str.dep_]
-        self.f_type      = cluster_type
-        self.f_intent    = False
-        self.f_value     = False
+        self.p_con_dep = [elem_str.dep_]
+        self.f_type = cluster_type
+        self.f_intent = False
+        self.f_value = False
 
         if not elem_str.is_stop and not elem_str.is_punct:
             self.p_lemma = [elem_str.lemma_]
-            self.p_pos   = [elem_str.pos_]
+            self.p_pos = [elem_str.pos_]
         else:
             self.p_lemma = [None]
-            self.p_pos   = [None]
+            self.p_pos = [None]
 
     def __repr__(self):
         return \
@@ -45,25 +45,30 @@ class Token:
 
     def append(self, elem_str):
         if elem_str.i not in self.p_index:
-            self.p_index     += [elem_str.i]
-            self.p_text      += [elem_str.text]
+            self.p_index += [elem_str.i]
+            self.p_text += [elem_str.text]
             self.p_con_index += [elem_str.head.i]
-            self.p_con_dep   += [elem_str.dep_]
+            self.p_con_dep += [elem_str.dep_]
 
             if not elem_str.is_stop and not elem_str.is_punct:
                 self.p_lemma += [elem_str.lemma_]
-                self.p_pos   += [elem_str.pos_]
+                self.p_pos += [elem_str.pos_]
             else:
                 self.p_lemma += [None]
-                self.p_pos   += [None]
+                self.p_pos += [None]
 
     def sort_connect(self):
-        combined_arrays = list(zip(self.p_index, self.p_text, self.p_lemma, self.p_pos))
-        sorted_combined_arrays = sorted(combined_arrays, key=lambda elem: elem[0])
-        self.p_index, self.p_text, self.p_lemma, self.p_pos = zip(*sorted_combined_arrays)
+        combined_arrays = list(zip(self.p_index, self.p_text,
+                                   self.p_lemma, self.p_pos))
+        sorted_combined_arrays = sorted(combined_arrays,
+                                        key=lambda elem: elem[0])
+        self.p_index, self.p_text, self.p_lemma, self.p_pos = (
+            zip(*sorted_combined_arrays))
 
     def remove_connect(self):
-        connect = [[index, dep] for index, dep in zip(self.p_con_index, self.p_con_dep) if index not in self.p_index]
+        connect = [[index, dep] for index, dep in
+                   zip(self.p_con_index, self.p_con_dep)
+                   if index not in self.p_index]
         if connect:
             self.p_con_index, self.p_con_dep = connect[0]
         else:
@@ -96,22 +101,24 @@ class Token:
 
 def resolve_connect(doc, sent):
     """
-    Функция для разрешения равнозначных связей в предложении, сохраняя структуру дерева зависимостей.
+    Функция для разрешения равнозначных связей в предложении, сохраняя
+    структуру дерева зависимостей.
 
     Parameters:
     - doc (spacy.Doc): Объект документа SpaCy, содержащий анализируемый текст.
     - sent (spacy.Span): Предложение SpaCy.
 
     Returns:
-    - list_node[0] (list): Список кортежей, представляющих связи между токенами с учетом разрешенных равнозначных
-    связей.
+    - list_node[0] (list): Список кортежей, представляющих связи между токенами
+    с учетом разрешенных равнозначных связей.
     """
 
     conj = doc.vocab.strings.add("conj")
     root = doc.vocab.strings.add("ROOT")
 
     # list_node[0] содержит исходные связи
-    # list_node[1] используется для временного хранения токенов с равнозначными связями
+    # list_node[1] используется для временного хранения токенов с равнозначными
+    # связями
     list_node = [set(), set()]
 
     for i, word in enumerate(sent):
@@ -147,7 +154,9 @@ def create_quoted_clusters(doc, sent):
     for i, word in enumerate(sent):
         if word.text == '"':
             if quoted_cluster is None:
-                quoted_cluster = Token(word, cluster_type=ClusterType.TokenClusterQuoted)
+                quoted_cluster = Token(
+                    word, cluster_type=ClusterType.TokenClusterQuoted
+                )
             else:
                 list_quoted_clusters.append(quoted_cluster)
                 quoted_cluster = None
@@ -158,7 +167,7 @@ def create_quoted_clusters(doc, sent):
                 quoted_cluster.append(word)
 
     for cluster in list_quoted_clusters:
-        cluster.sort_connect()    # Сортировка связей кластера
+        cluster.sort_connect()  # Сортировка связей кластера
         cluster.remove_connect()  # Удаление связей
 
     list_quoted_clusters = remove_subsets_clusters(list_quoted_clusters)
@@ -171,7 +180,8 @@ def create_clusters_token(doc, sent):
 
     Parameters:
     - doc (spacy.Doc): Объект Doc, представляющий обработанный текст.
-    - sent (spacy.tokens.span.Span): Предложение в виде объекта Span из библиотеки spaCy.
+    - sent (spacy.tokens.span.Span): Предложение в виде объекта Span из
+    библиотеки spaCy.
 
     Returns:
     - list_token (list): Список кластеров токенов.
@@ -179,27 +189,31 @@ def create_clusters_token(doc, sent):
 
     # Определение типов зависимостей для разных уровней
     labels_layer_1 = [
-        "nsubj", "dobj", "nsubjpass", "pcomp", "pobj", "dative", "appos", "attr", "ROOT",
+        "nsubj", "dobj", "nsubjpass", "pcomp", "pobj",
+        "dative", "appos", "attr", "ROOT",
     ]
     labels_layer_2 = [
         "amod", "nmod", "obl", "obj",
     ]
-    np_deps_layer_1 = [doc.vocab.strings.add(label) for label in labels_layer_1]
-    np_deps_layer_2 = [doc.vocab.strings.add(label) for label in labels_layer_2]
+    np_deps_layer_1 = [doc.vocab.strings.add(label)
+                       for label in labels_layer_1]
+    np_deps_layer_2 = [doc.vocab.strings.add(label)
+                       for label in labels_layer_2]
 
     list_token_clusters = []  # Список кластеров токенов
-    seen = set()              # Множество для отслеживания уже обработанных токенов
+    seen = set()  # Множество для отслеживания уже обработанных токенов
 
     # Проходим по каждому слову в предложении
     for i, word in enumerate(sent):
-        # Пропускаем слова, которые не являются существительными или местоимениями, или уже были обработаны
+        # Пропускаем слова, которые не являются существительными или
+        # местоимениями, или уже были обработаны
         if word.pos not in (NOUN, PROPN, PRON) or word.i in seen:
             continue
         # Создаем новый кластер токенов
         token_cluster = Token(word, cluster_type=ClusterType.TokenCluster)
 
-        # Если зависимость слова входит в первый или второй уровень зависимостей,
-        # добавляем слово и его потомков в кластер токенов
+        # Если зависимость слова входит в первый или второй уровень
+        # зависимостей, добавляем слово и его потомков в кластер токенов
         if word.dep in np_deps_layer_1 or word.dep in np_deps_layer_2:
             if any(wrd.i in seen for wrd in word.subtree):
                 continue
@@ -225,40 +239,33 @@ def create_clusters_token(doc, sent):
         else:
             # Этап: разрешение равнозначных связей - выполнено
             pass
-            # if word.dep == conj:
-            #     head = word.head
-            #     while head.dep == conj and head.head.i < head.i:
-            #         head = head.head
-            #     if head.dep in np_deps_layer_1 or head.dep in np_deps_layer_2:
-            #         if any(w.i in seen for w in word.subtree):
-            #             continue
-            #         seen.update(j for j in range(word.left_edge.i, word.i + 1))
-            #         for k in range(word.left_edge.i, word.i + 1):
-            #             token_cluster.add(doc[k])
 
-        token_cluster.sort_connect()            # Сортировка связей кластера
-        token_cluster.remove_connect()          # Удаление связей
-        list_token_clusters += [token_cluster]  # Добавление кластера в список кластеров
+        token_cluster.sort_connect()  # Сортировка связей кластера
+        token_cluster.remove_connect()  # Удаление связей
+        list_token_clusters += [token_cluster]  # Добавление в список кластеров
 
-    list_token_clusters = remove_subsets_clusters(list_token_clusters)  # Удаление подмножеств кластеров
+    # Удаление подмножеств кластеров
+    list_token_clusters = remove_subsets_clusters(list_token_clusters)
     return list_token_clusters  # Возвращение списка кластеров
 
 
 def create_clusters_entity(doc, sent):
     """
-    Функция для создания списка кластеров именованных сущностей на основе предложения.
+    Функция для создания списка кластеров именованных сущностей на основе
+    предложения.
 
     Parameters:
     - doc (spacy.Doc): Объект документа SpaCy, содержащий анализируемый текст.
-    - sent (spacy.Span): Предложение SpaCy, для которого создаются кластеры сущностей.
+    - sent (spacy.Span): Предложение SpaCy, для которого создаются кластеры
+    сущностей.
 
     Returns:
     - list_token (list): Список кластеров именованных сущностей в предложении.
     """
 
     list_entity_clusters = []  # Список кластеров сущностей
-    entity_cluster = None      # Текущий кластер сущностей
-    entity_index = 0           # Индекс текущей сущности
+    entity_cluster = None  # Текущий кластер сущностей
+    entity_index = 0  # Индекс текущей сущности
 
     # Проходим по каждому слову в предложении
     for i, word in enumerate(sent):
@@ -274,14 +281,18 @@ def create_clusters_entity(doc, sent):
             if word in entity:
                 if entity_cluster is None:
                     entity_index = j
-                    entity_cluster = Token(word, cluster_type=ClusterType.NamedEntity)
+                    entity_cluster = Token(
+                        word, cluster_type=ClusterType.NamedEntity
+                    )
                 else:
                     if entity_index == j:
                         entity_cluster.append(word)
                     else:
                         list_entity_clusters.append(entity_cluster)
                         entity_index = j
-                        entity_cluster = Token(word, cluster_type=ClusterType.NamedEntity)
+                        entity_cluster = Token(
+                            word, cluster_type=ClusterType.NamedEntity
+                        )
                 break
 
     # Добавляем последний кластер, если он не был добавлен
@@ -289,7 +300,7 @@ def create_clusters_entity(doc, sent):
         list_entity_clusters.append(entity_cluster)
 
     for cluster in list_entity_clusters:
-        cluster.sort_connect()    # Сортировка связей кластера
+        cluster.sort_connect()  # Сортировка связей кластера
         cluster.remove_connect()  # Удаление связей
 
     list_entity_clusters = remove_subsets_clusters(list_entity_clusters)
@@ -301,8 +312,8 @@ def remove_subsets_clusters(clusters):
     Функция для удаления подмножества кластеров из списка кластеров.
 
     Parameters:
-    - clusters (list): Список кластеров, где каждый кластер представляет собой объект, имеющий атрибут 'index',
-    содержащий индексы токенов кластера.
+    - clusters (list): Список кластеров, где каждый кластер представляет собой
+    объект, имеющий атрибут 'index', содержащий индексы токенов кластера.
 
     Returns:
     - clusters_res (list): Список кластеров без подмножеств других кластеров.
@@ -322,8 +333,8 @@ def remove_subsets_clusters(clusters):
 
 def create_clusters(doc, sent):
     """
-    Функция для создания кластеров токенов на основе предложения, используя предварительно определенные
-    кластеры сущностей и кластеры токенов.
+    Функция для создания кластеров токенов на основе предложения, используя
+    предварительно определенные кластеры сущностей и кластеры токенов.
 
     Parameters:
     - doc (spacy.Doc): Объект документа SpaCy, содержащий анализируемый текст.
@@ -331,7 +342,8 @@ def create_clusters(doc, sent):
 
     Returns:
     - clusters (list): Список кластеров токенов.
-    - list_node (list): Список кортежей, представляющих связи между токенами с учетом разрешенных равнозначных связей.
+    - list_node (list): Список кортежей, представляющих связи между токенами с
+    учетом разрешенных равнозначных связей.
     """
 
     # Разрешение равнозначных связей в предложении
@@ -339,11 +351,11 @@ def create_clusters(doc, sent):
 
     # Определение кластеров сущностей и кластеров токенов
     clusters_entity = create_clusters_entity(doc, sent)
-    clusters_token  = create_clusters_token(doc, sent)
+    clusters_token = create_clusters_token(doc, sent)
     clusters_quoted = create_quoted_clusters(doc, sent)
 
-    clusters      = []  # Список кластеров токенов
-    cluster_index = 0   # Индекс текущего кластера
+    clusters = []  # Список кластеров токенов
+    cluster_index = 0  # Индекс текущего кластера
 
     for word in sent:
         # Пропускаем стоп-слова и пунктуацию
@@ -353,7 +365,8 @@ def create_clusters(doc, sent):
         # Обработка кластеров токенов
         if True:
             # Поиск выделенных кластера, к которому принадлежит слово
-            cluster_quoted = next((tokens for tokens in clusters_quoted if word.i in tokens.index), None)
+            cluster_quoted = next((tokens for tokens in clusters_quoted
+                                   if word.i in tokens.index), None)
 
             if cluster_quoted:
                 # Определение индекса кластера
@@ -361,10 +374,13 @@ def create_clusters(doc, sent):
 
                 # Создание нового кластера или добавление в существующий
                 if (
-                        not clusters or clusters[-1].f_type != ClusterType.TokenClusterQuoted or
-                        cluster_index != cluster_quoted_index
+                    not clusters or
+                    clusters[-1].f_type != ClusterType.TokenClusterQuoted or
+                    cluster_index != cluster_quoted_index
                 ):
-                    clusters.append(Token(word, cluster_type=ClusterType.TokenClusterQuoted))
+                    clusters.append(Token(
+                        word, cluster_type=ClusterType.TokenClusterQuoted
+                    ))
                     cluster_index = cluster_quoted_index
                 else:
                     clusters[-1].append(word)
@@ -373,7 +389,8 @@ def create_clusters(doc, sent):
         # Обработка кластеров сущностей
         if not word.is_digit:
             # Поиск кластера сущности, к которому принадлежит слово
-            cluster_entity = next((entity for entity in clusters_entity if word.i in entity.index), None)
+            cluster_entity = next((entity for entity in clusters_entity
+                                   if word.i in entity.index), None)
 
             if cluster_entity:
                 # Определение индекса кластера
@@ -381,10 +398,13 @@ def create_clusters(doc, sent):
 
                 # Создание нового кластера или добавление в существующий
                 if (
-                        not clusters or clusters[-1].f_type != ClusterType.NamedEntity or
-                        cluster_index != cluster_entity_index
+                    not clusters or
+                    clusters[-1].f_type != ClusterType.NamedEntity or
+                    cluster_index != cluster_entity_index
                 ):
-                    clusters.append(Token(word, cluster_type=ClusterType.NamedEntity))
+                    clusters.append(Token(
+                        word, cluster_type=ClusterType.NamedEntity
+                    ))
                     cluster_index = cluster_entity_index
                 else:
                     clusters[-1].append(word)
@@ -393,7 +413,8 @@ def create_clusters(doc, sent):
         # Обработка кластеров токенов
         if not word.is_digit:
             # Поиск кластера токена, к которому принадлежит слово
-            cluster_token = next((tokens for tokens in clusters_token if word.i in tokens.index), None)
+            cluster_token = next((tokens for tokens in clusters_token
+                                  if word.i in tokens.index), None)
 
             if cluster_token:
                 # Определение индекса кластера
@@ -401,10 +422,13 @@ def create_clusters(doc, sent):
 
                 # Создание нового кластера или добавление в существующий
                 if (
-                        not clusters or clusters[-1].f_type != ClusterType.TokenCluster or
-                        cluster_index != cluster_token_index
+                    not clusters or
+                    clusters[-1].f_type != ClusterType.TokenCluster or
+                    cluster_index != cluster_token_index
                 ):
-                    clusters.append(Token(word, cluster_type=ClusterType.TokenCluster))
+                    clusters.append(Token(
+                        word, cluster_type=ClusterType.TokenCluster
+                    ))
                     cluster_index = cluster_token_index
                 else:
                     clusters[-1].append(word)
@@ -414,7 +438,9 @@ def create_clusters(doc, sent):
         if not word.is_digit:
             if word.pos in (NOUN, PROPN, PRON):
                 # Создание нового кластера
-                clusters.append(Token(word, cluster_type=ClusterType.PartOfSpeech))
+                clusters.append(Token(
+                    word, cluster_type=ClusterType.PartOfSpeech
+                ))
                 continue
 
         # Обработка чисел и слов связок
@@ -428,4 +454,4 @@ def create_clusters(doc, sent):
     for cluster in clusters:
         cluster.remove_connect()
 
-    return clusters, list_node  # Возвращаем список кластеров и список связей между токенами
+    return clusters, list_node  # Возвращаем список кластеров и связей

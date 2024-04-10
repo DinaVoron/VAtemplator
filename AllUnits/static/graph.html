@@ -36,7 +36,7 @@
 
              #mynetwork {
                  width: 100%;
-                 height: 683px;
+                 height: 800px;
                  background-color: #222222;
                  border: 1px solid lightgray;
                  position: relative;
@@ -54,26 +54,6 @@
 
     <body>
         <div class="card" style="width: 100%">
-            
-                <div id="select-menu" class="card-header">
-                    <div class="row no-gutters">
-                        <div class="col-10 pb-2">
-                            <select
-                            class="form-select"
-                            aria-label="Default select example"
-                            onchange="selectNode([value]);"
-                            id="select-node"
-                            placeholder="Select node..."
-                            >
-                                <option selected>Select a Node by ID</option>
-                                
-                            </select>
-                        </div>
-                        <div class="col-2 pb-2">
-                            <button type="button" class="btn btn-primary btn-block" onclick="neighbourhoodHighlight({nodes: []});">Reset Selection</button>
-                        </div>
-                    </div>
-                </div>
             
             
               <div id="filter-menu" class="card-header">
@@ -142,14 +122,6 @@
                   value : []
               };
 
-              
-                  new TomSelect("#select-node",{
-                      create: false,
-                      sortField: {
-                          field: "text",
-                          direction: "asc"
-                      }
-                  });
               
 
               
@@ -310,8 +282,6 @@
 
                   
 
-                  
-                    network.on("selectNode", neighbourhoodHighlight);
                   
 
                   

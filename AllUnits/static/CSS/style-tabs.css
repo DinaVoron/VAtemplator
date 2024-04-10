@@ -1,57 +1,63 @@
 nav {
+    align-items: 		center;
+    background: 		var(--color_background_1);
     display: 			inline-flex;
     flex-direction: 	column;
     justify-content: 	center;
-    align-items: 		center;
-
-	width: 				var(--width-tabs);
-	height:				var(--height-tabs);
-    background: 		var(--main_color_2);
+    width: 				var(--width-tabs);
+    height:				var(--height-tabs);
 }
+
 nav.text_style_tabs {
-	font-family: 			Inter, sans-serif;
-	font-size: 				10px;
-	color:					var(--main_color_1);
-	line-height: 			1.5;
-	text-align:				center;
+    color:					var(--color_text_2);
+    font-family: 			var(--font_family);
+    font-size: 				var(--font_size_small);
+    line-height: 			1.5;
+    text-align:				center;
 }
 
-nav div.tab-elem {
-	width: 				100%;
-	margin:				32% 0;
-}
 nav div.tab {
-	width: 				32px;
-	height:				32px;
-	margin: 			auto;
-	background-color: 	var(--main_color_1);
-}
-nav div.active {
-    background-color: color-mix(in srgb, var(--main_color_3) 18%, transparent);
+    margin:				32% 0;
+    width: 				100%;
 }
 
-.tab-editor-tree {
-	-webkit-mask: url(../images/frame-scena.svg) no-repeat center;
-	mask: url(../images/frame-scena.svg) no-repeat center;
-	mask-size: contain;
+nav div.tab.active {
+    background-color: color-mix(in srgb, var(--color_main_3) 18%, transparent);
 }
-.tab-editor-graph {
-	-webkit-mask: url(../images/frame-domain-model.svg) no-repeat center;
-	mask: url(../images/frame-domain-model.svg) no-repeat center;
-	mask-size: contain;
+
+nav div.tab div {
+    background-color: 	var(--color_icon_2);
+    width: 				32px;
+    height:				32px;
+    margin: 			auto;
 }
-.tab-editor-testing {
-	-webkit-mask: url(../images/frame-testing.svg) no-repeat center;
-	mask: url(../images/frame-testing.svg) no-repeat center;
-	mask-size: contain;
+
+#tab-editor-data {
+    -webkit-mask: url(../images/frame-analytics.svg) no-repeat center;
+    mask: url(../images/frame-analytics.svg) no-repeat center;
+    mask-size: contain;
 }
-.tab-editor-data {
-	-webkit-mask: url(../images/frame-analytics.svg) no-repeat center;
-	mask: url(../images/frame-analytics.svg) no-repeat center;
-	mask-size: contain;
+
+#tab-editor-dialog {
+    -webkit-mask: url(../images/frame-chat.svg) no-repeat center;
+    mask: url(../images/frame-chat.svg) no-repeat center;
+    mask-size: contain;
 }
-.tab-editor-dialog {
-	-webkit-mask: url(../images/frame-chat.svg) no-repeat center;
-	mask: url(../images/frame-chat.svg) no-repeat center;
-	mask-size: contain;
+
+#tab-editor-graph {
+    -webkit-mask: url(../images/frame-domain-model.svg) no-repeat center;
+    mask: url(../images/frame-domain-model.svg) no-repeat center;
+    mask-size: contain;
+}
+
+#tab-editor-testing {
+    -webkit-mask: url(../images/frame-testing.svg) no-repeat center;
+    mask: url(../images/frame-testing.svg) no-repeat center;
+    mask-size: contain;
+}
+
+#tab-editor-tree {
+    -webkit-mask: url(../images/frame-scena.svg) no-repeat center;
+    mask: url(../images/frame-scena.svg) no-repeat center;
+    mask-size: contain;
 }
