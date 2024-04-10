@@ -153,7 +153,8 @@ class Graph:
                 request_layer.append([])
                 break
         # Находим общие слои для всех запросов
-        request_layer = list(set(request_layer[0]).intersection(*request_layer[1:]))
+        if request_layer:
+            request_layer = list(set(request_layer[0]).intersection(*request_layer[1:]))
         if not request_layer:
             return request
         # Обновляем запросы с найденной информацией
