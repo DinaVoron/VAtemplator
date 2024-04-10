@@ -3,10 +3,6 @@ textarea {
   height: 100px;
 }
 
-nav {
-    display: inline-block;
-}
-
 .tree_print {
     width: 33%;
     border: 1px solid black;
