@@ -2,7 +2,7 @@ from app import app, graph, dialog_tree
 from flask import render_template, request
 from models.dialog_model import (get_text_scenes, get_root, get_scene_name,
                                  find_scene_by_name, get_scene_everything,
-                                 add_child, save_tree, add_scene)
+                                 add_child, save_tree, add_scene, delete_scene)
 
 
 @app.route("/", methods=["get", "post"])
@@ -51,6 +51,9 @@ def editor_tree():
 
     if request.values.get("save_tree"):
         save_tree("save_files/pickle_test.PKL", dialog_tree = dialog_tree)
+
+    if request.values.get("delete_scene"):
+        delete_scene(scene_name, dialog_tree)
 
     html = render_template(
         "editor_tree.html",

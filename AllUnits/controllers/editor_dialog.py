@@ -19,16 +19,16 @@ def editor_dialog():
         question_text = request.values.get("question")
         all_list = dialog(current_scene, question_text, graph)
         answer = all_list[0]
-        scene_name = all_list[1] # None - почему?
+        scene_name = all_list[1]
         current_scene = find_scene_by_name(scene_name,
                                            dialog_tree = dialog_tree)
         if current_scene is None:
             scene_name = request.values.get("prev_scene")
             current_scene = find_scene_by_name(scene_name,
-                                               dialog_tree=dialog_tree)
+                                               dialog_tree = dialog_tree)
 
     else:
-        current_scene = get_root(dialog_tree=dialog_tree)
+        current_scene = get_root(dialog_tree = dialog_tree)
         scene_name = get_scene_name(current_scene)
         answer = None
 
