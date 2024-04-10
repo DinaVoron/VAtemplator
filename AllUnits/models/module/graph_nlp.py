@@ -348,7 +348,6 @@ def create_clusters(doc, sent):
     for word in sent:
         # Пропускаем стоп-слова и пунктуацию
         if word.is_stop or word.is_punct:
-            print(word.text)
             continue
 
         # Обработка кластеров токенов

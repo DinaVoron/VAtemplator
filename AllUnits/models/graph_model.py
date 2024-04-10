@@ -414,8 +414,8 @@ class Graph:
         return None
 
     def get_documents(self, sort=True):
-        data = [(doc[0], len(doc[1])) for doc in self.documents]
-        return sorted(data, key=lambda doc: doc[0]) if sort else data
+        data = [doc[0] for doc in self.documents]
+        return sorted(data) if sort else data
 
     @staticmethod
     def auto_allocation(clusters, list_node):
