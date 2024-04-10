@@ -13,7 +13,7 @@
     {% include "__block_tabs.html" %}
     {% endmacro %}
     {% macro render_scenes() %}
-    <select name="scene">
+    <select name="scene" class="testing-select">
     {% for i in range(len(scenes)) %}
         {% if scenes[i].name == selected_scene %}
         <option value="{{ scenes[i].name }}" selected>{{ scenes[i].name }}</option>
@@ -47,7 +47,7 @@
                         Выберите сцену для ручного тестирования
                         {{ render_scenes() }}
                     </label>
-                    <input type="submit" name="i" value="Выбрать">
+                    <input type="submit" name="i" value="Выбрать" class="testing_button_select">
                     <p>Составьте вопросы:</p>
                     {{ render_questions() }}
                     <input type="submit" name="get_answers" value="Сгенерировать ответы" class="testing_button manual_testing">

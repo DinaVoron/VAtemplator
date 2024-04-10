@@ -21,33 +21,33 @@ main {
     padding-bottom: 0.5em;
 }
 .logs__ok {
-    background-color: #EAFFF2;
+    background-color: #D2E0A2;
 }
 .logs__ok button {
-    background-color: #B3EBDE;
+    background-color: #a8b381;
 }
 .logs__ok button:hover{
-    background-color: #c7fff2;
+    background-color: #949f6d;
     cursor: pointer;
 }
 .logs__err {
-    background-color: #FFEAEA;
+    background-color: #d6c153;
 }
 .logs__err button {
-    background-color: #f6baba;
+    background-color: #ab9a42;
 }
 .logs__err button:hover {
-    background-color: #f6cece;
+    background-color: #97862e;
     cursor: pointer;
 }
 .logs__nf {
-    background-color: #8DF7FF;
+    background-color: #e1ebf8;
 }
 .logs__nf button {
-    background-color: #28BFCB;
+    background-color: #b4bcc6;
 }
 .logs__nf button:hover {
-    background-color: #3cd3df;
+    background-color: #a0a8b2;
     cursor: pointer;
 }
 article {
@@ -55,7 +55,7 @@ article {
     border-bottom: 1px solid gray;
 }
 .testing_button {
-    background: #16c3cf;
+    background: #344966;
     color: #ffffff;
     border: 0px;
     padding: 0.8em 1em;
@@ -63,7 +63,7 @@ article {
     font-size: 1em;
 }
 .testing_button:hover {
-    background: #2ad7e3;
+    background: #B4CDED;
     cursor: pointer;
 }
 .manual_testing {
@@ -93,4 +93,17 @@ article {
     width    : 400px;
     height   : 555px;
     border-width: 0px;
+}
+.testing_button_select {
+    background: #344966;
+    color: #ffffff;
+    border: 0px;
+    padding: 0.4em 1em;
+    border-radius: 0.4em;
+    font-size: 0.8em;
+    vertical-align: bottom;
+}
+.testing-select {
+    font-size: 1em;
+    padding: 0.1em 1em;
 }
