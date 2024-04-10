@@ -54,6 +54,8 @@ def editor_tree():
 
     html = render_template(
         "editor_tree.html",
+        current_page='editor_tree',
+
         text_scenes = text_scenes,
         current_scene = current_scene,
         scene_name = scene_name,

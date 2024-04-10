@@ -1,39 +1,39 @@
 <!-- block-tabs -->
 
-<nav>
-    <ul>
-        <li><a href="{{url_for('editor_tree')}}">Дерево</a></li>
-        <li><a href="{{url_for('editor_graph')}}">Граф</a></li>
-        <li><a href="{{url_for('editor_data')}}">Статистика</a></li>
-        <li><a href="{{url_for('editor_testing')}}">Тестирование</a></li>
-        <li><a href="{{url_for('editor_dialog')}}">Диалог</a></li>
-    </ul>
+<nav class="no_text_select text_style_tabs">
+    <div data-href="{{url_for('editor_tree')}}"
+         onclick="window.location.href = this.getAttribute('data-href');"
+         class="tab-elem {% if current_page == 'editor_tree' %}active{% endif %}"
+    >
+        <div class="tab tab-editor-tree"></div>
+        <p class="tab">Сценарий</p>
+    </div>
+    <div data-href="{{url_for('editor_graph')}}"
+         onclick="window.location.href = this.getAttribute('data-href');"
+         class="tab-elem {% if current_page == 'editor_graph' %}active{% endif %}"
+    >
+        <div class="tab tab-editor-graph"></div>
+        <p class="tab">Модель ПО</p>
+    </div>
+    <div data-href="{{url_for('editor_testing')}}"
+         onclick="window.location.href = this.getAttribute('data-href');"
+         class="tab-elem {% if current_page == 'editor_testing' %}active{% endif %}"
+    >
+        <div class="tab tab-editor-testing"></div>
+        <p class="tab">Тестирование</p>
+    </div>
+    <div data-href="{{url_for('editor_data')}}"
+         onclick="window.location.href = this.getAttribute('data-href');"
+         class="tab-elem {% if current_page == 'editor_data' %}active{% endif %}"
+    >
+        <div class="tab tab-editor-data"></div>
+        <p class="tab">Аналитика</p>
+    </div>
+    <div data-href="{{url_for('editor_dialog')}}"
+         onclick="window.location.href = this.getAttribute('data-href');"
+         class="tab-elem {% if current_page == 'editor_dialog' %}active{% endif %}"
+    >
+        <div class="tab tab-editor-dialog"></div>
+        <p class="tab">Чат</p>
+    </div>
 </nav>
-
-<!--{% for tab in tabs %}-->
-<!--    <div-->
-<!--            class="tab {% if tab.id == 1 %}active-tab{% endif %}"-->
-<!--            id="tab-{{ tab.id }}"-->
-<!--            onclick="showContent({{ tab.id }})"-->
-<!--    >-->
-<!--        <img class="shadow" src="static/images/{{ tab.image }}">-->
-<!--        <div class="caption-overlay">-->
-<!--            <p>{{ tab.name }}</p>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--{% endfor %}-->
-<!--    -->
-<!--<script>-->
-<!--    function showContent(id) {-->
-<!--        var tabs = document.querySelectorAll('.tab');-->
-<!--        var contents = document.querySelectorAll('.content > div');-->
-<!--        tabs.forEach(function(tab) {-->
-<!--            tab.classList.remove('active-tab');-->
-<!--        });-->
-<!--        contents.forEach(function(content) {-->
-<!--            content.style.display = 'none';-->
-<!--        });-->
-<!--        document.getElementById('tab-' + id).classList.add('active-tab');-->
-<!--        document.getElementById('content-' + id).style.display = 'block';-->
-<!--    }-->
-<!--</script>-->

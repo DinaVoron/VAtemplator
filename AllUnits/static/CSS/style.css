@@ -1,9 +1,6 @@
 body {
     font-family: "Gill Sans", sans-serif;
 }
-nav {
-    display: inline-block;
-}
 main {
     padding-left: 4em;
     display: inline-block;

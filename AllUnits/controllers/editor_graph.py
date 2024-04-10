@@ -11,7 +11,8 @@ document = None
 @app.route('/graph', methods=['get', 'post'])
 def editor_graph():
     html = render_template(
-        'editor_graph.html'
+        'editor_graph.html',
+        current_page='editor_graph',
     )
     return html
 
@@ -58,7 +59,7 @@ def handle_get_reference():
 @app.route("/graph/upload_document", methods=["POST"])
 def handle_upload_document():
     rst = upload_document()
-    return make_response(jsonify({'message': rst[0]}), rst[1])
+    return make_response(rst[0], rst[1])
 
 
 @app.route("/graph/test")
@@ -77,9 +78,9 @@ def test():
 
 
 def upload_document():
-    if "file" not in request.files:
+    if "document" not in request.files:
         return "Файл не найден", 400
-    file = request.files["file"]
+    file = request.files["document"]
     if file.filename == "":
         return "Файл не выбран", 400
     if file:

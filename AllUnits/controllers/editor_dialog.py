@@ -51,6 +51,8 @@ def editor_dialog():
 
     html = render_template(
         "editor_dialog.html",
+        current_page='editor_dialog',
+
         current_scene=current_scene,
         scene_name=scene_name,
         end_dialog=end_dialog,

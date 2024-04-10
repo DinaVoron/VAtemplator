@@ -29,6 +29,8 @@ def editor_data():
 
     html = render_template(
         "editor_data.html",
+        current_page='editor_data',
+
         success_amount=success_amount,
         not_found_amount=not_found_amount,
         error_amount=error_amount,

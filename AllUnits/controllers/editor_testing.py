@@ -59,6 +59,8 @@ def editor_testing():
 
     html = render_template(
         "editor_testing.html",
+        current_page='editor_testing',
+
         len=len,
         scenes=scenes,
         selected_scene=selected_scene,
