@@ -31,13 +31,13 @@ main {
     cursor: pointer;
 }
 .logs__err {
-    background-color: #d6c153;
+    background-color: #feeae9;
 }
 .logs__err button {
-    background-color: #ab9a42;
+    background-color: #f7b9ba;
 }
 .logs__err button:hover {
-    background-color: #97862e;
+    background-color: #e3a5a6;
     cursor: pointer;
 }
 .logs__nf {

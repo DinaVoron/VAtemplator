@@ -126,6 +126,8 @@ def graph_verify(dialog_tree, graph):
     intents = graph.list_intent_text
 
     chains = find_all_chains(dialog_tree, edges, intents)
+    if len(chains) > 7:
+        chains = chains[0:7]
     return chains
 
 

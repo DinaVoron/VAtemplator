@@ -19,8 +19,12 @@ def editor_tree():
             scene_stats = None
         else:
             scene_stats = get_scene_everything(current_scene)
+    elif request.values.get("delete_scene"):
+        scene_name = (request.values.get("hidden_scene_name"))
+        print(scene_name)
+        delete_scene(scene_name, dialog_tree)
     else:
-        current_scene = get_root(dialog_tree=dialog_tree)
+        current_scene = get_root(dialog_tree = dialog_tree)
         scene_name = get_scene_name(current_scene)
         scene_stats = get_scene_everything(current_scene)
 
@@ -46,14 +50,12 @@ def editor_tree():
                   pass_conditions = add_pass,
                   answer = add_answer,
                   questions = add_questions,
-                  clarifying_question = add_clarifying_question
+                  clarifying_question = add_clarifying_question,
+                  dialog_tree = dialog_tree
                   )
 
     if request.values.get("save_tree"):
         save_tree("save_files/pickle_test.PKL", dialog_tree = dialog_tree)
-
-    if request.values.get("delete_scene"):
-        delete_scene(scene_name, dialog_tree)
 
     html = render_template(
         "editor_tree.html",
