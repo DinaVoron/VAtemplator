@@ -1,0 +1,4 @@
+<question><date>2024-04-11</date><time>12:20:35</time><text>Какой</text><intent>срок</intent><intent>приём</intent><intent>подготовка</intent><value>архитектура</value><place>срок_приема_подготовки</place></question>
+<answer><date>2024-04-11</date><time>12:20:35</time><text> На срок ['приём'] приём ['обучение'  'документ'  'г '  'июль'  'август'  'время']</text><place>срок_приема_подготовки</place></answer>
+<question><date>2024-04-11</date><time>12:21:22</time><text>Какой</text><intent>срок</intent><intent>приём</intent><value>июль</value><intent>подготовка</intent><place>срок_приема_за_месяц</place></question>
+<answer><date>2024-04-11</date><time>12:21:22</time><text> На срок ['приём'  'приём документ'] приём ['июль'] подготовка ['архитектура'  'дизайн'  'журналистика'  'физический культура']</text><place>срок_приема_за_месяц</place></answer>
