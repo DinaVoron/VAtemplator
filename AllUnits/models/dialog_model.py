@@ -280,40 +280,43 @@ def main():
         tree = pc.load(f)
 
     '''
-    main_scene = Scene(name = "main", answer=["На",
+    main_scene = Scene(name = "срок_приема_подготовки", answer=["На",
                                                IntentTemplate("срок"),
                                                IntentValue("срок"),
                                                IntentTemplate("приём"),
                                                IntentValue("приём")],
-                        pass_conditions=[["срок", "прием"]],
+                        pass_conditions=[["подготовка", "приём", "срок"]],
                         questions=[["Какой", IntentTemplate("срок"),
                                     IntentTemplate("приём"),
                                     IntentTemplate("подготовка"),
                                     IntentValue("подготовка")]],
                         clarifying_question = ["Не найден ответ в main"])
-    sub1 = Scene(name="sub1", pass_conditions=[["переход"]], answer=["на",
-                                               IntentTemplate("курс"),
-                                               IntentValue("курс"),
-                                               IntentTemplate("балл"),
-                                               IntentValue("балл")],
-                  questions=[["Какой", IntentTemplate("балл"),
-                                               "у",
-                                               IntentTemplate("курс"),
-                                                IntentValue("курс")]])
-    sub2 = Scene(name="sub2", pass_conditions=[["two, three"]])
-    sub21 = Scene(name="sub21", pass_conditions=[["one"]])
-    tree = SceneTree(main_scene)
+    sub1 = Scene(name="срок_приема_за_месяц", pass_conditions=[["переход"]],
+                 answer=["На",
+                         IntentTemplate("срок"),
+                         IntentValue("срок"),
+                         IntentTemplate("приём"),
+                         IntentValue("приём"),
+                         IntentTemplate("подготовка"),
+                         IntentValue("подготовка")
+                         ],
+                 questions=[["Какой", IntentTemplate("срок"),
+                                    IntentTemplate("приём"),
+                                    IntentValue("приём"),
+                                    IntentTemplate("подготовка")]])
     main_scene.add_child(sub1)
-    main_scene.add_child(sub2)
-    sub2.add_child(sub21)
+    tree = SceneTree(main_scene)
     tree.set_height_tree()
     '''
+
+
 
     # Сериализация pickle
     with open("save_files/pickle_test.PKL", "wb") as f:
         pc.dump(tree, f)
 
     return tree
+
 
 
 
@@ -509,11 +512,12 @@ def save_tree(file, dialog_tree):
 
 def find_parent(current_scene, find_scene):
     if current_scene.children is not None:
-        if scene in current_scene.children:
-            return current_scene
-        else:
-            for child in current_scene.children:
-                find_parent(child, find_scene)
+        print(current_scene.name)
+        for child in current_scene.children:
+            if child == find_scene:
+                return current_scene
+            else:
+                return find_parent(child, find_scene)
 
 
 def delete_scene(scene_name, dialog_tree):
