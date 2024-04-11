@@ -8,7 +8,7 @@ from models.dialog_model import (get_text_scenes, get_root, get_scene_name,
 from models.editor_data_model import send_res, clean_logs
 
 
-@app.route("/dialog", methods=["get", "post"])
+@app.route("/dialog", methods=["get"])
 def editor_dialog():
     question_text = ""
 
@@ -17,23 +17,25 @@ def editor_dialog():
 
     if request.values.get("write_question"):
         scene_name = request.values.get("prev_scene")
-        current_scene = find_scene_by_name(scene_name,
-                                           dialog_tree = dialog_tree)
+        current_scene = find_scene_by_name(
+            scene_name, dialog_tree=dialog_tree
+        )
         question_text = request.values.get("question")
         all_list = dialog(current_scene, question_text, graph)
         answer = all_list[0]
         scene_name = all_list[1]
-        current_scene = find_scene_by_name(scene_name,
-                                           dialog_tree = dialog_tree)
+        current_scene = find_scene_by_name(
+            scene_name, dialog_tree=dialog_tree
+        )
         if current_scene is None:
             scene_name = request.values.get("prev_scene")
-            current_scene = find_scene_by_name(scene_name,
-                                               dialog_tree = dialog_tree)
-
+            current_scene = find_scene_by_name(
+                scene_name, dialog_tree=dialog_tree
+            )
     else:
-        current_scene = get_root(dialog_tree = dialog_tree)
+        current_scene = get_root(dialog_tree=dialog_tree)
         scene_name = get_scene_name(current_scene)
-        answer = None
+        answer = "Приветствую! Я ожидаю ваших вопросов."
 
     if request.values.get("end_dialog"):
         end_dialog = 1
@@ -56,12 +58,43 @@ def editor_dialog():
         current_scene=current_scene,
         scene_name=scene_name,
         end_dialog=end_dialog,
-        answer = answer,
-        question_text = question_text,
+        answer=answer,
+        question_text=question_text,
     )
     return html
+
 
 @app.route("/chat/voice")
 def handle_chat_voice():
     text = take_command()
     return make_response(jsonify({"message": text}), 200)
+
+
+@app.route("/chat/send", methods=["post"])
+def handle_chat_send():
+    current_scene = get_root(dialog_tree=dialog_tree)
+    scene_name    = get_scene_name(current_scene)
+    answer        = None
+    question      = None
+
+    if request.form:
+        scene_name = request.form.get("prev_scene")
+        current_scene = find_scene_by_name(
+            scene_name, dialog_tree=dialog_tree
+        )
+        question   = request.form.get("question")
+        all_list   = dialog(current_scene, question, graph)
+        answer     = all_list[0]
+        scene_name = all_list[1]
+
+        if find_scene_by_name(scene_name, dialog_tree=dialog_tree) is None:
+            scene_name = request.values.get("prev_scene")
+    else:
+        clean_logs()
+
+    if not answer:
+        answer = "Мои соболезнования. Я не нашел ответа на ваш вопрос."
+
+    return make_response(jsonify({
+        "scene_name": scene_name, "answer": answer, "question": question,
+    }), 200)

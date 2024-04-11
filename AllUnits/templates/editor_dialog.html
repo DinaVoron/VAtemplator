@@ -7,23 +7,44 @@
     <link rel="stylesheet" href="static/css/style-main.css">
     <link rel="stylesheet" href="static/css/style-tabs.css">
 
-    <link rel="stylesheet" href="/static/CSS/tree_style.css">
+    <link rel="stylesheet" href="static/css/style-chat.css">
+
 </head>
 <body>
     {% include "__block_tabs.html" %}
-    <p>Страница для диалога</p>
-    <div class = "chat">
-        <p style="color: skyblue"> {{ question_text }} </p>
-        <p style="color: green"> {{ answer }}</p>
-    </div>
-    <form method="get">
-        <input type="hidden" name = write_question value="1">
-        <input type="hidden" name = prev_scene value= {{scene_name}}>
-        <input type="text" id="quest" name = question>
-        <input type="submit" value="Задать вопрос">
 
-    </form>
-    <button onclick="voice_button()">Голос</button>
+    <article>
+        <h1>Чат :: {{ scene_name }}</h1>
+
+        <section id="chat">
+            <div class="answer">{{ answer }} </div>
+        </section>
+
+        <section>
+            <input type="text" id="quest">
+
+            <div id="voice" onclick="voice_button();">Голос</div>
+            <div id="send" onclick="send_button(1, '{{ scene_name }}');">Задать</div>
+        </section>
+
+        <section>
+            <form method="get">
+                <input type="hidden" name="end_dialog" value="1">
+                <input type="submit" value="Закончить диалог">
+            </form>
+            {% if end_dialog != None %}
+                <form method="get">
+                    <input type="hidden" name="rate_dialog" value="1">
+                    <input type="submit" value="Всё понравилось">
+                </form>
+                <form method="get">
+                    <input type="hidden" name="rate_dialog" value="2">
+                    <input type="submit" value="Неудовлетворительно">
+                </form>
+            {% endif %}
+        </section>
+    </article>
+
     <script>
         function voice_button() {
             questElem = document.getElementById('quest');
@@ -36,24 +57,38 @@
             .catch(error => console.error('Ошибка:', error));
         }
 
+        function send_button(write_question, prev_scene) {
+
+            let form = new FormData();
+            form.append('write_question', write_question);
+            form.append('prev_scene',     prev_scene);
+            form.append('question',       document.getElementById('quest').value);
+
+            fetch('/chat/send', {
+                method: 'POST',
+                body:   form
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector("article h1").innerHTML = "Чат :: " + data.scene_name;
+
+                question = document.createElement('div');
+                answer   = document.createElement('div');
+
+                question.textContent = data.question;
+                question.classList.add('question');
+
+                answer.textContent = data.answer;
+                answer.classList.add('answer');
+
+                document.getElementById("chat").appendChild(question);
+                document.getElementById("chat").appendChild(answer);
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+
+        }
     </script>
-    <form method="get">
-        <input type="hidden" name = end_dialog value="1">
-        <input type="submit" value="Закончить диалог">
-
-    </form>
-    {% if end_dialog != None %}
-        <form method="get">
-        <input type="hidden" name = rate_dialog value="1">
-        <input type="submit" value="Всё понравилось">
-        </form>
-        <form method="get">
-        <input type="hidden" name = rate_dialog value="2">
-        <input type="submit" value="Неудовлетворительно">
-        </form>
-    {% endif %}
-
-    <p>{{ scene_name }}</p>
-
 </body>
 </html>

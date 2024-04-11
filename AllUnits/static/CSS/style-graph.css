@@ -12,15 +12,6 @@ article section > div {
     display: 			flex;
 }
 
-article div > h1 {
-    color: 				var(--color_text_1);
-    font-size:			var(--font_size_h1);
-    font-weight: 		bold;
-    margin: 			5px 0;
-    padding: 			0;
-    text-align: 		justify;
-}
-
 article div > div#update-directory {
     background-color: 	var(--color_icon_1);
     width: 				1.6em;
