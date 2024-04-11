@@ -230,10 +230,12 @@ class Scene:
             print(checklist)
             print(key_words)
             # Переход в потомка с соответствующим номером
-            if (checklist == key_words and checklist != []):
-                print(self.children[pass_count-1].name)
-
-                return self.children[pass_count-1].name
+            if checklist == key_words and checklist != []:
+                print(self.children)
+                if self.children == []:
+                    return self.name
+                else:
+                    return self.children[pass_count-1].name
         for child in self.children:
             return child.pass_to_children(key_words)
 
