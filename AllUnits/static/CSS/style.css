@@ -1,8 +1,16 @@
 body {
+    --color_main_text: #0D1821;
+    --color_main_bg: #F0F4EF;
+    --color_accent_1: #D6C153;
+    --color_secondary_1: #D2E0A2;
+    --color_accent_2: #344966;
+    --color_secondary_2: #B4CDED;
     font-family: "Gill Sans", sans-serif;
+    background-color: #F0F4EF;
+    font-size: 1.6em;
 }
 main {
-    padding-left: 4em;
+    padding-left: 3.3em;
     display: inline-block;
     vertical-align: top;
 }
@@ -51,8 +59,8 @@ main {
     cursor: pointer;
 }
 article {
+    padding-top: 0.9em;
     padding-bottom: 1em;
-    border-bottom: 1px solid gray;
 }
 .testing_button {
     background: #344966;
@@ -106,4 +114,27 @@ article {
 .testing-select {
     font-size: 1em;
     padding: 0.1em 1em;
+}
+.time-text {
+    color: var(-color_main_text);
+}
+.time-article {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 0px;
+    padding-top: 0px;
+    padding-bottom: 1em;
+}
+.period__input {
+    font-size: 0.9em;
+}
+.button {
+    background: var(--color_accent_2);
+    color: #ffffff;
+    border: 0px;
+    padding: 0.2em 1.5em;
+    border-radius: 0.4em;
+    font-size: 0.8em;
+    vertical-align: bottom;
 }
