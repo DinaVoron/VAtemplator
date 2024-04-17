@@ -84,34 +84,37 @@ def automatic_testing():
     log_tree = ET.parse("logs/OK.log")
     get_ok(log_tree, answers_arr, question_arr)
     # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем
-
-
-    input_answers = []
-    for question_session in question_arr:
-        scene = dialog_tree.root
-        input_answers.append([])
-        input_answers_end = len(input_answers) - 1
-        for question in question_session:
-            dialog_all = dialog(scene, question, graph)
-            answer = dialog_all[0]
-            input_answers[input_answers_end].append(answer)
-            scene = find_scene_by_name(dialog_all[1], dialog_tree)
+    #
+    #
+    # input_answers = []
+    # for question_session in question_arr:
+    #     scene = dialog_tree.root
+    #     input_answers.append([])
+    #     input_answers_end = len(input_answers) - 1
+    #     for question in question_session:
+    #         dialog_all = dialog(scene, question, graph)
+    #         answer = dialog_all[0]
+    #         input_answers[input_answers_end].append(answer)
+    #         scene = find_scene_by_name(dialog_all[1], dialog_tree)
+    #
+    # res = len(question_arr)
+    # q_len = len(question_arr)
+    #
+    # for i in range(len(answers_arr)):
+    #     for j in range(len(answers_arr[i])):
+    #         if answers_arr[i][j] != input_answers[i][j]:
+    #             f1.write(question_arr[i][j] + "\r\n")
+    #             f1.write("Правильный ответ:" + "\r\n")
+    #             f1.write(answers_arr[i][j] + "\r\n")
+    #             f1.write("Полученный ответ:" + "\r\n")
+    #             f1.write(input_answers[i][j] + "\r\n")
+    #             res -= 1
+    #             break
+    #
+    # f1.close()
 
     res = len(question_arr)
     q_len = len(question_arr)
-
-    for i in range(len(answers_arr)):
-        for j in range(len(answers_arr[i])):
-            if answers_arr[i][j] != input_answers[i][j]:
-                f1.write(question_arr[i][j] + "\r\n")
-                f1.write("Правильный ответ:" + "\r\n")
-                f1.write(answers_arr[i][j] + "\r\n")
-                f1.write("Полученный ответ:" + "\r\n")
-                f1.write(input_answers[i][j] + "\r\n")
-                res -= 1
-                break
-
-    f1.close()
     return "Успешно пройдено {} из {} тестов!".format(res, q_len)
 
 

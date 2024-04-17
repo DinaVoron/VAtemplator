@@ -17,8 +17,10 @@
 
 <answer><date>2024-04-07</date><time>23:16:00</time><text> на курс ['3'] балл None</text><place>sub1</place></answer>
 
-</log>
-<log>
+</log>
+
+<log>
+
 <question><date>2024-04-11</date><time>12:16:41</time><text>fdgf</text><place>main</place></question>
 
 <answer><date>2024-04-11</date><time>12:16:42</time><text /><place>main</place></answer>
@@ -26,6 +28,48 @@
 <question><date>2024-04-11</date><time>12:16:44</time><text>fdgffw</text><place>main</place></question>
 
 <answer><date>2024-04-11</date><time>12:16:44</time><text /><place>main</place></answer>
+
+</log>
+
+<log>
+
+<question><date>2024-04-11</date><time>13:23:04</time><text>Какой</text><intent>срок</intent><intent>приёма</intent><intent>подготовка</intent><value>архитектура</value><place>срок_приема_подготовки</place></question>
+
+<answer><date>2024-04-11</date><time>13:23:04</time><text> На срок ['приём'  'завершение приём'  'июль'  'г '] приём ['обучение'  'срок'  'документ'  'июль']</text><place>срок_приема_подготовки</place></answer>
+
+<question><date>2024-04-11</date><time>13:23:21</time><text>Какой</text><intent>срок</intent><intent>приём</intent><intent>подготовка</intent><value>архитектура</value><place>срок_приема_подготовки</place></question>
+
+<answer><date>2024-04-11</date><time>13:23:21</time><text> На срок ['приём'  'завершение приём'  'июль'  'г '] приём ['обучение'  'срок'  'документ'  'июль']</text><place>срок_приема_подготовки</place></answer>
+
+</log>
+
+<log>
+
+<question><date>2024-04-11</date><time>14:14:27</time><text>раз два раз</text><place>срок_приема_подготовки</place></question>
+
+<answer><date>2024-04-11</date><time>14:14:27</time><text /><place>срок_приема_подготовки</place></answer>
+
+<question><date>2024-04-11</date><time>14:14:30</time><text>раз два раз</text><place>срок_приема_подготовки</place></question>
+
+<answer><date>2024-04-11</date><time>14:14:30</time><text /><place>срок_приема_подготовки</place></answer>
+
+<question><date>2024-04-11</date><time>14:14:31</time><text>раз два раз</text><place>срок_приема_подготовки</place></question>
+
+<answer><date>2024-04-11</date><time>14:14:31</time><text /><place>срок_приема_подготовки</place></answer>
+
+<question><date>2024-04-11</date><time>14:14:31</time><text>раз два раз</text><place>срок_приема_подготовки</place></question>
+
+<answer><date>2024-04-11</date><time>14:14:31</time><text /><place>срок_приема_подготовки</place></answer>
+
+<question><date>2024-04-11</date><time>14:14:31</time><text>раз два раз</text><place>срок_приема_подготовки</place></question>
+
+<answer><date>2024-04-11</date><time>14:14:31</time><text /><place>срок_приема_подготовки</place></answer>
+
+</log>
+<log>
+<question><date>2024-04-11</date><time>14:33:19</time><text>Какой</text><intent>срок</intent><intent>приём</intent><intent>подготовка</intent><value>архитектура</value><place>срок_приема_подготовки</place></question>
+
+<answer><date>2024-04-11</date><time>14:33:20</time><text> На срок ['приём'  'завершение приём'  'июль'  'г '] приём ['обучение'  'срок'  'документ'  'июль']</text><place>срок_приема_подготовки</place></answer>
 
 </log>
 </logs>

@@ -9,7 +9,7 @@ from models.module.graph_nlp import ClusterType, create_clusters
 
 class Graph:
     def __init__(self, documents_folder="./documents",
-                 model="ru_core_news_sm"):
+                 model="ru_core_news_lg"):
         """
         Конструктор класса Graph.
 

@@ -89,6 +89,9 @@ def handle_chat_send():
 
         if find_scene_by_name(scene_name, dialog_tree=dialog_tree) is None:
             scene_name = request.values.get("prev_scene")
+        else:
+            scene_name = all_list[1]
+            current_scene = find_scene_by_name(scene_name, dialog_tree=dialog_tree)
     else:
         clean_logs()
 

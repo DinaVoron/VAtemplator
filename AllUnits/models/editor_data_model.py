@@ -345,6 +345,6 @@ def log_message_try(rep_type, text, intents_values_dic, place):
 
 
 def clean_logs():
-    f1 = open("logs/temp.log", "r+")
+    f1 = open("logs/temp.log", "w+")
     f1.truncate(0)
     f1.close()

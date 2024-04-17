@@ -67,3 +67,7 @@ article section > div#send {
     mask-size: 			contain;
 
 }
+
+#quest {
+	width: 600px;
+}

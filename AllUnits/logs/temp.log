@@ -1,0 +1,2 @@
+<question><date>2024-04-12</date><time>13:43:45</time><text>Какой</text><intent>срок</intent><intent>приём</intent><text>июль</text><value>подготовка</value><place>срок_приема_подготовки</place></question>
+<answer><date>2024-04-12</date><time>13:43:46</time><text> На срок None приём None</text><place>срок_приема_подготовки</place></answer>

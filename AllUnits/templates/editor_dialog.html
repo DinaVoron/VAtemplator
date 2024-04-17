@@ -58,7 +58,6 @@
         }
 
         function send_button(write_question, prev_scene) {
-
             let form = new FormData();
             form.append('write_question', write_question);
             form.append('prev_scene',     prev_scene);
@@ -83,11 +82,14 @@
 
                 document.getElementById("chat").appendChild(question);
                 document.getElementById("chat").appendChild(answer);
+
+                document.getElementById("send").onclick = function() {
+                    send_button(1, data.scene_name);
+                };
             })
             .catch(error => {
                 console.error('Ошибка:', error);
             });
-
         }
     </script>
 </body>
