@@ -3,3 +3,4 @@
 /AllUnits/venv/*
 /AllUnits/controllers/__pycache__/*
 /AllUnits/models/__pycache__/*
+/AllUnits/models/module/__pycache__/*
