@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Система управления навыками голосового помощника</title>
-
     <link rel="stylesheet" href="static/css/style-main.css">
     <link rel="stylesheet" href="static/css/style-tabs.css">
-
     <link rel="stylesheet" href="/static/CSS/tree_style.css">
 </head>
 <body>
@@ -26,7 +24,7 @@
         <p> {{stat}} </p>
     {% endfor %}
     </div>
-    <div class = "scene_options">
+    <div class="scene_options">
     <form method="get">
         <input type="hidden" name = go_to_scene value="1">
         <input type="text" name = scene_name value="Имя сцены">
@@ -41,8 +39,6 @@
     {% if child_scene_name != None %}
         <p> Успешно добавлена в потомки сцены {{ scene_name }} сцена {{ child_scene_name }}</p>
     {% endif %}
-
-
     <form method="get">
         <p> Добавление сцены</p>
         <input type="hidden" name = add_scene value="1">

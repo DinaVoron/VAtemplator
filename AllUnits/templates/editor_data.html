@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Статистика</title>
-
     <link rel="stylesheet" href="static/css/style-main.css">
     <link rel="stylesheet" href="static/css/style-tabs.css">
-
     <link rel="stylesheet" href="/static/CSS/style.css">
-
     {% macro render_menu() %}
     {% include "__block_tabs.html" %}
     {% endmacro %}
@@ -39,28 +36,37 @@
 <body>
     {{ render_menu() }}
     <main>
-        <article>
-            <form action="{{ url_for('editor_data') }}">
-                <h4>Статистика работы</h4>
-                <section class="logs">
-                    {{ render_log_block("Успех", success_amount, "ok") }}
-                    {{ render_log_block("Провал", not_found_amount, "nf") }}
-                    {{ render_log_block("Ошибка", error_amount, "err") }}
+        <form action="{{ url_for('editor_data') }}">
+            <h4>Аналитика</h4>
+            <article>
+                <section class="period">
+                    Период<br><br>
+                    от: <input name="start_date" type="date" class="period__input"> &nbsp;
+                    до: <input name="end_date" type="date" class="period__input">&nbsp;&nbsp;
+                    <input type="submit" name="show" value="Показать" class="button">
                 </section>
-            </form>
-        </article>
-        <article>
-            <h4>Ошибки по сценам</h4>
-            {{ render_errs() }}
-        </article>
-        <article>
-            <h4>Среднее время работы</h4>
-            {{ time }} сек.
-        </article>
-        <article>
-            <h4>Возможный состав вопросов</h4>
-            {{ render_intents() }}
-        </article>
+<!--                <section class="logs">-->
+<!--                    {{ render_log_block("Успех", success_amount, "ok") }}-->
+<!--                    {{ render_log_block("Провал", not_found_amount, "nf") }}-->
+<!--                    {{ render_log_block("Ошибка", error_amount, "err") }}-->
+<!--                </section>-->
+            </article>
+            <article class="time-article">
+                <div>
+                    Среднее время ответа
+                </div>
+                <figure>
+                    <svg width="125" height="125">
+                        <circle cx="62" cy="62" r="57" stroke="#D6C153" stroke-width="10" fill="#F0F4EF"/>
+                        <text x="45" y="70" class="time-text">{{ time }}</text>
+                    </svg>
+                </figure>
+            </article>
+            <article>
+                Ошибки по сценам<br>
+                {{ render_errs() }}
+            </article>
+        </form>
     </main>
 </body>
 </html>

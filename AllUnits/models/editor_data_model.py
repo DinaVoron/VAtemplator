@@ -34,40 +34,48 @@ def count_errors():
     return res
 
 
-def get_time_one_log(logs):
+def get_time_one_log(logs, start_date, end_date):
     result_time = 0
     for log in logs:
         times = log.findall("time")
+        dates = log.findall("date")
         i = 1
         while i < len(times):
-            time1 = datetime.datetime.strptime(
-                times[i - 1].text,
-                "%H:%M:%S"
-            )
-            time2 = datetime.datetime.strptime(
-                times[i].text,
-                "%H:%M:%S"
-            )
-            result_time += (time2 - time1).seconds
+            print()
+            print(start_date)
+            print(end_date)
+            if ((start_date is None or start_date < dates[i-1].text)
+                and (end_date is None or dates[i-1].text < end_date)):
+
+                time1 = datetime.datetime.strptime(
+                    times[i - 1].text,
+                    "%H:%M:%S"
+                )
+                time2 = datetime.datetime.strptime(
+                    times[i].text,
+                    "%H:%M:%S"
+                )
+                result_time += (time2 - time1).seconds
             i += 2
     return result_time
 
 
-def get_time():
+def get_time(start_date, end_date):
     time = 0
     amount = 0
     logs = ET.parse("logs/OK.log").getroot()
-    time += get_time_one_log(logs)
+    time += get_time_one_log(logs, start_date, end_date)
     amount += len(logs)
     logs = ET.parse("logs/ERR.log").getroot()
-    time += get_time_one_log(logs)
+    time += get_time_one_log(logs, start_date, end_date)
     amount += len(logs)
     logs = ET.parse("logs/NF.log").getroot()
-    time += get_time_one_log(logs)
+    time += get_time_one_log(logs, start_date, end_date)
     amount += len(logs)
     if amount == 0:
-        return 0
-    return round(time/amount, 2)
+        return "0:00"
+    result_time = round(time/amount, 2)
+    return str(int(result_time)) + ":" + str(int(result_time % 1))
 
 
 def find_all_paths(graph, current_node, visited, path, paths):

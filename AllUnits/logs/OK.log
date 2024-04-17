@@ -3,18 +3,18 @@
 
 <question><date>2024-04-07</date><time>22:19:17</time><intent>направление</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><place>main</place></question>
 
-<answer><date>2024-04-07</date><time>22:19:17</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
+<answer><date>2024-04-07</date><time>22:19:19</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
 
 </log>
 <log>
 
-<question><date>2024-04-07</date><time>23:15:55</time><intent>направление</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><place>main</place></question>
+<question><date>2024-05-08</date><time>23:15:55</time><intent>направление</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><place>main</place></question>
 
-<answer><date>2024-04-07</date><time>23:15:55</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
+<answer><date>2024-05-08</date><time>23:15:58</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
 
-<question><date>2024-04-07</date><time>23:16:00</time><text>какой</text><intent>балл</intent><text>у</text><intent>курс</intent><value>3</value><place>sub1</place></question>
+<question><date>2024-05-08</date><time>23:16:00</time><text>какой</text><intent>балл</intent><text>у</text><intent>курс</intent><value>3</value><place>sub1</place></question>
 
-<answer><date>2024-04-07</date><time>23:16:00</time><text> на курс ['3'] балл None</text><place>sub1</place></answer>
+<answer><date>2024-05-08</date><time>23:16:20</time><text> на курс ['3'] балл None</text><place>sub1</place></answer>
 
 </log>
 </logs>
