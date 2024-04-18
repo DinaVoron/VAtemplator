@@ -41,8 +41,8 @@
             <article>
                 <section class="period">
                     Период<br><br>
-                    от: <input name="start_date" type="date" class="period__input"> &nbsp;
-                    до: <input name="end_date" type="date" class="period__input">&nbsp;&nbsp;
+                    от: <input name="start_date" type="date" class="period__input" value="{{ start_date }}">&nbsp;&nbsp;
+                    до: <input name="end_date" type="date" class="period__input" value="{{ end_date }}">&nbsp;&nbsp;
                     <input type="submit" name="show" value="Показать" class="button">
                 </section>
 <!--                <section class="logs">-->
@@ -58,7 +58,7 @@
                 <figure>
                     <svg width="125" height="125">
                         <circle cx="62" cy="62" r="57" stroke="#D6C153" stroke-width="10" fill="#F0F4EF"/>
-                        <text x="45" y="70" class="time-text">{{ time }}</text>
+                        <text x="38" y="70" class="time-text">{{ time }}</text>
                     </svg>
                 </figure>
             </article>
