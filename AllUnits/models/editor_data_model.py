@@ -5,6 +5,18 @@ from datetime import date
 import re
 
 
+def get_scenes(dialog_tree):
+    res = []
+    get_scene(dialog_tree.root, res)
+    return res
+
+
+def get_scene(node, res):
+    res.append(node)
+    for child in node.children:
+        get_scene(child, res)
+
+
 def get_ok_num():
     success_amount = len(ET.parse("logs/OK.log").getroot())
     return success_amount
@@ -20,17 +32,38 @@ def get_nf_num():
     return not_found_amount
 
 
-def count_errors():
+def count_errors(dialog_tree):
     res = {}
+    scenes = get_scenes(dialog_tree)
+    for scene in scenes:
+        res[scene.name] = {}
+        res[scene.name]['ok'] = 0
+        res[scene.name]['err'] = 0
+        res[scene.name]['nf'] = 0
+
     logs = ET.parse("logs/ERR.log").getroot()
     for log in logs:
         answers = log.findall("answer")
         for answer in answers:
             place = answer.find("place")
             if place.text in res:
-                res[place.text] += 1
-            else:
-                res[place.text] = 1
+                res[place.text]['err'] += 1
+
+    logs = ET.parse("logs/OK.log").getroot()
+    for log in logs:
+        answers = log.findall("answer")
+        for answer in answers:
+            place = answer.find("place")
+            if place.text in res:
+                res[place.text]['ok'] += 1
+    logs = ET.parse("logs/NF.log").getroot()
+    for log in logs:
+        questions = log.findall("question")
+        for question in questions:
+            place = question.find("place")
+            if place.text in res:
+                res[place.text]['nf'] += 1
+    print(res)
     return res
 
 

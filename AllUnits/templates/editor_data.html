@@ -9,15 +9,7 @@
     {% macro render_menu() %}
     {% include "__block_tabs.html" %}
     {% endmacro %}
-    {% macro render_errs() %}
-    <div>
-        {% for item in errs_per_scene %}
-        <div>
-            {{ item }}: {{ int(errs_per_scene[item]) }}
-        </div>
-        {% endfor %}
-    </div>
-    {% endmacro %}
+
     {% macro render_intents() %}
     {% for i in range(len(intents)) %}
     <section>
@@ -64,7 +56,6 @@
             </article>
             <article>
                 Ошибки по сценам<br>
-                {{ render_errs() }}
             </article>
         </form>
     </main>

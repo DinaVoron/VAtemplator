@@ -20,7 +20,7 @@ def editor_data():
     if request.values.get("end_date") is not None:
         end_date = request.values.get("end_date")
 
-    errs_per_scene = count_errors()
+    errs_per_scene = count_errors(dialog_tree)
 
     if request.values.get("open_ok"):
         subprocess.Popen(["notepad", "logs/OK.log"])
