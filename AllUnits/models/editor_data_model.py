@@ -5,6 +5,18 @@ from datetime import date
 import re
 
 
+def get_scenes(dialog_tree):
+    res = []
+    get_scene(dialog_tree.root, res)
+    return res
+
+
+def get_scene(node, res):
+    res.append(node)
+    for child in node.children:
+        get_scene(child, res)
+
+
 def get_ok_num():
     success_amount = len(ET.parse("logs/OK.log").getroot())
     return success_amount
@@ -20,62 +32,81 @@ def get_nf_num():
     return not_found_amount
 
 
-def count_errors():
+def count_errors(dialog_tree):
     res = {}
+    scenes = get_scenes(dialog_tree)
+    for scene in scenes:
+        res[scene.name] = {}
+        res[scene.name]['ok'] = 0
+        res[scene.name]['err'] = 0
+        res[scene.name]['nf'] = 0
+
     logs = ET.parse("logs/ERR.log").getroot()
     for log in logs:
         answers = log.findall("answer")
         for answer in answers:
             place = answer.find("place")
             if place.text in res:
-                res[place.text] += 1
-            else:
-                res[place.text] = 1
+                res[place.text]['err'] += 1
+
+    logs = ET.parse("logs/OK.log").getroot()
+    for log in logs:
+        answers = log.findall("answer")
+        for answer in answers:
+            place = answer.find("place")
+            if place.text in res:
+                res[place.text]['ok'] += 1
+    logs = ET.parse("logs/NF.log").getroot()
+    for log in logs:
+        questions = log.findall("question")
+        for question in questions:
+            place = question.find("place")
+            if place.text in res:
+                res[place.text]['nf'] += 1
+    print(res)
     return res
 
 
-def get_time_one_log(logs, start_date, end_date):
+def get_time_one_log(logs, start_date, end_date, logs_amount):
     result_time = 0
     for log in logs:
-        times = log.findall("time")
-        dates = log.findall("date")
-        i = 1
-        while i < len(times):
-            print()
-            print(start_date)
-            print(end_date)
-            if ((start_date is None or start_date < dates[i-1].text)
-                and (end_date is None or dates[i-1].text < end_date)):
-
-                time1 = datetime.datetime.strptime(
-                    times[i - 1].text,
-                    "%H:%M:%S"
-                )
-                time2 = datetime.datetime.strptime(
-                    times[i].text,
-                    "%H:%M:%S"
-                )
-                result_time += (time2 - time1).seconds
-            i += 2
+        questions = log.findall("question")
+        answers = log.findall("answer")
+        i = 0
+        while i < len(answers):
+            log_date = answers[i][0].text
+            start_time = datetime.datetime.strptime(
+                questions[i][1].text,
+                "%H:%M:%S"
+            )
+            end_time = datetime.datetime.strptime(
+                answers[i][1].text,
+                "%H:%M:%S"
+            )
+            if ((start_date == "" or start_date <= log_date)
+                and (end_date == "" or log_date <= end_date)):
+                result_time += (end_time - start_time).seconds
+                logs_amount[0] += 1
+            else:
+                i += 1
+            i += 1
     return result_time
 
 
 def get_time(start_date, end_date):
     time = 0
-    amount = 0
+    amount = [0]
     logs = ET.parse("logs/OK.log").getroot()
-    time += get_time_one_log(logs, start_date, end_date)
-    amount += len(logs)
+    time += get_time_one_log(logs, start_date, end_date, amount)
     logs = ET.parse("logs/ERR.log").getroot()
-    time += get_time_one_log(logs, start_date, end_date)
-    amount += len(logs)
+    time += get_time_one_log(logs, start_date, end_date, amount)
     logs = ET.parse("logs/NF.log").getroot()
-    time += get_time_one_log(logs, start_date, end_date)
-    amount += len(logs)
-    if amount == 0:
+    time += get_time_one_log(logs, start_date, end_date, amount)
+    if amount[0] == 0:
         return "0:00"
-    result_time = round(time/amount, 2)
-    return str(int(result_time)) + ":" + str(int(result_time % 1))
+    result_time = round(time/amount[0], 2)
+    print(result_time)
+    return str(int(result_time)) + ":" + str(int((result_time % 1)*100))
 
 
 def find_all_paths(graph, current_node, visited, path, paths):
