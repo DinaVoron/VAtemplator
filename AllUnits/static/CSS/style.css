@@ -10,9 +10,13 @@ body {
     font-size: 1.6em;
 }
 main {
+    height: 100vh;
+    width: var(--width-testing-aside);
+    overflow: scroll;
     padding-left: 3.3em;
     display: inline-block;
     vertical-align: top;
+    scrollbar-width: none;
 }
 .logs {
     display: flex;

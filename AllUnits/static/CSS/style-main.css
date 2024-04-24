@@ -31,7 +31,7 @@
 
 
     /* Размер */
-    --width-tabs:			18em;
+    --width-tabs:			11.5rem;
     --height-tabs:			100%;
 
     --width-graph-article: 	400px;
@@ -39,6 +39,7 @@
 
     --width-graph-aside:	calc(100% - var(--width-tabs) - var(--width-graph-article));
     --height-graph-aside: 	100%;
+    --width-testing-aside:  calc(100% - var(--width-tabs) - 3.3em);
 }
 
 html {

@@ -15,21 +15,21 @@ def speak(audio):
 
 
 class IntentTemplate:
-    def __init__(self, name, idx = None, has_value = True):
+    def __init__(self, name, idx=None, has_value=True):
         self.name = name
         self.has_value = has_value
 
 
 class IntentValue:
-    def __init__(self, name, value = None):
+    def __init__(self, name, value=None):
         self.name = name
         self.value = value
 
 
 class Scene:
-    def __init__(self, name = None, children = None, pass_conditions = None,
-                 answer = None, questions = None,
-                 clarifying_question = None, theme = None):
+    def __init__(self, name=None, children=None, pass_conditions=None,
+                 answer=None, questions=None,
+                 clarifying_question=None, theme=None):
         self.name = name
         self.children = []
         self.pass_conditions = []
@@ -73,11 +73,13 @@ class Scene:
     def print_pretty(self):
         print('---' * self.height, self.name, self.height)
 
-
     def print_children(self):
         self.print_scene()
         for child in self.children:
             child.print_children()
+
+    def get_testing_pretty(self):
+        return " " * self.height + self.name
 
     def get_pretty(self):
         return ("---" * self.height + self.name + ", " +
@@ -92,6 +94,21 @@ class Scene:
         while child_counter < len(self.children):
             self.children[child_counter].print_pretty_children()
             child_counter += 1
+
+    def get_testing_pretty_children(self, all_scenes):
+        print(all_scenes)
+        child_counter = 0
+        while child_counter < len(self.children) / 2:
+            self.children[child_counter].get_testing_pretty_children(all_scenes)
+            print(all_scenes)
+            child_counter += 1
+        all_scenes.append(self.get_testing_pretty())
+        print(all_scenes)
+        while child_counter < len(self.children):
+            self.children[child_counter].get_testing_pretty_children(all_scenes)
+            child_counter += 1
+            print(all_scenes)
+        return all_scenes
 
     def get_pretty_children(self, all_scenes):
         child_counter = 0
@@ -139,7 +156,6 @@ class Scene:
 
         return answer
 
-
     # Обработка вопроса пользователя
     # Пока intent всегда перед значением
     def get_work_question(self, user_question):
@@ -161,13 +177,13 @@ class Scene:
                         intent_values = (self.get_intent_values
                                          (elem.name,
                                           user_question_list, question))
-                        
+
                         if not intent_values:
                             intent_dict.append({"intent": elem.name,
-                                                    "meaning": None})
+                                                "meaning": None})
                         else:
                             intent_dict.append({"intent": elem.name,
-                                                    "meaning": intent_values})
+                                                "meaning": intent_values})
 
                         intent_count -= 1
 
@@ -214,7 +230,7 @@ class Scene:
         for child in self.children:
             return child.check_scene_rec(intents)
 
-# Поиск сцены по интентам и переходам
+    # Поиск сцены по интентам и переходам
     def pass_to_children(self, key_words):
         key_words.sort()
         pass_count = 0
@@ -235,7 +251,7 @@ class Scene:
                 if self.children == []:
                     return self.name
                 else:
-                    return self.children[pass_count-1].name
+                    return self.children[pass_count - 1].name
         for child in self.children:
             return child.pass_to_children(key_words)
 
@@ -256,19 +272,26 @@ class SceneTree:
     def set_height_tree(self):
         self.root.set_height_all(0)
 
+    def get_testing_pretty_nodes(self):
+        all_scenes = []
+        print(all_scenes)
+        self.root.get_testing_pretty_children(all_scenes)
+        print(all_scenes)
+        return all_scenes
+
     def get_pretty_nodes(self):
         all_scenes = ""
         all_scenes += self.root.get_pretty_children(all_scenes)
         return all_scenes
 
-    def scene_add(self, parent_scene, name = None, children = None,
-                  pass_conditions = None, answer = None, questions = None,
-                  clarifying_question = None, theme = None):
-        new_scene = Scene(name = name, children = children,
-                          pass_conditions = pass_conditions, answer = answer,
-                          questions = questions,
-                          clarifying_question = clarifying_question,
-                          theme = theme)
+    def scene_add(self, parent_scene, name=None, children=None,
+                  pass_conditions=None, answer=None, questions=None,
+                  clarifying_question=None, theme=None):
+        new_scene = Scene(name=name, children=children,
+                          pass_conditions=pass_conditions, answer=answer,
+                          questions=questions,
+                          clarifying_question=clarifying_question,
+                          theme=theme)
         parent_scene.add_child(new_scene)
         return new_scene
 
@@ -311,15 +334,11 @@ def main():
     tree.set_height_tree()
     '''
 
-
-
     # Сериализация pickle
     with open("save_files/pickle_test.PKL", "wb") as f:
         pc.dump(tree, f)
 
     return tree
-
-
 
 
 def get_scenes(dialog_tree):
@@ -338,14 +357,21 @@ def get_text_scenes(dialog_tree):
     return dialog_tree.get_pretty_nodes()
 
 
+def get_testing_text_scenes(dialog_tree):
+    return dialog_tree.get_testing_pretty_nodes()
+
+
 def get_root(dialog_tree):
     return dialog_tree.root
+
 
 def get_scene_name(cur_scene):
     return cur_scene.name
 
+
 def find_scene_by_name(name, dialog_tree):
     return dialog_tree.to_scene(name)
+
 
 def get_scene_everything(current_scene):
     # Потомки
@@ -366,7 +392,8 @@ def get_scene_everything(current_scene):
             if isinstance(word, IntentTemplate):
                 answer_return.append("Шаблон интента: " + str(word.name))
             elif isinstance(word, IntentValue):
-                answer_return.append("Шаблон значения интента: " + str(word.name))
+                answer_return.append(
+                    "Шаблон значения интента: " + str(word.name))
             else:
                 answer_return.append(word)
     else:
@@ -394,9 +421,11 @@ def get_scene_everything(current_scene):
     if clarifying_question is not None:
         for word in clarifying_question:
             if isinstance(word, IntentTemplate):
-                clarifying_question_return.append("Шаблон интента: " + str(word.name))
+                clarifying_question_return.append(
+                    "Шаблон интента: " + str(word.name))
             elif isinstance(word, IntentValue):
-                clarifying_question_return.append("Шаблон значения интента: " + str(word.name))
+                clarifying_question_return.append(
+                    "Шаблон значения интента: " + str(word.name))
             else:
                 clarifying_question_return.append(word)
     else:
@@ -417,7 +446,8 @@ def add_child(current_scene, child_scene, dialog_tree):
     dialog_tree.set_height_tree()
 
 
-def add_scene(name, parent, pass_conditions, answer, questions, clarifying_question, dialog_tree):
+def add_scene(name, parent, pass_conditions, answer, questions,
+              clarifying_question, dialog_tree):
     # Условия перехода пока одной строкой с разделением |
     pass_conditions_normal = []
     pass_condition = []
@@ -496,10 +526,9 @@ def add_scene(name, parent, pass_conditions, answer, questions, clarifying_quest
             else:
                 clarifying_question_normal.append(word)
 
-
-    to_add = Scene(name = name, pass_conditions = pass_conditions_normal,
-                        answer = answer_normal, questions = questions_normal,
-                        clarifying_question = clarifying_question_normal)
+    to_add = Scene(name=name, pass_conditions=pass_conditions_normal,
+                   answer=answer_normal, questions=questions_normal,
+                   clarifying_question=clarifying_question_normal)
     parent_scene = dialog_tree.to_scene(parent)
     parent_scene.add_child(to_add)
     dialog_tree.set_height_tree()
@@ -524,7 +553,7 @@ def find_parent(current_scene, find_scene):
 
 def delete_scene(scene_name, dialog_tree):
     scene = find_scene_by_name(scene_name, dialog_tree)
-    parent = find_parent(current_scene = dialog_tree.root, find_scene = scene)
+    parent = find_parent(current_scene=dialog_tree.root, find_scene=scene)
     if parent is not None:
         parent.children.remove(scene)
 

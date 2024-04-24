@@ -387,3 +387,27 @@ def clean_logs():
     f1 = open("logs/temp.log", "r+")
     f1.truncate(0)
     f1.close()
+
+
+# def get_scenes_names(dialog_tree):
+#     return get_pretty_nodes(dialog_tree)
+#
+#
+# def get_pretty_nodes(dialog_tree):
+#     all_scenes = ""
+#     all_scenes += get_pretty_children(dialog_tree.root, all_scenes)
+#     return all_scenes
+#
+#
+# def get_pretty_children(node, all_scenes):
+#     child_counter = 0
+#     while child_counter < len(node.children) / 2:
+#         all_scenes = (node.children[child_counter].
+#                       get_pretty_children(all_scenes))
+#         child_counter += 1
+#     all_scenes += node.get_pretty()
+#     while child_counter < len(node.children):
+#         all_scenes = (node.children[child_counter].
+#                       get_pretty_children(all_scenes))
+#         child_counter += 1
+#     return all_scenes
