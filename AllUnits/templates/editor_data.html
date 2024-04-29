@@ -58,7 +58,7 @@
                 Ошибки по сценам<br>
                 <div>
                 {% for scene in all_scenes %}
-                    <p> {{ scene }}:
+                    <p style="color: {{ errs_per_scene[scene]['color'] }}"> {{ scene }}:
                         {{ errs_per_scene[scene]['err'] }}
                         / {{ errs_per_scene[scene]['ok'] }}
                         / {{ errs_per_scene[scene]['nf'] }}

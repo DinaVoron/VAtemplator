@@ -8,10 +8,7 @@ import subprocess
 
 @app.route("/data", methods=["get", "post"])
 def editor_data():
-    success_amount = get_ok_num()
-    not_found_amount = get_nf_num()
-    error_amount = get_err_num()
-    all_amount = success_amount + not_found_amount + error_amount
+
     start_date = ""
     end_date = ""
 
@@ -22,8 +19,6 @@ def editor_data():
     if request.values.get("end_date") is not None:
         end_date = request.values.get("end_date")
 
-    errs_per_scene = count_errors(dialog_tree)
-
     if request.values.get("open_ok"):
         subprocess.Popen(["notepad", "logs/OK.log"])
 
@@ -33,19 +28,12 @@ def editor_data():
     if request.values.get("open_nf"):
         subprocess.Popen(["notepad", "logs/NF.log"])
 
-    # print("start_date")
-    # print(start_date)
-    # print("end_date")
-    # print(end_date)
     time = get_time(start_date, end_date)
+    errs_per_scene = count_errors(start_date, end_date, dialog_tree)
 
     html = render_template(
         "editor_data.html",
         current_page='editor_data',
-        success_amount=success_amount,
-        not_found_amount=not_found_amount,
-        error_amount=error_amount,
-        all_amount=all_amount,
         errs_per_scene=errs_per_scene,
         time=time,
         start_date=start_date,

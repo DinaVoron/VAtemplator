@@ -17,9 +17,14 @@
             <nav class="testing-nav">
                 <div><b>Тестирование</b></div>
                 <button type="submit" name="set_type" value="manual">Ручное</button>
-                <button type="submit" name="set_type" value="auto">Автоматическое</button>
-                <button type="submit" name="set_type" value=verify">Верификация модели ПО</button>
+                <button class="selected" name="set_type" value="auto">Автоматическое</button>
+                <button type="submit" name="set_type" value="verify">Верификация модели ПО</button>
             </nav>
+            <article>
+                <div class="header">Успешные логи</div>
+                <div class="test_result">{{ test_result }}</div><br>
+                <button value="open_test" name="open_test" class="testing_button_select">Посмотреть диалоги</button>
+            </article>
         </form>
     </main>
 </body>

@@ -300,43 +300,39 @@ class SceneTree:
 
 
 def main():
-    # Десериализация pickle
-    with open("save_files/pickle_test.PKL", "rb") as f:
-        tree = pc.load(f)
+    # # Десериализация pickle
+    # with open("save_files/pickle_test.PKL", "rb") as f:
+    #     tree = pc.load(f)
 
-    '''
-    main_scene = Scene(name = "срок_приема_подготовки", answer=["На",
-                                               IntentTemplate("срок"),
-                                               IntentValue("срок"),
-                                               IntentTemplate("приём"),
-                                               IntentValue("приём")],
-                        pass_conditions=[["подготовка", "приём", "срок"]],
-                        questions=[["Какой", IntentTemplate("срок"),
-                                    IntentTemplate("приём"),
-                                    IntentTemplate("подготовка"),
-                                    IntentValue("подготовка")]],
-                        clarifying_question = ["Не найден ответ в main"])
-    sub1 = Scene(name="срок_приема_за_месяц", pass_conditions=[["переход"]],
-                 answer=["На",
-                         IntentTemplate("срок"),
-                         IntentValue("срок"),
-                         IntentTemplate("приём"),
-                         IntentValue("приём"),
-                         IntentTemplate("подготовка"),
-                         IntentValue("подготовка")
-                         ],
-                 questions=[["Какой", IntentTemplate("срок"),
-                                    IntentTemplate("приём"),
-                                    IntentValue("приём"),
-                                    IntentTemplate("подготовка")]])
+
+    main_scene = Scene(name = "срок_приема_подготовки",
+                       answer=["Да"],
+                       pass_conditions=[["приём"]],
+                       questions=[[IntentTemplate("срок"),
+                                IntentTemplate("приём")]],
+                       clarifying_question=["Не найден ответ в main"])
+    sub1 = Scene(name="срок_приема_за_месяц", pass_conditions=[["месяц"]],
+                 answer=["Да"],
+                 questions=[[IntentTemplate("месяц")]])
+    sub11 = Scene(name="прием_месяц", pass_conditions=[["приём", "срок"]],
+                  answer=[IntentTemplate("срок"),
+                          IntentValue("срок")],
+                  questions=[[
+                      "Какой",
+                      IntentTemplate("приём"),
+                      IntentValue("месяц")
+                  ]])
+
+
     main_scene.add_child(sub1)
+    sub1.add_child(sub11)
     tree = SceneTree(main_scene)
     tree.set_height_tree()
-    '''
 
-    # Сериализация pickle
-    with open("save_files/pickle_test.PKL", "wb") as f:
-        pc.dump(tree, f)
+
+    # # Сериализация pickle
+    # with open("save_files/pickle_test.PKL", "wb") as f:
+    #     pc.dump(tree, f)
 
     return tree
 

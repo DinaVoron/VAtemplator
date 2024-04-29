@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Тестирование</title>
+    <link rel="stylesheet" href="static/css/style-main.css">
+    <link rel="stylesheet" href="static/css/style-tabs.css">
+    <link rel="stylesheet" href="/static/CSS/style.css">
+    {% macro render_menu() %}
+    {% include "__block_tabs.html" %}
+    {% endmacro %}
+    {% macro render_scenes() %}
+    <select name="scene" class="testing-select">
+    {% for i in range(len(scenes)) %}
+        {% if scenes[i].name == selected_scene %}
+        <option value="{{ scenes[i].name }}" selected>{{ scenes[i].name }}</option>
+        {% else %}
+        <option value="{{ scenes[i].name }}">{{ scenes[i].name }}</option>
+        {% endif %}
+    {% endfor %}
+    </select>
+    {% endmacro %}
+    {% macro render_questions() %}
+    {% for i in range(len(questions)) %}
+    <section>
+        <label>
+            {{ questions[i] }}<br>
+            <textarea class="questions-textarea" name="questions" cols="57" rows="3">{{ user_questions[i] }}</textarea>
+            {% if is_answer %}
+            <div class="answer">
+                Ответ: {{ answers[i] }}
+                {% if results[i] == "ok" %}
+                <button name="ok_result" value="{{ i }}"><img src="/static/images/selected_ok.svg"></button>
+                {% else %}
+                <button name="ok_result" value="{{ i }}"><img src="/static/images/ok.svg"></button>
+                {% endif %}
+                {% if results[i] == "err" %}
+                <button name="err_result" value="{{ i }}"><img src="static/images/selected_err.svg"></button>
+                {% else %}
+                <button name="err_result" value="{{ i }}"><img src="static/images/err.svg"></button>
+                {% endif %}
+            </div>
+            {% endif %}
+        </label>
+    </section>
+    {% endfor %}
+    {% endmacro %}
+</head>
+<body>
+    {{ render_menu() }}
+    <main>
+        <form id="testing-form" action="{{ url_for('editor_testing') }}">
+            <nav class="testing-nav">
+                <div><b>Тестирование</b></div>
+                <button class="selected" type="submit" name="set_type" value="manual">Ручное</button>
+                <button type="submit" name="set_type" value="auto">Автоматическое</button>
+                <button type="submit" name="set_type" value="verify">Верификация модели ПО</button>
+            </nav>
+            <section class="manual-testing-section">
+                <article>
+                    <div class="header">Ручное тестирование сцен</div>
+                    <label>
+                        cцена&nbsp;&nbsp;
+                        {{ render_scenes() }}&nbsp;
+                        <input type="submit" name="i" value="Выбрать" class="testing_button_select">
+                    </label>
+                    <div class="header">Составьте вопросы:</div>
+                    {{ render_questions() }}
+                    <section class="testing-buttons-section">
+                        <input type="submit" name="get_answers" value="Сгенерировать ответы" class="testing_button_select">
+                        {% if is_answer %}
+                        <input type="submit" name="render_all_questions" value="Скачать отчет" class="testing_button_select">
+                        {% endif %}
+                    </section>
+                </article>
+                <article>
+                    <div class="header">Ручное тестирование</div>
+                    <div class="frame-div">
+                        <iframe src="{{ url_for('editor_dialog') }}" class="iframe">
+                        </iframe>
+                    </div>
+                </article>
+            </section>
+        </form>
+    </main>
+</body>
+</html>

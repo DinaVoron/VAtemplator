@@ -83,9 +83,8 @@ def automatic_testing():
     # Получаем ответы и вопросы из файла успешного логирования
     log_tree = ET.parse("logs/OK.log")
     get_ok(log_tree, answers_arr, question_arr)
+    print(answers_arr)
     # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем
-
-
     input_answers = []
     for question_session in question_arr:
         scene = dialog_tree.root

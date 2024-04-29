@@ -21,6 +21,9 @@
     --color_button_2:		var(--color_main_6);
 
 
+    --color_bad_scene:      #D65353;
+    --color_good_scene:     #D2E0A2;
+
 
 	/* Размеры текста */
 	--font_family:		Inter, sans-serif;

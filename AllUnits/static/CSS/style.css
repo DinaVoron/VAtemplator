@@ -93,10 +93,11 @@ article {
     border-radius: 0.7em;
 }
 .frame-div {
-    width    : 400px;
-    height   : 420px;
+    width    : 500px;
+    height   : 500px;
     overflow : hidden;
     position : relative;
+    border: 1px solid black;
 }
 .iframe
 {
@@ -114,6 +115,7 @@ article {
     border-radius: 0.4em;
     font-size: 0.8em;
     vertical-align: bottom;
+    cursor: pointer;
 }
 .testing-select {
     font-size: 1em;
@@ -141,4 +143,54 @@ article {
     border-radius: 0.4em;
     font-size: 0.8em;
     vertical-align: bottom;
+}
+.testing-nav {
+    margin-left: -0.5em;
+    margin-top: 1.3em;
+    height: auto;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    background: none;
+    justify-content: start;
+}
+.testing-nav > * {
+    padding: 0.5em 0.5em;
+    font-size: 1em;
+    border: none;
+}
+.testing-nav > button {
+    cursor: pointer;
+}
+.testing-nav .selected {
+    background: var(--color_main_6);
+    border-radius: 0.4em;
+}
+.manual-testing-section {
+    display: flex;
+}
+.manual-testing-section article + article {
+    margin-left: 5%;
+}
+.header {
+    padding: 1em 0em;
+    font-size: 1.1em;
+}
+.questions-textarea {
+    font-size: 0.9em;
+}
+.testing-buttons-section {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+}
+.testing-buttons-section input {
+    margin-top: 1em;
+}
+.answer img {
+    margin-bottom: -0.25em;
+}
+.answer button {
+    border: none;
 }
