@@ -31,8 +31,13 @@ def get_questions(node):
             if isinstance(item, IntentValue):
                 values.append(item.name)
 
-        question_text = "c интентами " + ", ".join(intents)
+        question_text = "c ключевыми словами " + ", ".join(intents)
+
+        if len(values) > 0:
+            question_text += " и значениями " + ", ".join(values)
+
         res.append(question_text)
+
 
     return res
 
@@ -117,3 +122,14 @@ def automatic_testing():
 def get_scene_answer(scene, question):
     answer = scene.get_work_question(question)
     return answer
+
+
+def pass_testing(root):
+    res = []
+    pass_testing_rec(res, root)
+
+
+def pass_testing_rec(res, elem):
+    for child in elem.children:
+
+        pass_testing_rec(res, elem)

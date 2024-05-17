@@ -4,7 +4,57 @@ from models.editor_testing_model import get_scenes, get_questions
 from models.editor_testing_model import get_scene_by_name
 from models.editor_testing_model import automatic_testing
 from models.editor_testing_model import get_scene_answer
+from models.editor_data_model import graph_verify
+from fpdf import FPDF
 import subprocess
+
+
+def makePDF(scene_name, answers, user_questions):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.add_font(
+        "Sans",
+        style="",
+        fname="static/fonts/NotoSans-Medium.ttf",
+        uni=True
+    )
+    pdf.set_font("Sans", size=12)
+    pdf.set_fill_color(135, 206, 235)
+    pdf.rect(0, 0, 220, 10, style="F")
+    pdf.cell(
+        190,
+        0, txt="",
+        ln=1,
+        align="C"
+    )
+    pdf.cell(
+        190,
+        20, txt="Результаты автоматического тестирования",
+        ln=1,
+        border=1,
+        align="C"
+    )
+    pdf.cell(
+        190,
+        20,
+        txt="Тестируемая сцена: " + scene_name,
+        ln=1,
+        align="R"
+    )
+    for i in range(len(user_questions)):
+        pdf.cell(
+            200,
+            10,
+            txt=user_questions[i],
+            ln=1
+        )
+        pdf.cell(
+            200,
+            10,
+            txt=answers[i],
+            ln=1
+        )
+    pdf.output("results.pdf")
 
 
 @app.route("/testing", methods=["get", "post"])
@@ -14,10 +64,10 @@ def editor_testing():
     answers = []
     user_questions = []
     results = []
-    for i in range(len(question_arr)):
-        answers.append("")
-        user_questions.append("")
-        results.append("")
+    answers.append("")
+    user_questions.append("")
+    results.append("")
+
     scenes = get_scenes()
     is_answer = False
 
@@ -27,37 +77,26 @@ def editor_testing():
         elif session["scene"] != request.values.get("scene"):
             selected_scene = request.values.get("scene")
             session["scene"] = selected_scene
+            user_questions = []
         else:
             selected_scene = session["scene"]
-        user_questions = request.values.getlist("questions")
+            user_questions = request.values.getlist("questions")
     else:
         session["scene"] = dialog_tree.root.name
-
-    if request.values.get("ok_result") or request.values.get("err_result"):
-        is_answer = True
-        answers = []
-        for i in range(len(user_questions)):
-            answer = get_scene_answer(get_scene_by_name(
-                dialog_tree.root,
-                selected_scene
-            ), user_questions[i])
-            answers.append(answer)
-        if request.values.get("ok_result"):
-            result_num = int(request.values.get("ok_result"))
-            results[result_num] = "ok"
-        if request.values.get("err_result"):
-            result_num = int(request.values.get("err_result"))
-            results[result_num] = "err"
 
     if request.values.get("get_answers"):
         is_answer = True
         answers = []
+        results = []
         for i in range(len(user_questions)):
+            print("len(user_questions)")
+            print(len(user_questions))
             answer = get_scene_answer(get_scene_by_name(
                 dialog_tree.root,
                 selected_scene
             ), user_questions[i])
             answers.append(answer)
+            results.append("")
 
     question_arr = get_questions(get_scene_by_name(
         dialog_tree.root,
@@ -65,13 +104,25 @@ def editor_testing():
     ))
 
     if request.values.get("set_type"):
-        session["type"] = request.values.get("set_type")
+        if request.values.get("set_type") != "verify":
+            session["type"] = request.values.get("set_type")
 
     if "type" not in session:
         html = render_template(
             "editor_testing.html",
         )
         return html
+
+    if request.values.get("download_pdf"):
+        is_answer = True
+        answers = []
+        for i in range(len(user_questions)):
+            answer = get_scene_answer(get_scene_by_name(
+                dialog_tree.root,
+                selected_scene
+            ), user_questions[i])
+            answers.append(str(answer))
+        makePDF(session["scene"], answers, user_questions)
 
     if session["type"] == "manual":
         html = render_template(
@@ -83,6 +134,7 @@ def editor_testing():
             answers=answers,
             is_answer=is_answer,
             results=results,
+            current_page='editor_testing',
             len=len
         )
         return html
@@ -102,12 +154,17 @@ def editor_testing():
 
         html = render_template(
             "editor_testing_auto.html",
-            test_result=test_result
+            test_result=test_result,
+            current_page='editor_testing'
         )
         return html
 
     if session["type"] == "verify":
+        intents = graph_verify(dialog_tree, graph)
         html = render_template(
-            "editor_testing_verify.html"
+            "editor_testing_verify.html",
+            intents=intents,
+            current_page='editor_testing',
+            len=len
         )
         return html
