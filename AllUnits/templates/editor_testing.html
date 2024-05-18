@@ -15,10 +15,10 @@
     <main>
         <form id="testing-form" action="{{ url_for('editor_testing') }}">
             <nav class="testing-nav">
-                <div><b>Тестирование</b></div>
-                <button type="submit" name="set_type" value="manual">Ручное</button>
-                <button type="submit" name="set_type" value="auto">Автоматическое</button>
-                <button type="submit" name="set_type" value=verify">Верификация модели ПО</button>
+                <div class="testing-nav__item"><b>Тестирование</b></div>
+                <button class="testing-nav__item" type="submit" name="set_type" value="manual">Ручное</button>
+                <button class="testing-nav__item" type="submit" name="set_type" value="auto">Автоматическое</button>
+                <button class="testing-nav__item" type="submit" name="set_type" value=verify">Верификация модели ПО</button>
             </nav>
         </form>
     </main>

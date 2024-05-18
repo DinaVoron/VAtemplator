@@ -1,6 +1,18 @@
-<question><date>2024-04-29</date><time>22:07:22</time><text>приём</text><place>срок_приема_подготовки</place></question>
-<answer><date>2024-04-29</date><time>22:07:22</time><text /><place>срок_приема_подготовки</place></answer>
-<question><date>2024-04-29</date><time>22:07:30</time><intent>срок</intent><intent>приём</intent><place>срок_приема_подготовки</place></question>
-<answer><date>2024-04-29</date><time>22:07:30</time><text> Да</text><place>срок_приема_подготовки</place></answer>
-<question><date>2024-04-29</date><time>22:07:37</time><text>месяц</text><place>прием_месяц</place></question>
-<answer><date>2024-04-29</date><time>22:07:37</time><text /><place>прием_месяц</place></answer>
+<question><date>2024-05-17</date><time>19:24:08</time><text>направление инженерия имеет балл </text><place>срок_приема_подготовки</place></question>
+<answer><date>2024-05-17</date><time>19:24:09</time><text> Да</text><place>срок_приема_подготовки</place></answer>
+<question><date>2024-05-17</date><time>19:24:09</time><text>направление инженерия имеет балл </text><place>срок_приема_подготовки</place></question>
+<answer><date>2024-05-17</date><time>19:24:09</time><text> Да</text><place>срок_приема_подготовки</place></answer>
+<question><date>2024-05-17</date><time>19:24:09</time><text>какой балл у курс 3 </text><place>прием_месяц</place></question>
+<answer><date>2024-05-17</date><time>19:24:09</time><text /><place>прием_месяц</place></answer>
+<question><date>2024-05-17</date><time>19:24:10</time><text>направление инженерия имеет балл </text><place>срок_приема_подготовки</place></question>
+<answer><date>2024-05-17</date><time>19:24:10</time><text> Да</text><place>срок_приема_подготовки</place></answer>
+<question><date>2024-05-17</date><time>19:24:11</time><text>направление инженерия имеет балл </text><place>срок_приема_подготовки</place></question>
+<answer><date>2024-05-17</date><time>19:24:11</time><text> Да</text><place>срок_приема_подготовки</place></answer>
+<question><date>2024-05-17</date><time>19:24:11</time><text>какой балл у курс 3 </text><place>прием_месяц</place></question>
+<answer><date>2024-05-17</date><time>19:24:11</time><text /><place>прием_месяц</place></answer>
+<question><date>2024-05-17</date><time>19:24:33</time><text>направление инженерия имеет балл </text><place>срок_приема_подготовки</place></question>
+<answer><date>2024-05-17</date><time>19:24:33</time><text> Да</text><place>срок_приема_подготовки</place></answer>
+<question><date>2024-05-17</date><time>19:24:33</time><text>направление инженерия имеет балл </text><place>срок_приема_подготовки</place></question>
+<answer><date>2024-05-17</date><time>19:24:33</time><text> Да</text><place>срок_приема_подготовки</place></answer>
+<question><date>2024-05-17</date><time>19:24:33</time><text>какой балл у курс 3 </text><place>прием_месяц</place></question>
+<answer><date>2024-05-17</date><time>19:24:33</time><text /><place>прием_месяц</place></answer>

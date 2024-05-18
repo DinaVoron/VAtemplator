@@ -9,18 +9,29 @@
     {% macro render_menu() %}
     {% include "__block_tabs.html" %}
     {% endmacro %}
+    {% macro render_intents() %}
+    {% for i in range(len(intents)) %}
+    <section>
+        <p class="section__p">{{ intents[i] }}</p>
+    </section>
+    {% endfor %}
+    {% endmacro %}
 </head>
 <body>
     {{ render_menu() }}
     <main>
         <form id="testing-form" action="{{ url_for('editor_testing') }}">
             <nav class="testing-nav">
-                <div><b>Тестирование</b></div>
-                <button type="submit" name="set_type" value="manual">Ручное</button>
-                <button type="submit" name="set_type" value="auto">Автоматическое</button>
-                <button class="selected" type="submit" name="set_type" value="verify">Верификация модели ПО</button>
+                <div class="testing-nav__item"><b>Тестирование</b></div>
+                <button class="testing-nav__item" type="submit" name="set_type" value="manual">Ручное</button>
+                <button class="testing-nav__item" type="submit" name="set_type" value="auto">Автоматическое</button>
+                <button class="testing-nav__item testing-nav__item_selected" type="submit" name="set_type" value="verify">Верификация модели ПО</button>
             </nav>
         </form>
+        <article>
+            <div class="header testing-article">Возможный состав вопросов</div>
+            {{ render_intents() }}
+        </article>
     </main>
 </body>
 </html>
