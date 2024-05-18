@@ -193,7 +193,7 @@ def graph_verify(dialog_tree, graph):
     print("Верификация графа...")
     nodes = graph.nodes
     edges = list(graph.edges)
-    intents = graph.list_intent_text
+    intents = graph.nodes_intent_text
 
     chains = find_all_chains(dialog_tree, edges, intents)
 
