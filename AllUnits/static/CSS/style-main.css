@@ -1,48 +1,43 @@
 :root {
     /* Основные цвета */
-    --color_main_1:	#0D1821;
-    --color_main_2:	#F0F4EF;
-    --color_main_3:	#D6C153;
-    --color_main_4:	#D2E0A2;
-    --color_main_5:	#344966;
-    --color_main_6:	#B4CDED;
+    --main-color_1:				#0D1821;
+    --main-color_2:				#F0F4EF;
+    --main-color_3:				#D6C153;
+    --main-color_4:				#D2E0A2;
+    --main-color_5:				#344966;
+    --main-color_6:				#B4CDED;
+
+    /* Цвета стили */
+    --main-color_background_1:	var(--main-color_1);	/* Темный  */
+    --main-color_background_2:	var(--main-color_2);	/* Светлый */
+
+    --main-color_text_1:		var(--main-color_1);	/* Темный  */
+    --main-color_text_2:		var(--main-color_2);	/* Светлый */
+
+    --main-color_icon_1:		var(--main-color_1);	/* Темный  */
+    --main-color_icon_2:		var(--main-color_2);	/* Светлый */
+
+    --main-color_button_1:		var(--main-color_5);	/* По умолчанию */
+    --main-color_button_2:		var(--main-color_6);	/* При наводке */
+
+    /* Отступ */
+    --margin-w:			8px;
+    --margin-h:			4px;
+
+	/* Текст */
+	--font_family:		Inter, sans-serif;
+	--font_size_h1:		24px;
+	--font_size_medium:	14px;
+	--font_size_small:	10px;
 
 
-    --color_background_1:	var(--color_main_1);	/* Основной цвет Menu */
-    --color_background_2:	var(--color_main_2);
 
-    --color_text_1:			var(--color_main_1);	/* Основной цвет текста */
-    --color_text_2:			var(--color_main_2);	/* Цвет текста в меню */
-
-    --color_icon_1:			var(--color_main_1);	/* Основной цвет иконок */
-    --color_icon_2:			var(--color_main_2);	/* Цвет иконок в меню */
-
-    --color_button_1:		var(--color_main_5);
-    --color_button_2:		var(--color_main_6);
 
 
     --color_bad_scene:      #D65353;
     --color_good_scene:     #D2E0A2;
 
-
-	/* Размеры текста */
-	--font_family:		Inter, sans-serif;
-
-	--font_size_h1:		24px; /* 1.6em */
-	--font_size_medium:	14px;
-	--font_size_small:	10px;
-
-
-    /* Размер */
-    --width-tabs:			11.5rem;
-    --height-tabs:			100%;
-
-    --width-graph-article: 	400px;
-    --height-graph-article: 100%;
-
-    --width-graph-aside:	calc(100% - var(--width-tabs) - var(--width-graph-article));
-    --height-graph-aside: 	100%;
-    --width-testing-aside:  calc(100% - var(--width-tabs) - 3.3em);
+    --width-testing-aside:  calc(100% - 8rem - 3.3em);
 }
 
 html {
@@ -51,11 +46,12 @@ html {
 	margin:					0;
 }
 body {
-    display: flex;
-    flex-wrap: wrap;
+    display:				flex;
+    flex-wrap:				wrap;
 	width:					100%;
 	height:					100%;
 	margin:					0;
+    padding:				0;
 }
 body .no_text_select {
 	-webkit-user-select:	none;
@@ -69,4 +65,42 @@ body .shadow {
 	-moz-box-shadow:		3px 1px 5px 0px rgba(0,0,0,.75);
 	-o-box-shadow:			3px 1px 5px 0px rgba(0,0,0,.75);
 	box-shadow:				3px 1px 5px 0px rgba(0,0,0,.75);
+}
+
+body {
+    color:					var(--main-color_text_1);
+	font-family:			var(--font_family);
+    font-size:				var(--font_size_medium);
+    line-height:			1.5;
+    text-align: 			justify;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 			bold;
+    margin-top:				0;
+    margin-bottom:			0.2em;
+    padding: 				0;
+}
+h1 {
+    font-size:				var(--font_size_h1);
+}
+p {
+    margin-bottom:			0.5em;
+    padding: 				0;
+}
+
+div.button {
+    display:				inline-block;
+    padding:				5px 20px;
+    border:					1px solid var(--main-color_button_1);
+    background-color:		var(--main-color_button_1);
+    color:					var(--main-color_text_2);
+    font-size:				var(--font_size_medium);
+    font-weight:			bold;
+    border-radius:			5px;
+    cursor:					pointer;
+    transition:				all 0.25s ease;
+}
+div.button:hover {
+    background-color:		color-mix(in srgb, var(--main-color_button_1) 70%, var(--main-color_button_2));
+    border-color:			color-mix(in srgb, var(--main-color_button_1) 70%, var(--main-color_button_2));
 }

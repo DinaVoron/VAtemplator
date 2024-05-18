@@ -1,61 +1,77 @@
-nav {
-    align-items: 		center;
-    background: 		var(--color_background_1);
-    display: 			inline-flex;
-    flex-direction: 	column;
-    justify-content: 	space-around;
-    width: 				var(--width-tabs);
-    height:				var(--height-tabs);
+:root {
+	/* Цвета */
+
+	/* Функциональные цвета */
+
+    /* Цвета стили */
+    --tabs-color_background_1:	color-mix(in srgb, var(--main-color_3) 12%, transparent);	/* Активное меню */
+
+    /* Отступ */
+
+	/* Размер */
+    --tabs-width:				8rem;
+    --tabs-height:				100%;
+
+	--tabs-size_icon:			32px;
 }
 
+/*
+* Меню :: nav
+*/
+
+nav {
+	display: 			inline-flex;
+    flex-direction: 	column;
+    justify-content: 	space-around;
+    background: 		var(--main-color_background_1);
+    width: 				var(--tabs-width);
+    height:				var(--tabs-height);
+    align-items: 		center;
+}
 nav.text_style_tabs {
-    color:					var(--color_text_2);
-    font-family: 			var(--font_family);
-    font-size: 				var(--font_size_small);
-    line-height: 			1.5;
-    text-align:				center;
+    color:				var(--main-color_text_2);
+    font-size: 			var(--font_size_small);
+    text-align:			center;
 }
 
 nav div.tab {
-    margin:				0;
     width: 				100%;
+    margin:				0;
+}
+nav div.tab.active {
+    background-color:	var(--tabs-color_background_1);
 }
 
-nav div.tab.active {
-    background-color: color-mix(in srgb, var(--color_main_3) 18%, transparent);
-}
+/*
+* Меню :: nav - Иконки
+*/
 
 nav div.tab div {
-    background-color: 	var(--color_icon_2);
-    width: 				32px;
-    height:				32px;
+    background-color: 	var(--main-color_icon_2);
+    width: 				var(--tabs-size_icon);
+    height:				var(--tabs-size_icon);
     margin: 			auto;
 }
-
 #tab-editor-data {
     -webkit-mask: url(../images/frame-analytics.svg) no-repeat center;
     mask: url(../images/frame-analytics.svg) no-repeat center;
     mask-size: contain;
 }
-
 #tab-editor-dialog {
     -webkit-mask: url(../images/frame-chat.svg) no-repeat center;
     mask: url(../images/frame-chat.svg) no-repeat center;
     mask-size: contain;
 }
-
 #tab-editor-graph {
     -webkit-mask: url(../images/frame-domain-model.svg) no-repeat center;
     mask: url(../images/frame-domain-model.svg) no-repeat center;
     mask-size: contain;
 }
-
 #tab-editor-testing {
     -webkit-mask: url(../images/frame-testing.svg) no-repeat center;
     mask: url(../images/frame-testing.svg) no-repeat center;
     mask-size: contain;
 }
-
 #tab-editor-tree {
     -webkit-mask: url(../images/frame-scena.svg) no-repeat center;
     mask: url(../images/frame-scena.svg) no-repeat center;

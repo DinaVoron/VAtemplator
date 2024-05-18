@@ -1,3 +1,4 @@
+import os
 from flask import Flask, session, render_template
 from models.graph_model import Graph
 #from tree import SceneTree, Scene, IntentValue, IntentTemplate, main
@@ -14,7 +15,10 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'  # Определение ключа
 app.config['UPLOAD_FOLDER_DOCUMENTS'] = "documents"
 
 # Определение глобальных статических переменных
-graph = Graph()
+if os.path.exists("save_files/graph.pkl"):
+    graph = Graph.load("save_files/graph.pkl")
+else:
+    graph = Graph()
 
 dialog_tree = main()
 
