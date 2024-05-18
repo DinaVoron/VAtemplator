@@ -150,19 +150,32 @@ def check_intent_tree(dialog_tree, paths):
 
 
 def find_all_chains(dialog_tree, edges, intents):
-    print("intents")
-    print(intents)
     graph = {}
     for edge in edges:
-        if edge[0] not in graph and edge[0] in intents:
-            graph[edge[0]] = []
-        if edge[1] not in graph and edge[1] in intents:
-            graph[edge[1]] = []
+        if edge[0] in intents:
+            for i in range(len(edge[0].layer)):
+                edge_with_layer = str(edge[0]) + "_" + str(edge[0].layer[i])
+                if edge_with_layer not in graph:
+                    graph[edge_with_layer] = []
+        if edge[1] in intents:
+            for i in range(len(edge[1].layer)):
+                edge_with_layer = str(edge[1]) + "_" + str(edge[1].layer[i])
+                if edge_with_layer not in graph:
+                    graph[edge_with_layer] = []
 
         if edge[0] in intents:
-            graph[edge[0]].append(edge[1])
-        if edge[1] in intents:
-            graph[edge[1]].append(edge[0])
+            if edge[1] in intents:
+                for i in range(len(edge[0].layer)):
+                    for j in range(len(edge[1].layer)):
+                        edge_with_layer0 = str(edge[0]) + "_" + str(edge[0].layer[i])
+                        edge_with_layer1 = str(edge[1]) + "_" + str(edge[1].layer[j])
+                        graph[edge_with_layer0].append(edge_with_layer1)
+
+                for i in range(len(edge[1].layer)):
+                    for j in range(len(edge[0].layer)):
+                        edge_with_layer0 = str(edge[1]) + "_" + str(edge[1].layer[i])
+                        edge_with_layer1 = str(edge[0]) + "_" + str(edge[0].layer[j])
+                        graph[edge_with_layer0].append(edge_with_layer1)
 
     visited = {node: False for node in graph}
     path = []
@@ -183,8 +196,7 @@ def graph_verify(dialog_tree, graph):
     intents = graph.nodes_intent_text
 
     chains = find_all_chains(dialog_tree, edges, intents)
-    if len(chains) > 7:
-        chains = chains[0:7]
+
     return chains
 
 

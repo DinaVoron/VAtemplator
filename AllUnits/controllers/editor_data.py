@@ -12,6 +12,12 @@ def editor_data():
     start_date = ""
     end_date = ""
 
+    ok_log = get_ok_num()
+    err_log = get_err_num()
+    nf_log = get_nf_num()
+
+    all_log = ok_log + err_log + nf_log
+
     all_scenes = get_testing_text_scenes(dialog_tree=dialog_tree)
 
     if request.values.get("start_date") is not None:
@@ -33,7 +39,11 @@ def editor_data():
 
     html = render_template(
         "editor_data.html",
-        current_page='editor_data',
+        success_amount=ok_log,
+        not_found_amount=nf_log,
+        error_amount=err_log,
+        all_amount=ok_log + nf_log + err_log,
+        current_page="editor_data",
         errs_per_scene=errs_per_scene,
         time=time,
         start_date=start_date,

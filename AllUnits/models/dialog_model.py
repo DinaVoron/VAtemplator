@@ -79,7 +79,10 @@ class Scene:
             child.print_children()
 
     def get_testing_pretty(self):
-        return " " * self.height + self.name
+        res = {}
+        res["name"] = self.name
+        res["height"] = self.height
+        return res
 
     def get_pretty(self):
         return ("---" * self.height + self.name + ", " +

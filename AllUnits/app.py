@@ -1,8 +1,8 @@
 import os
 from flask import Flask, session, render_template
 from models.graph_model import Graph
-#from tree import SceneTree, Scene, IntentValue, IntentTemplate, main
 from models.dialog_model import SceneTree, Scene, IntentValue, IntentTemplate, main
+# from tree import SceneTree, Scene, IntentValue, IntentTemplate, main
 # from tree import main
 # import pickle as pc
 

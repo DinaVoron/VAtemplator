@@ -1,0 +1,20 @@
+@media print {
+    body {
+        font-size: 1.1em;
+    }
+    nav {
+        display: none;
+    }
+    .testing-nav {
+        display: none;
+    }
+    .button {
+        display: none;
+    }
+    .testing-article {
+        display: none;
+    }
+    .testing-article_print {
+        display: block;
+    }
+}

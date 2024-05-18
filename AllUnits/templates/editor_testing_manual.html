@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="static/css/style-main.css">
     <link rel="stylesheet" href="static/css/style-tabs.css">
     <link rel="stylesheet" href="/static/CSS/style.css">
+    <link rel="stylesheet" href="/static/CSS/print.css">
     {% macro render_menu() %}
     {% include "__block_tabs.html" %}
     {% endmacro %}
@@ -21,28 +22,17 @@
     </select>
     {% endmacro %}
     {% macro render_questions() %}
-    {% for i in range(len(questions)) %}
-    <section>
+    {% for i in range(len(user_questions)) %}
         <label>
-            {{ questions[i] }}<br>
-            <textarea class="questions-textarea" name="questions" cols="57" rows="3">{{ user_questions[i] }}</textarea>
+            <textarea class="questions-textarea" name="questions" cols="57" rows="2">{{ user_questions[i] }}</textarea>
             {% if is_answer %}
-            <div class="answer">
+            <div class="answer-area">
                 Ответ: {{ answers[i] }}
-                {% if results[i] == "ok" %}
-                <button name="ok_result" value="{{ i }}"><img src="/static/images/selected_ok.svg"></button>
-                {% else %}
-                <button name="ok_result" value="{{ i }}"><img src="/static/images/ok.svg"></button>
-                {% endif %}
-                {% if results[i] == "err" %}
-                <button name="err_result" value="{{ i }}"><img src="static/images/selected_err.svg"></button>
-                {% else %}
-                <button name="err_result" value="{{ i }}"><img src="static/images/err.svg"></button>
-                {% endif %}
+                <button class="answer-area__button" name="ok_result" value="{{ i }}" onclick="set_ok(event)"><img src="/static/images/ok.svg"></button>
+                <button class="answer-area__button" name="err_result" value="{{ i }}" onclick="set_err(event)"><img src="static/images/err.svg"></button>
             </div>
             {% endif %}
         </label>
-    </section>
     {% endfor %}
     {% endmacro %}
 </head>
@@ -51,37 +41,63 @@
     <main>
         <form id="testing-form" action="{{ url_for('editor_testing') }}">
             <nav class="testing-nav">
-                <div><b>Тестирование</b></div>
-                <button class="selected" type="submit" name="set_type" value="manual">Ручное</button>
-                <button type="submit" name="set_type" value="auto">Автоматическое</button>
-                <button type="submit" name="set_type" value="verify">Верификация модели ПО</button>
+                <div class="testing-nav__item"><b>Тестирование</b></div>
+                <button class="testing-nav__item testing-nav__item_selected" type="submit" name="set_type" value="manual">Ручное</button>
+                <button class="testing-nav__item" type="submit" name="set_type" value="auto">Автоматическое</button>
+                <button class="testing-nav__item" type="submit" name="set_type" value="verify">Верификация модели ПО</button>
             </nav>
-            <section class="manual-testing-section">
-                <article>
-                    <div class="header">Ручное тестирование сцен</div>
+            <section class="testing-section">
+                <article class="testing-article testing-article_print">
+                    <div class="testing-article__header">Ручное тестирование сцен</div>
                     <label>
-                        cцена&nbsp;&nbsp;
+                        cцена&nbsp;
                         {{ render_scenes() }}&nbsp;
-                        <input type="submit" name="i" value="Выбрать" class="testing_button_select">
+                        <input class="button" type="submit" name="i" value="Выбрать">
                     </label>
-                    <div class="header">Составьте вопросы:</div>
-                    {{ render_questions() }}
-                    <section class="testing-buttons-section">
-                        <input type="submit" name="get_answers" value="Сгенерировать ответы" class="testing_button_select">
+                    <div class="testing-article__header">Составьте вопросы {{ questions[0] }}</div>
+                    <section id="questions_section">
+                        {{ render_questions() }}
+                    </section>
+                    <section class="testing-buttons">
+                        <button class="testing-buttons__button button" onclick="add_input(event)">Добавить вопрос</button>
+                        <input class="testing-buttons__button button" type="submit" name="get_answers" value="Сгенерировать ответы">
                         {% if is_answer %}
-                        <input type="submit" name="render_all_questions" value="Скачать отчет" class="testing_button_select">
+                        <button class="testing-buttons__button button" type="button" name="download_pdf" onclick="print()">Скачать отчет</button>
                         {% endif %}
                     </section>
                 </article>
-                <article>
-                    <div class="header">Ручное тестирование</div>
+                <article  class="testing-article">
+                    <div class="testing-article__header">Ручное тестирование</div>
                     <div class="frame-div">
-                        <iframe src="{{ url_for('editor_dialog') }}" class="iframe">
+                        <iframe class="frame-div__iframe" src="{{ url_for('editor_dialog') }}">
                         </iframe>
                     </div>
                 </article>
             </section>
         </form>
     </main>
+    <script>
+        function add_input(event) {
+            event.preventDefault();
+            console.log("adding a new child...");
+            questions = document.getElementById("questions_section");
+            newTextarea = document.createElement("label");
+            newTextarea.innerHTML = `
+                <textarea class="questions-textarea" name="questions" cols="57" rows="2"></textarea>
+            `;
+            questions.appendChild(newTextarea);
+        };
+        function set_ok(event) {
+            console.log("ok");
+            event.preventDefault();
+            event.currentTarget.innerHTML = `<img src="/static/images/selected_ok.svg">`;
+            event.currentTarget.nextElementSibling.innerHTML = `<img src="/static/images/err.svg">`;
+        };
+        function set_err(event) {
+            event.preventDefault();
+            event.currentTarget.innerHTML = `<img src="/static/images/selected_err.svg">`;
+            event.currentTarget.previousElementSibling.innerHTML = `<img src="/static/images/ok.svg">`;
+        }
+    </script>
 </body>
 </html>
