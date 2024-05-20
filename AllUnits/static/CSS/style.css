@@ -78,7 +78,7 @@ main {
     margin-top: 1em;
 }
 .section__p {
-    background: var(--color_main_4);
+    background: var(--main-color_4);
     padding: 1em;
     border-radius: 0.7em;
 }
@@ -132,7 +132,7 @@ main {
     border: none;
 }
 .testing-nav__item_selected {
-    background: var(--color_main_6);
+    background: var(--main-color_6);
     border-radius: 0.4em;
 }
 /* end */
