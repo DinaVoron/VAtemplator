@@ -11,9 +11,16 @@
     {% endmacro %}
     {% macro render_intents() %}
     {% for i in range(len(intents)) %}
+    {% if len(intents[i]) > 1 %}
     <section>
-        <p class="section__p">{{ intents[i] }}</p>
+        <p class="section__p">
+        {% for j in range(len(intents[i]) - 1) %}
+            {{ intents[i][j].text }},
+        {% endfor %}
+        {{ intents[i][len(intents[i]) - 1].text }}
+        </p>
     </section>
+    {% endif %}
     {% endfor %}
     {% endmacro %}
 </head>

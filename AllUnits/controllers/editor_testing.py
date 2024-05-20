@@ -59,6 +59,7 @@ def makePDF(scene_name, answers, user_questions):
 
 @app.route("/testing", methods=["get", "post"])
 def editor_testing():
+
     selected_scene = dialog_tree.root.name
     question_arr = get_questions(dialog_tree.root)
     answers = []
@@ -104,8 +105,7 @@ def editor_testing():
     ))
 
     if request.values.get("set_type"):
-        if request.values.get("set_type") != "verify":
-            session["type"] = request.values.get("set_type")
+        session["type"] = request.values.get("set_type")
 
     if "type" not in session:
         html = render_template(
@@ -160,6 +160,7 @@ def editor_testing():
         return html
 
     if session["type"] == "verify":
+        print("verify")
         intents = graph_verify(dialog_tree, graph)
         html = render_template(
             "editor_testing_verify.html",

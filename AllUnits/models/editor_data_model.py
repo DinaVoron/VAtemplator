@@ -127,12 +127,21 @@ def get_time(start_date, end_date):
     return str(int(result_time)) + ":" + str(int((result_time % 1) * 100))
 
 
+def one_layer(fir_node, sec_node):
+    for fir_layer in fir_node.layer:
+        for sec_layer in sec_node.layer:
+            if fir_layer == sec_layer:
+                return True
+    return False
+
+
 def find_all_paths(graph, current_node, visited, path, paths):
+
     visited[current_node] = True
     path.append(current_node)
 
     for neighbor in graph[current_node]:
-        if neighbor in visited and not visited[neighbor]:
+        if neighbor in visited and not visited[neighbor] and one_layer(neighbor, current_node):
             find_all_paths(graph, neighbor, visited, path, paths)
 
     paths.append(path.copy())
@@ -144,38 +153,31 @@ def find_all_paths(graph, current_node, visited, path, paths):
 def check_intent_tree(dialog_tree, paths):
     new_arr = []
     for i in range(len(paths)):
-        if not dialog_tree.find_scene(paths[i]):
+        arr = []
+        for j in range(len(paths[i])):
+            arr.append(paths[i][j].text)
+        if not dialog_tree.find_scene(arr):
             new_arr.append(paths[i])
     return new_arr
 
 
-def find_all_chains(dialog_tree, edges, intents):
+def find_all_chains(dialog_tree, edges):
     graph = {}
     for edge in edges:
-        if edge[0] in intents:
-            for i in range(len(edge[0].layer)):
-                edge_with_layer = str(edge[0]) + "_" + str(edge[0].layer[i])
-                if edge_with_layer not in graph:
-                    graph[edge_with_layer] = []
-        if edge[1] in intents:
-            for i in range(len(edge[1].layer)):
-                edge_with_layer = str(edge[1]) + "_" + str(edge[1].layer[i])
-                if edge_with_layer not in graph:
-                    graph[edge_with_layer] = []
+        if edge[0].is_intent and edge[0] not in graph:
+            graph[edge[0]] = []
 
-        if edge[0] in intents:
-            if edge[1] in intents:
-                for i in range(len(edge[0].layer)):
-                    for j in range(len(edge[1].layer)):
-                        edge_with_layer0 = str(edge[0]) + "_" + str(edge[0].layer[i])
-                        edge_with_layer1 = str(edge[1]) + "_" + str(edge[1].layer[j])
-                        graph[edge_with_layer0].append(edge_with_layer1)
+        if edge[1].is_intent and edge[1] not in graph:
+            graph[edge[1]] = []
 
-                for i in range(len(edge[1].layer)):
-                    for j in range(len(edge[0].layer)):
-                        edge_with_layer0 = str(edge[1]) + "_" + str(edge[1].layer[i])
-                        edge_with_layer1 = str(edge[0]) + "_" + str(edge[0].layer[j])
-                        graph[edge_with_layer0].append(edge_with_layer1)
+        if edge[0].is_intent:
+            if edge[1].is_intent:
+                graph[edge[0]].append(edge[1])
+
+        if edge[1].is_intent:
+            if edge[0].is_intent:
+                if edge[1] in graph:
+                    graph[edge[1]].append(edge[1])
 
     visited = {node: False for node in graph}
     path = []
@@ -184,6 +186,8 @@ def find_all_chains(dialog_tree, edges, intents):
     for node in graph:
         find_all_paths(graph, node, visited, path, paths)
 
+    print(paths)
+
     paths = check_intent_tree(dialog_tree, paths)
 
     return paths
@@ -191,12 +195,8 @@ def find_all_chains(dialog_tree, edges, intents):
 
 def graph_verify(dialog_tree, graph):
     print("Верификация графа...")
-    nodes = graph.nodes
-    edges = list(graph.edges)
-    intents = graph.nodes_intent_text
-
-    chains = find_all_chains(dialog_tree, edges, intents)
-
+    edges = list(graph.edges_data)
+    chains = find_all_chains(dialog_tree, edges)
     return chains
 
 
