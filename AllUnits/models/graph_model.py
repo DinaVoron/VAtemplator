@@ -599,8 +599,9 @@ class Graph:
 
     @property
     def edges_data(self):
+        nodes = self.graph.nodes
         return [
-            (self.graph.nodes[i]["data"], self.graph.nodes[j]["data"]) for i, j in self.graph.edges
+            (nodes[i]["data"], nodes[j]["data"]) for i, j in self.graph.edges
         ]
 
     def edge_parsing(self, i, j):

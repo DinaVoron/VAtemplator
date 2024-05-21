@@ -10,6 +10,7 @@
     /* Цвета стили */
     --main-color_background_1:	var(--main-color_1);	/* Темный  */
     --main-color_background_2:	var(--main-color_2);	/* Светлый */
+    --main-color_background_3:	color-mix(in srgb, var(--main-color_background_1)  8%, transparent);	/* Панель */
 
     --main-color_text_1:		var(--main-color_1);	/* Темный  */
     --main-color_text_2:		var(--main-color_2);	/* Светлый */

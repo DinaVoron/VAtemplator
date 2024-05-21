@@ -13,11 +13,19 @@
 
 <answer><date>2024-04-07</date><time>17:39:39</time><text> a intent b</text><place>main</place></answer>
 
-</log>
-<log>
+</log>
+
+<log>
+
 <question><date>2024-04-09</date><time>17:20:26</time><text>привет ты лох </text><place>main</place></question>
 
 <answer><date>2024-04-09</date><time>17:20:26</time><text /><place>main</place></answer>
 
+</log>
+
+<log>
+
+</log>
+<log>
 </log>
 </logs>
