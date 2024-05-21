@@ -7,10 +7,8 @@
     --graph-color_funct_3:			#FFEF00;
 
     /* Цвета стили */
-    --graph-color_background_1:		color-mix(in srgb, var(--main-color_background_1)  8%, transparent);	/* Панель управления */
-    --graph-color_background_2:		var(--main-color_5);													/* Заголовок таблицы */
-    --graph-color_background_3:		color-mix(in srgb, var(--main-color_1)  8%, transparent);				/* Строки таблицы */
-    --graph-color_background_4:		color-mix(in srgb, var(--main-color_1) 20%, var(--main-color_2));		/* Кластер / Токен */
+    --graph-color_background_1:		var(--main-color_5);													/* Заголовок таблицы */
+    --graph-color_background_2:		color-mix(in srgb, var(--main-color_1)  8%, transparent);				/* Строки таблицы */
     --graph-color_background_5:		color-mix(in srgb, var(--main-color_1) 40%, transparent);				/* Неизменный */
 
     --graph-color_select:			color-mix(in srgb, var(--main-color_2) 40%, var(--graph-color_funct_1));
@@ -32,7 +30,7 @@
 */
 
 article {
-    background-color:	var(--graph-color_background_1);
+    background-color:	var(--main-color_background_2);
     border-radius:		8px;
     box-sizing:			border-box;
     width: 				calc(var(--graph-width_article)  - 2 * var(--margin-w));
@@ -42,7 +40,6 @@ article {
 }
 article section > div {
     display: 			flex;
-
 }
 
 article ul.file-list {
@@ -181,7 +178,7 @@ aside #process-data #cluster-container th, td {
 }
 aside #process-data #cluster-container th {
 	color:				var(--main-color_text_2);
-    background-color:	var(--graph-color_background_2);
+    background-color:	var(--graph-color_background_1);
     text-align:			center;
 }
 aside #process-data #cluster-container div {
@@ -189,21 +186,13 @@ aside #process-data #cluster-container div {
     border-radius:		2px;
     margin-right:		5px;
 }
-aside #process-data #cluster-container .swap {
-    width:				calc(var(--graph-size_icon) / 2);
-    height:				calc(var(--graph-size_icon) / 2);
-    border:				1px solid color-mix(in srgb, var(--main-color_1) 20%, var(--graph-color_background_4));
-    background-color:	var(--graph-color_background_4);
-    margin-right:		10px;
-    cursor:				pointer;
-}
 
 /*
 * Основная панель содержимого :: aside :: process-data - Выделение
 */
 
 aside #process-data tr:nth-child(even) {
-	background-color:	var(--graph-color_background_3);
+	background-color:	var(--graph-color_background_2);
 }
 aside #process-data tr.select:nth-child(even) {
 	background-color:	var(--graph-color_select);

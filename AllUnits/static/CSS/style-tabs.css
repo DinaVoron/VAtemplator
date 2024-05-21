@@ -57,11 +57,6 @@ nav div.tab div {
     mask: url(../images/frame-analytics.svg) no-repeat center;
     mask-size: contain;
 }
-#tab-editor-dialog {
-    -webkit-mask: url(../images/frame-chat.svg) no-repeat center;
-    mask: url(../images/frame-chat.svg) no-repeat center;
-    mask-size: contain;
-}
 #tab-editor-graph {
     -webkit-mask: url(../images/frame-domain-model.svg) no-repeat center;
     mask: url(../images/frame-domain-model.svg) no-repeat center;
@@ -75,5 +70,10 @@ nav div.tab div {
 #tab-editor-tree {
     -webkit-mask: url(../images/frame-scena.svg) no-repeat center;
     mask: url(../images/frame-scena.svg) no-repeat center;
+    mask-size: contain;
+}
+#tab-editor-chat {
+    -webkit-mask: url(../images/frame-chat.svg) no-repeat center;
+    mask: url(../images/frame-chat.svg) no-repeat center;
     mask-size: contain;
 }
