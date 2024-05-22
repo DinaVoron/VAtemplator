@@ -381,6 +381,10 @@ def get_text_scenes(dialog_tree):
     return dialog_tree.get_pretty_nodes()
 
 
+def get_testing_text_scenes(dialog_tree):
+    return dialog_tree.get_testing_pretty_nodes()
+
+
 def get_final_text_scenes(dialog_tree):
     return dialog_tree.get_final_nodes()
 

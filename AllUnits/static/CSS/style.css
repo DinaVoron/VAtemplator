@@ -7,7 +7,7 @@ body {
     --color_secondary_2: #B4CDED;
     font-family: "Gill Sans", sans-serif;
     background-color: #F0F4EF;
-    font-size: 1.6em;
+    font-size: 1em;
 }
 main {
     height: 100vh;
@@ -55,16 +55,20 @@ main {
 
 /* testing_button */
 .testing_button {
-    background: #344966;
-    color: #ffffff;
-    border: 0px;
-    padding: 0.8em 1em;
-    border-radius: 0.4em;
-    font-size: 1em;
+    display:				inline-block;
+    padding:				5px 20px;
+    border:					1px solid var(--main-color_button_1);
+    background-color:		var(--main-color_button_1);
+    color:					var(--main-color_text_2);
+    font-size:				var(--font_size_medium);
+    font-weight:			bold;
+    border-radius:			5px;
+    cursor:					pointer;
+    transition:				all 0.25s ease;
 }
 .testing_button:hover {
-    background: #B4CDED;
-    cursor: pointer;
+    background-color:		color-mix(in srgb, var(--main-color_button_1) 70%, var(--main-color_button_2));
+    border-color:			color-mix(in srgb, var(--main-color_button_1) 70%, var(--main-color_button_2));
 }
 /* end */
 
@@ -161,15 +165,16 @@ main {
 
 /* button */
 .button {
-    cursor: pointer;
-    background: #344966;
-    color: #ffffff;
-    border: 0px;
-    padding: 0.4em 1em;
-    border-radius: 0.4em;
-    font-size: 0.8em;
-    vertical-align: bottom;
-    cursor: pointer;
+    display:				inline-block;
+    padding:				5px 20px;
+    border:					1px solid var(--main-color_button_1);
+    background-color:		var(--main-color_button_1);
+    color:					var(--main-color_text_2);
+    font-size:				var(--font_size_medium);
+    font-weight:			bold;
+    border-radius:			5px;
+    cursor:					pointer;
+    transition:				all 0.25s ease;
 }
 /* end */
 

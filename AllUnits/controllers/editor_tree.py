@@ -63,7 +63,7 @@ def editor_tree():
     if request.values.get("Добавить интент"):
         current_scene.add_intent_in_list(request.values.get("graph_intents"))
 
-    graph_intents = graph.list_intent_text
+    graph_intents = graph.nodes_intent_text
 
     html = render_template(
         "editor_tree.html",
