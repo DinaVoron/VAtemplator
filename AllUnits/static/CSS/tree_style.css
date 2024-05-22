@@ -4,22 +4,25 @@ textarea {
 }
 
 .tree_print {
-    width: 33%;
+    display: flex;
+    flex-grow: 2;
+    min-width: 400px;
     border: 1px solid black;
 }
 
 .scene_print {
-    width: 33%;
     border: 1px solid black;
 }
 
 .scene_options {
-    width: 33%;
+    display: flex;
+    flex-grow: 1;
     border: 1px solid black;
 }
 
 .super_flex {
     display: flex;
+    flex-wrap: nowrap;
 }
 
 p.user_text {
@@ -35,4 +38,70 @@ p.answer_text {
     height: 200px;
     border: 1px solid #ccc;
     padding: 5px;
+}
+
+ul, #myUL {
+  list-style-type: none;
+}
+
+#myUL {
+  margin: 0;
+  padding: 0;
+}
+
+ul, #treeUL {
+  list-style-type: none;
+}
+
+#treeUL {
+  margin: 0;
+  padding: 0;
+}
+
+.caret {
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 8px;
+    min-height: 30px;
+    display: inline-block;
+    user-select: none; /* Prevent text selection */
+    background-color: #344966;
+    color: white;
+}
+
+.caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.caret-down::before {
+    transform: rotate(90deg);
+}
+
+.nested {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.tree_block {
+    border: 1px solid black;
+}
+
+.scene_adder {
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.empty_caret {
+    display: inline-block;
+    border-radius: 8px;
+    background-color: #344966;
+    color: white;
+    user-select: none; /* Prevent text selection */
 }

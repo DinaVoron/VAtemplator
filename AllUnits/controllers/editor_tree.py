@@ -7,8 +7,11 @@ from models.dialog_model import (get_text_scenes, get_root, get_scene_name,
 
 @app.route("/", methods=["get", "post"])
 def editor_tree():
-    all_scenes = get_text_scenes(dialog_tree = dialog_tree)
-    text_scenes = all_scenes.split('\n')
+    #all_scenes = get_text_scenes(dialog_tree = dialog_tree)
+    #text_scenes = all_scenes.split('\n')
+    all_tree = dialog_tree
+    scenes_count, scenes_list = dialog_tree.get_scenes_list()
+
     # Если сцена не выбрана
     if request.values.get("go_to_scene"):
         scene_name = (request.values.get("scene_name"))
@@ -57,14 +60,23 @@ def editor_tree():
     if request.values.get("save_tree"):
         save_tree("save_files/pickle_test.PKL", dialog_tree = dialog_tree)
 
+    if request.values.get("Добавить интент"):
+        current_scene.add_intent_in_list(request.values.get("graph_intents"))
+
+    graph_intents = graph.list_intent_text
+
     html = render_template(
         "editor_tree.html",
         current_page='editor_tree',
-
-        text_scenes = text_scenes,
+        dialog_tree = dialog_tree,
+        #text_scenes = text_scenes,
+        all_tree = all_tree,
         current_scene = current_scene,
         scene_name = scene_name,
         scene_stats = scene_stats,
-        child_scene_name = child_scene_name
+        child_scene_name = child_scene_name,
+
+        graph_intents = graph_intents,
+        scenes_list = scenes_list
     )
     return html
