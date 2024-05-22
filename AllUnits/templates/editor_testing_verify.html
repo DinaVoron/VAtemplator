@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Тестирование</title>
+    <link rel="stylesheet" href="static/css/style-main.css">
+    <link rel="stylesheet" href="static/css/style-tabs.css">
+    <link rel="stylesheet" href="/static/CSS/style.css">
+    {% macro render_menu() %}
+    {% include "__block_tabs.html" %}
+    {% endmacro %}
+    {% macro render_intents() %}
+    {% for i in range(len(intents)) %}
+    {% if len(intents[i]) > 1 %}
+    <section>
+        <p class="section__p">
+        {% for j in range(len(intents[i]) - 1) %}
+            {{ intents[i][j].text }},
+        {% endfor %}
+        {{ intents[i][len(intents[i]) - 1].text }}
+        </p>
+    </section>
+    {% endif %}
+    {% endfor %}
+    {% endmacro %}
+</head>
+<body>
+    {{ render_menu() }}
+    <main>
+        <form id="testing-form" action="{{ url_for('editor_testing') }}">
+            <nav class="testing-nav">
+                <div class="testing-nav__item"><b>Тестирование</b></div>
+                <button class="testing-nav__item" type="submit" name="set_type" value="manual">Ручное</button>
+                <button class="testing-nav__item" type="submit" name="set_type" value="auto">Автоматическое</button>
+                <button class="testing-nav__item testing-nav__item_selected" type="submit" name="set_type" value="verify">Верификация модели ПО</button>
+            </nav>
+        </form>
+        <article>
+            <div class="header testing-article">Возможный состав вопросов</div>
+            {{ render_intents() }}
+        </article>
+    </main>
+</body>
+</html>

@@ -5,6 +5,18 @@ from datetime import date
 import re
 
 
+def get_scenes(dialog_tree):
+    res = []
+    get_scene(dialog_tree.root, res)
+    return res
+
+
+def get_scene(node, res):
+    res.append(node)
+    for child in node.children:
+        get_scene(child, res)
+
+
 def get_ok_num():
     success_amount = len(ET.parse("logs/OK.log").getroot())
     return success_amount
@@ -20,62 +32,116 @@ def get_nf_num():
     return not_found_amount
 
 
-def count_errors():
+def count_errors(start_date, end_date, dialog_tree):
     res = {}
+    scenes = get_scenes(dialog_tree)
+    for scene in scenes:
+        res[scene.name] = {}
+        res[scene.name]['ok'] = 0
+        res[scene.name]['err'] = 0
+        res[scene.name]['nf'] = 0
+
     logs = ET.parse("logs/ERR.log").getroot()
     for log in logs:
         answers = log.findall("answer")
         for answer in answers:
+            log_date = answer[0].text
             place = answer.find("place")
-            if place.text in res:
-                res[place.text] += 1
-            else:
-                res[place.text] = 1
+            if ((start_date == "" or start_date <= log_date)
+                    and (end_date == "" or log_date <= end_date)):
+                if place.text in res:
+                    res[place.text]['err'] += 1
+
+    logs = ET.parse("logs/OK.log").getroot()
+    for log in logs:
+        answers = log.findall("answer")
+        for answer in answers:
+            log_date = answer[0].text
+            place = answer.find("place")
+            if ((start_date == "" or start_date <= log_date)
+                    and (end_date == "" or log_date <= end_date)):
+                if place.text in res:
+                    res[place.text]['ok'] += 1
+
+    logs = ET.parse("logs/NF.log").getroot()
+    for log in logs:
+        questions = log.findall("question")
+        for question in questions:
+            log_date = question[0].text
+            place = question.find("place")
+            if ((start_date == "" or start_date <= log_date)
+                    and (end_date == "" or log_date <= end_date)):
+                if place.text in res:
+                    res[place.text]['nf'] += 1
+    for scene in res:
+        all_scores = res[scene]['ok'] + res[scene]['err'] + res[scene]['nf']
+        if all_scores == 0:
+            res[scene]['color'] = 'var(--color_good_scene)'
+        else:
+            proportion = int(100 * (res[scene]['ok'] / all_scores))
+            res[scene]['color'] = (
+                        'color-mix(in oklab, var(--color_good_scene)'
+                        + f' {proportion}%, var(--color_bad_scene))')
     return res
 
 
-def get_time_one_log(logs):
+def get_time_one_log(logs, start_date, end_date, logs_amount):
     result_time = 0
     for log in logs:
-        times = log.findall("time")
-        i = 1
-        while i < len(times):
-            time1 = datetime.datetime.strptime(
-                times[i - 1].text,
+        questions = log.findall("question")
+        answers = log.findall("answer")
+        i = 0
+        while i < len(answers):
+            log_date = answers[i][0].text
+            start_time = datetime.datetime.strptime(
+                questions[i][1].text,
                 "%H:%M:%S"
             )
-            time2 = datetime.datetime.strptime(
-                times[i].text,
+            end_time = datetime.datetime.strptime(
+                answers[i][1].text,
                 "%H:%M:%S"
             )
-            result_time += (time2 - time1).seconds
-            i += 2
+            if ((start_date == "" or start_date <= log_date)
+                    and (end_date == "" or log_date <= end_date)):
+                result_time += (end_time - start_time).seconds
+                logs_amount[0] += 1
+            else:
+                i += 1
+            i += 1
     return result_time
 
 
-def get_time():
+def get_time(start_date, end_date):
     time = 0
-    amount = 0
+    amount = [0]
     logs = ET.parse("logs/OK.log").getroot()
-    time += get_time_one_log(logs)
-    amount += len(logs)
+    time += get_time_one_log(logs, start_date, end_date, amount)
     logs = ET.parse("logs/ERR.log").getroot()
-    time += get_time_one_log(logs)
-    amount += len(logs)
+    time += get_time_one_log(logs, start_date, end_date, amount)
     logs = ET.parse("logs/NF.log").getroot()
-    time += get_time_one_log(logs)
-    amount += len(logs)
-    if amount == 0:
-        return 0
-    return round(time/amount, 2)
+    time += get_time_one_log(logs, start_date, end_date, amount)
+    if amount[0] == 0:
+        return "0:00"
+    result_time = round(time / amount[0], 2)
+    print(result_time)
+    return str(int(result_time)) + ":" + str(int((result_time % 1) * 100))
+
+
+def one_layer(fir_node, sec_node):
+    for fir_layer in fir_node.layer:
+        for sec_layer in sec_node.layer:
+            if fir_layer == sec_layer:
+                return True
+    return False
 
 
 def find_all_paths(graph, current_node, visited, path, paths):
+
     visited[current_node] = True
     path.append(current_node)
 
     for neighbor in graph[current_node]:
-        if neighbor in visited and not visited[neighbor]:
+        if neighbor in visited and not visited[neighbor] and one_layer(neighbor, current_node):
             find_all_paths(graph, neighbor, visited, path, paths)
 
     paths.append(path.copy())
@@ -87,25 +153,31 @@ def find_all_paths(graph, current_node, visited, path, paths):
 def check_intent_tree(dialog_tree, paths):
     new_arr = []
     for i in range(len(paths)):
-        if not dialog_tree.find_scene(paths[i]):
+        arr = []
+        for j in range(len(paths[i])):
+            arr.append(paths[i][j].text)
+        if not dialog_tree.find_scene(arr):
             new_arr.append(paths[i])
     return new_arr
 
 
-def find_all_chains(dialog_tree, edges, intents):
-    print("intents")
-    print(intents)
+def find_all_chains(dialog_tree, edges):
     graph = {}
     for edge in edges:
-        if edge[0] not in graph and edge[0] in intents:
+        if edge[0].is_intent and edge[0] not in graph:
             graph[edge[0]] = []
-        if edge[1] not in graph and edge[1] in intents:
+
+        if edge[1].is_intent and edge[1] not in graph:
             graph[edge[1]] = []
 
-        if edge[0] in intents:
-            graph[edge[0]].append(edge[1])
-        if edge[1] in intents:
-            graph[edge[1]].append(edge[0])
+        if edge[0].is_intent:
+            if edge[1].is_intent:
+                graph[edge[0]].append(edge[1])
+
+        if edge[1].is_intent:
+            if edge[0].is_intent:
+                if edge[1] in graph:
+                    graph[edge[1]].append(edge[1])
 
     visited = {node: False for node in graph}
     path = []
@@ -114,6 +186,8 @@ def find_all_chains(dialog_tree, edges, intents):
     for node in graph:
         find_all_paths(graph, node, visited, path, paths)
 
+    print(paths)
+
     paths = check_intent_tree(dialog_tree, paths)
 
     return paths
@@ -121,11 +195,8 @@ def find_all_chains(dialog_tree, edges, intents):
 
 def graph_verify(dialog_tree, graph):
     print("Верификация графа...")
-    nodes = graph.nodes
-    edges = list(graph.edges)
-    intents = graph.list_intent_text
-
-    chains = find_all_chains(dialog_tree, edges, intents)
+    edges = list(graph.edges_data)
+    chains = find_all_chains(dialog_tree, edges)
     return chains
 
 
@@ -226,7 +297,6 @@ def send_res(res):
 
 
 def log_message_try(rep_type, text, intents_values_dic, place):
-
     print("intents_values_dic")
     print(intents_values_dic)
 
@@ -254,38 +324,44 @@ def log_message_try(rep_type, text, intents_values_dic, place):
     for words in intent_values:
         new_words = words.split(" ")
         if len(new_words) == 1:
-            arr_start_end = text_split_normal.index(new_words[0])
-            text_split_indexes[arr_start_end] = "intent"
+            if new_words[0] in text_split_normal:
+                arr_start_end = text_split_normal.index(new_words[0])
+                text_split_indexes[arr_start_end] = "intent"
         else:
-            arr_start = text_split_normal.index(new_words[0])
-            arr_end = text_split_normal.index(new_words[len(new_words) - 1])
-            text_split_indexes[arr_start] = "intent_start"
-            text_split_indexes[arr_end] = "intent_end"
+            if (new_words[0] in text_split_normal
+                    and new_words[len(new_words) - 1] in text_split_normal):
+                arr_start = text_split_normal.index(new_words[0])
+                arr_end = text_split_normal.index(
+                    new_words[len(new_words) - 1])
+                text_split_indexes[arr_start] = "intent_start"
+                text_split_indexes[arr_end] = "intent_end"
 
         if intent_values[words] is not None:
             for intent in intent_values[words]:
                 value_arr = str(intent).split(" ")
                 if len(value_arr) == 1:
-                    arr_value_start_end = text_split_normal.index(
-                        morph.parse(str(value_arr[0]))[0].normal_form
-                    )
-                    text_split_indexes[arr_value_start_end] = "value"
+                    if (morph.parse(str(value_arr[0]))[0].normal_form
+                            in text_split_normal):
+                        arr_value_start_end = text_split_normal.index(
+                            morph.parse(str(value_arr[0]))[0].normal_form
+                        )
+                        text_split_indexes[arr_value_start_end] = "value"
                 else:
-                    arr_value_start = text_split_normal.index(
-                        morph.parse(str(value_arr[0]))[0].normal_form
-                    )
-                    arr_value_end = text_split_normal.index(
-                        morph.parse(str(
-                            value_arr[len(value_arr) - 1])
-                        )[0].normal_form
-                    )
-                    text_split_indexes[arr_value_start] = "value_start"
-                    text_split_indexes[arr_value_end] = "value_end"
-
+                    if (morph.parse(str(value_arr[0]))[0].normal_form
+                            in text_split_normal):
+                        arr_value_start = text_split_normal.index(
+                            morph.parse(str(value_arr[0]))[0].normal_form
+                        )
+                        arr_value_end = text_split_normal.index(
+                            morph.parse(str(
+                                value_arr[len(value_arr) - 1])
+                            )[0].normal_form
+                        )
+                        text_split_indexes[arr_value_start] = "value_start"
+                        text_split_indexes[arr_value_end] = "value_end"
     index = 0
     while index < len(text_split):
         text_arr = []
-
         if text_split_indexes[index] == "value_start":
             text_arr.append(text_split[index])
             last_index = index + 1
@@ -346,3 +422,26 @@ def clean_logs():
     f1 = open("logs/temp.log", "r+")
     f1.truncate(0)
     f1.close()
+
+# def get_scenes_names(dialog_tree):
+#     return get_pretty_nodes(dialog_tree)
+#
+#
+# def get_pretty_nodes(dialog_tree):
+#     all_scenes = ""
+#     all_scenes += get_pretty_children(dialog_tree.root, all_scenes)
+#     return all_scenes
+#
+#
+# def get_pretty_children(node, all_scenes):
+#     child_counter = 0
+#     while child_counter < len(node.children) / 2:
+#         all_scenes = (node.children[child_counter].
+#                       get_pretty_children(all_scenes))
+#         child_counter += 1
+#     all_scenes += node.get_pretty()
+#     while child_counter < len(node.children):
+#         all_scenes = (node.children[child_counter].
+#                       get_pretty_children(all_scenes))
+#         child_counter += 1
+#     return all_scenes

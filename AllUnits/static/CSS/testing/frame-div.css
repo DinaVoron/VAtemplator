@@ -1,0 +1,14 @@
+.frame-div {
+    width    : 500px;
+    height   : 500px;
+    overflow : hidden;
+    position : relative;
+    border: 1px solid black;
+}
+.frame-div__iframe {
+    position : absolute;
+    top      : -120px;
+    width    : 400px;
+    height   : 555px;
+    border-width: 0px;
+}

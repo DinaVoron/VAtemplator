@@ -29,11 +29,11 @@
         <div id="tab-editor-data"></div>
         <p>Аналитика</p>
     </div>
-    <div data-href="{{url_for('editor_dialog')}}"
+    <div data-href="{{url_for('editor_chat')}}"
          onclick="window.location.href = this.getAttribute('data-href');"
-         class="tab {% if current_page == 'editor_dialog' %}active{% endif %}"
+         class="tab {% if current_page == 'editor_chat' %}active{% endif %}"
     >
-        <div id="tab-editor-dialog"></div>
+        <div id="tab-editor-chat"></div>
         <p>Чат</p>
     </div>
 </nav>
