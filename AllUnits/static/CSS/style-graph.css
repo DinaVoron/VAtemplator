@@ -1,122 +1,231 @@
-article {
-    background-color: 	color-mix(in srgb, var(--color_background_1) 10%, transparent);
-    border-radius: 		8px;
-    box-sizing: 		border-box;
-    width: 				calc(var(--width-graph-article) - 16px);
-    height: 			calc(var(--height-graph-article) - 8px);
-    margin:				4px 8px;
-    padding:			4px 8px;
+:root {
+	/* Цвета */
+
+	/* Функциональные цвета */
+    --graph-color_funct_1:			#41DB00;
+    --graph-color_funct_2:			#04819E;
+    --graph-color_funct_3:			#FFEF00;
+
+    /* Цвета стили */
+    --graph-color_background_1:		var(--main-color_5);													/* Заголовок таблицы */
+    --graph-color_background_2:		color-mix(in srgb, var(--main-color_1)  8%, transparent);				/* Строки таблицы */
+    --graph-color_background_5:		color-mix(in srgb, var(--main-color_1) 40%, transparent);				/* Неизменный */
+
+    --graph-color_select:			color-mix(in srgb, var(--main-color_2) 40%, var(--graph-color_funct_1));
+    --graph-color_select_related:	color-mix(in srgb, var(--main-color_2) 80%, var(--graph-color_funct_1));
+    --graph-color_parent:			color-mix(in srgb, var(--main-color_2) 40%, var(--graph-color_funct_2));
+    --graph-color_child:			color-mix(in srgb, var(--main-color_2) 40%, var(--graph-color_funct_3));
+
+	/* Размер */
+	--graph-size_icon:				24px;
+
+    --graph-width_article:			400px;
+    --graph-height_article:			100%;
+    --graph-width_aside:			calc(100% - var(--tabs-width) - var(--graph-width_article));
+    --graph-height_aside:			100%;
 }
 
+/*
+* Основная панель управления :: article
+*/
+
+article {
+    background-color:	var(--main-color_background_2);
+    border-radius:		8px;
+    box-sizing:			border-box;
+    width: 				calc(var(--graph-width_article)  - 2 * var(--margin-w));
+    height: 			calc(var(--graph-height_article) - 2 * var(--margin-h));
+    margin:				var(--margin-h) var(--margin-w);
+    padding:			var(--margin-h) var(--margin-w);
+}
 article section > div {
     display: 			flex;
 }
 
-article div > h1 {
-    color: 				var(--color_text_1);
-    font-size:			var(--font_size_h1);
-    font-weight: 		bold;
-    margin: 			5px 0;
-    padding: 			0;
-    text-align: 		justify;
+article ul.file-list {
+    list-style:			none;
+    max-height:			720px;
+    overflow-y:			auto;
+    margin:				20px 0;
+    padding:			0;
+    border-top:			1px solid color-mix(in srgb, var(--main-color_1) 40%, transparent);
+}
+article li.file-item {
+    display:			flex;
+    align-items:		center;
+    padding:			8px;
+    border-bottom:		1px solid color-mix(in srgb, var(--main-color_1) 40%, transparent);
+}
+article li.file-item p {
+	width:				calc(100% - 60px);
+    margin:				0;
+    padding-left:		10px;
+    padding-right:		5px;
+}
+article li.file-item div {
+    width:				20px;
+    height:				20px;
+    margin-left:		auto;
+    margin-right:		5px;
+}
+article li.file-item div + div {
+    margin-left:		0;
+    margin-right:		0;
 }
 
-article div > div#update-directory {
-    background-color: 	var(--color_icon_1);
-    width: 				1.6em;
-    height:				1.6em;
+/*
+* Основная панель управления :: article - Иконки
+*/
+
+#update-directory {
+    background-color: 	var(--main-color_icon_1);
+    width: 				var(--graph-size_icon);
+    height:				var(--graph-size_icon);
     margin: 			5px;
 
     -webkit-mask: 		url(../images/frame-sync.svg) no-repeat center;
     mask: 				url(../images/frame-sync.svg) no-repeat center;
     mask-size: 			contain;
 }
-
-article ul.file-list {
-    list-style:			none;
-    max-height:			600px;
-    overflow-y:			auto;
-    margin:				20px 0;
-    padding:			0;
-    border-top:			1px solid color-mix(in srgb, var(--color_main_1) 40%, transparent);
-}
-
-article ul.file-list .file-item {
-    display:			flex;
-    align-items:		center;
-    padding:			8px;
-    border-bottom:		1px solid color-mix(in srgb, var(--color_main_1) 40%, transparent);
-}
-
-article ul.file-list .file-item p {
-    margin:				0;
-    padding-left:		10px;
-    padding-right:		20px;
-}
-
-article ul.file-list .file-item div {
-    width:				20px;
-    height:				20px;
-    margin-left:		auto;
-    margin-right:		5px;
-}
-
-article ul.file-list .file-item div + div {
-    margin-left:		5px;
-    margin-right:		5px;
-}
-
-article ul.file-list .file-item div.elem-load {
-    background-color: 	var(--color_main_3);
+article li.file-item div.elem-load {
+    background-color: 	var(--main-color_3);
     -webkit-mask: 		url(../images/frame-point.svg) no-repeat center;
     mask: 				url(../images/frame-point.svg) no-repeat center;
     mask-size: 			contain;
     transition:			background-image 0.2s ease;
 }
-
-article ul.file-list .file-item div.elem-load:hover {
+article li.file-item div.elem-load:hover {
     background-color:	transparent;
     -webkit-mask: 		none;
     mask: 				none;
     background-image:	url(../images/frame-graph.svg);
     background-size:	contain;
 }
-
-article ul.file-list .file-item div.elem-delete {
+article li.file-item div.elem-delete {
     background-image:	url(../images/frame-cancel.svg);
     background-size: 	contain;
 }
 
+/*
+* Основная панель содержимого :: aside
+*/
+
 aside {
-    border-radius: 		8px;
-    box-sizing: 		border-box;
-	width: 				calc(var(--width-graph-aside)  - 16px);
-	height: 			calc(var(--height-graph-aside) - 8px);
-	margin:				4px 8px;
+    width: 				calc(var(--graph-width_aside)  - 2 * var(--margin-w));
+    height: 			calc(var(--graph-height_aside) - 2 * var(--margin-h));
+    margin:				var(--margin-h) var(--margin-w);
     box-sizing: 		border-box;
 }
-
-aside section#graph-visible {
+aside section {
 	width:				100%;
 	height:				100%;
     margin: 			0;
     padding: 			0;
 }
-
-div.button {
-    display:			inline-block;
-    padding:			5px 20px;
-    border:				1px solid var(--color_button_1);
-    background-color:	var(--color_button_1);
-    color:				var(--color_text_2);
-    font-size:			var(--font_size_medium);
-    font-weight:		bold;
-    border-radius:		5px;
-    cursor:				pointer;
-    transition:			all 0.3s ease;
+aside section#graph-visible {
+	/* ... */
+}
+aside section#process-data {
+    padding:			var(--margin-h) var(--margin-w);
+    box-sizing: 		border-box;
 }
 
-div.button:hover {
-    background-color:	color-mix(in srgb, var(--color_button_1) 60%, var(--color_button_2));
-    border-color:		color-mix(in srgb, var(--color_button_1) 60%, var(--color_button_2));
+/*
+* Основная панель содержимого :: aside :: graph-visible
+*/
+
+aside #graph-visible {
+	/* ... */
+}
+
+/*
+* Основная панель содержимого :: aside :: process-data
+*/
+
+aside #process-data {
+	/* ... */
+}
+
+/*
+* Основная панель содержимого :: aside :: process-data :: content-container
+*/
+
+aside #process-data #content-container {
+	/* ... */
+}
+aside #process-data #content-container swap {
+    font-weight:		bold;
+    border-radius:		3px;
+    padding:			3px 5px;
+}
+
+/*
+* Основная панель содержимого :: aside :: process-data :: cluster-container
+*/
+
+aside #process-data #cluster-container {
+	/* ... */
+}
+
+aside #process-data #cluster-container table {
+    width:				100%;
+    border-collapse:	collapse;
+}
+aside #process-data #cluster-container th, td {
+    border:				1px solid var(--main-color_1);
+    padding:			8px;
+    text-align:			left;
+}
+aside #process-data #cluster-container th {
+	color:				var(--main-color_text_2);
+    background-color:	var(--graph-color_background_1);
+    text-align:			center;
+}
+aside #process-data #cluster-container div {
+    display:			inline-block;
+    border-radius:		2px;
+    margin-right:		5px;
+}
+
+/*
+* Основная панель содержимого :: aside :: process-data - Выделение
+*/
+
+aside #process-data tr:nth-child(even) {
+	background-color:	var(--graph-color_background_2);
+}
+aside #process-data tr.select:nth-child(even) {
+	background-color:	var(--graph-color_select);
+}
+aside #process-data tr.parent:nth-child(even) {
+	background-color:	var(--graph-color_parent);
+}
+aside #process-data tr.child:nth-child(even) {
+	background-color:	var(--graph-color_child);
+}
+aside #process-data .select {
+    border:				1px solid color-mix(in srgb, var(--main-color_1) 20%, var(--graph-color_select));
+	background-color:	var(--graph-color_select);
+}
+aside #process-data .select_related {
+    border:				1px dashed color-mix(in srgb, var(--main-color_1) 20%, var(--graph-color_select));
+	background-color:	var(--graph-color_select_related);
+}
+aside #process-data .parent {
+    border:				1px solid color-mix(in srgb, var(--main-color_1) 20%, var(--graph-color_parent));
+	background-color:	var(--graph-color_parent);
+}
+aside #process-data .child {
+    border:				1px solid color-mix(in srgb, var(--main-color_1) 20%, var(--graph-color_child));
+	background-color:	var(--graph-color_child);
+}
+
+
+
+
+
+aside #process-data td.data-disabled {
+	background-color: dimgrey;
+	color: linen;
+	opacity: 1;
 }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Тестирование</title>
+    <link rel="stylesheet" href="static/css/style-main.css">
+    <link rel="stylesheet" href="static/css/style-tabs.css">
+    <link rel="stylesheet" href="/static/CSS/style.css">
+    {% macro render_menu() %}
+    {% include "__block_tabs.html" %}
+    {% endmacro %}
+</head>
+<body>
+    {{ render_menu() }}
+    <main>
+        <form id="testing-form" action="{{ url_for('editor_testing') }}">
+            <nav class="testing-nav">
+                <div class="testing-nav__item"><b>Тестирование</b></div>
+                <button class="testing-nav__item" type="submit" name="set_type" value="manual">Ручное</button>
+                <button class="testing-nav__item testing-nav__item_selected" type="submit" name="set_type" value="auto">Автоматическое</button>
+                <button class="testing-nav__item" type="submit" name="set_type" value="verify">Верификация модели ПО</button>
+            </nav>
+            <article class="testing-article">
+                <div class="testing-article__header">Успешные логи</div>
+                <div class="test_result">{{ test_result }}</div><br>
+                <button value="open_test" name="open_test" class="button">Посмотреть диалоги</button>
+            </article>
+        </form>
+    </main>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Тестирование</title>
+    <link rel="stylesheet" href="static/css/style-main.css">
+    <link rel="stylesheet" href="static/css/style-tabs.css">
+    <link rel="stylesheet" href="/static/CSS/style.css">
+    <link rel="stylesheet" href="/static/CSS/print.css">
+    {% macro render_menu() %}
+    {% include "__block_tabs.html" %}
+    {% endmacro %}
+    {% macro render_scenes() %}
+    <select name="scene" class="testing-select">
+    {% for i in range(len(scenes)) %}
+        {% if scenes[i].name == selected_scene %}
+        <option value="{{ scenes[i].name }}" selected>{{ scenes[i].name }}</option>
+        {% else %}
+        <option value="{{ scenes[i].name }}">{{ scenes[i].name }}</option>
+        {% endif %}
+    {% endfor %}
+    </select>
+    {% endmacro %}
+    {% macro render_questions() %}
+    {% for i in range(len(user_questions)) %}
+        <label>
+            <textarea class="questions-textarea" name="questions" cols="57" rows="2">{{ user_questions[i] }}</textarea>
+            {% if is_answer %}
+            <div class="answer-area">
+                Ответ: {{ answers[i] }}
+                <button class="answer-area__button" name="ok_result" value="{{ i }}" onclick="set_ok(event)"><img src="/static/images/ok.svg"></button>
+                <button class="answer-area__button" name="err_result" value="{{ i }}" onclick="set_err(event)"><img src="static/images/err.svg"></button>
+            </div>
+            {% endif %}
+        </label>
+    {% endfor %}
+    {% endmacro %}
+</head>
+<body>
+    {{ render_menu() }}
+    <main>
+        <form id="testing-form" action="{{ url_for('editor_testing') }}">
+            <nav class="testing-nav">
+                <div class="testing-nav__item"><b>Тестирование</b></div>
+                <button class="testing-nav__item testing-nav__item_selected" type="submit" name="set_type" value="manual">Ручное</button>
+                <button class="testing-nav__item" type="submit" name="set_type" value="auto">Автоматическое</button>
+                <button class="testing-nav__item" type="submit" name="set_type" value="verify">Верификация модели ПО</button>
+            </nav>
+            <section class="testing-section">
+                <article class="testing-article testing-article_print">
+                    <div class="testing-article__header">Ручное тестирование сцен</div>
+                    <label>
+                        cцена&nbsp;
+                        {{ render_scenes() }}&nbsp;
+                        <input class="button" type="submit" name="i" value="Выбрать">
+                    </label>
+                    <div class="testing-article__header">Составьте вопросы {{ questions[0] }}</div>
+                    <section id="questions_section">
+                        {{ render_questions() }}
+                    </section>
+                    <section class="testing-buttons">
+                        <button class="testing-buttons__button button" onclick="add_input(event)">Добавить вопрос</button>
+                        <input class="testing-buttons__button button" type="submit" name="get_answers" value="Сгенерировать ответы">
+                        {% if is_answer %}
+                        <button class="testing-buttons__button button" type="button" name="download_pdf" onclick="print()">Скачать отчет</button>
+                        {% endif %}
+                    </section>
+                </article>
+                <article  class="testing-article">
+                    <div class="testing-article__header">Ручное тестирование</div>
+                    <div class="frame-div">
+                        <iframe class="frame-div__iframe" src="{{ url_for('editor_dialog') }}">
+                        </iframe>
+                    </div>
+                </article>
+            </section>
+        </form>
+    </main>
+    <script>
+        function add_input(event) {
+            event.preventDefault();
+            console.log("adding a new child...");
+            questions = document.getElementById("questions_section");
+            newTextarea = document.createElement("label");
+            newTextarea.innerHTML = `
+                <textarea class="questions-textarea" name="questions" cols="57" rows="2"></textarea>
+            `;
+            questions.appendChild(newTextarea);
+        };
+        function set_ok(event) {
+            console.log("ok");
+            event.preventDefault();
+            event.currentTarget.innerHTML = `<img src="/static/images/selected_ok.svg">`;
+            event.currentTarget.nextElementSibling.innerHTML = `<img src="/static/images/err.svg">`;
+        };
+        function set_err(event) {
+            event.preventDefault();
+            event.currentTarget.innerHTML = `<img src="/static/images/selected_err.svg">`;
+            event.currentTarget.previousElementSibling.innerHTML = `<img src="/static/images/ok.svg">`;
+        }
+    </script>
+</body>
+</html>

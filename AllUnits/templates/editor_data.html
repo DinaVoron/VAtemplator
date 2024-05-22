@@ -3,64 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>Статистика</title>
-
     <link rel="stylesheet" href="static/css/style-main.css">
     <link rel="stylesheet" href="static/css/style-tabs.css">
-
     <link rel="stylesheet" href="/static/CSS/style.css">
-
     {% macro render_menu() %}
     {% include "__block_tabs.html" %}
     {% endmacro %}
-    {% macro render_errs() %}
-    <div>
-        {% for item in errs_per_scene %}
-        <div>
-            {{ item }}: {{ int(errs_per_scene[item]) }}
-        </div>
-        {% endfor %}
-    </div>
-    {% endmacro %}
-    {% macro render_intents() %}
-    {% for i in range(len(intents)) %}
-    <section>
-        <p class="section__p">{{ intents[i] }}</p>
-    </section>
-    {% endfor %}
-    {% endmacro %}
+
     {% macro render_log_block(state_name, amount, state) %}
-    <div class="logs__{{ state }}">
+    <div class="logs__div logs_{{ state }}">
         {{ state_name }}<br><br>
         {{ amount }}/{{ all_amount }} диалогов<br><br>
-        <button value="open_{{ state }}" name="open_{{ state }}">Посмотреть логи</button>
+        <button class="logs__button" value="open_{{ state }}" name="open_{{ state }}">Посмотреть логи</button>
     </div>
     {% endmacro %}
 </head>
 <body>
     {{ render_menu() }}
     <main>
-        <article>
-            <form action="{{ url_for('editor_data') }}">
-                <h4>Статистика работы</h4>
+        <form action="{{ url_for('editor_data') }}">
+            <h4>Аналитика</h4>
+            <article class="testing-article">
+                <div class="testing-article__header">Период</div>
+                <section>
+                    от: <input name="start_date" type="date" class="period-input" value="{{ start_date }}">&nbsp;&nbsp;
+                    до: <input name="end_date" type="date" class="period-input" value="{{ end_date }}">&nbsp;&nbsp;
+                    <input type="submit" name="show" value="Показать" class="button">
+                </section>
+            </article>
+            <article class="testing-article">
+                <div class="testing-article__header">Среднее время ответа</div>
+                <figure>
+                    <svg width="125" height="125">
+                        <circle cx="62" cy="62" r="57" stroke="#D6C153" stroke-width="10" fill="#F0F4EF"/>
+                        <text x="38" y="70" class="time-text">{{ time }}</text>
+                    </svg>
+                </figure>
+            </article>
+            <article class="testing-article">
+                <div class="testing-article__header">Ошибки по сценам</div>
+                <div>
+                {% for scene in all_scenes %}
+                    {% for i in range(scene["height"]) %}
+                    &nbsp;&nbsp;&nbsp;
+                    {% endfor %}
+                    <p class="tree-scene" style="background-color: {{ errs_per_scene[scene['name']]['color'] }}"> {{ scene["name"] }}:
+                        {{ errs_per_scene[scene['name']]['err'] }}
+                        / {{ errs_per_scene[scene['name']]['ok'] }}
+                        / {{ errs_per_scene[scene['name']]['nf'] }}
+                    </p><br>
+                {% endfor %}
+                </div>
+            </article>
+            <article class="testing-article">
+                <div class="testing-article__header">Логи</div>
                 <section class="logs">
                     {{ render_log_block("Успех", success_amount, "ok") }}
                     {{ render_log_block("Провал", not_found_amount, "nf") }}
                     {{ render_log_block("Ошибка", error_amount, "err") }}
                 </section>
-            </form>
-        </article>
-        <article>
-            <h4>Ошибки по сценам</h4>
-            {{ render_errs() }}
-        </article>
-        <article>
-            <h4>Среднее время работы</h4>
-            {{ time }} сек.
-        </article>
-        <article>
-            <h4>Возможный состав вопросов</h4>
-            {{ render_intents() }}
-        </article>
+            </article>
+        </form>
     </main>
 </body>
 </html>

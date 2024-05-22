@@ -1,60 +1,43 @@
-from enum import Enum
-
-
 class GraphNode:
-    def __init__(self, cluster):
-        self.p_text   = cluster["lemma"]
-        self.f_intent = cluster["f_intent"]
-        self.f_value  = cluster["f_value"]
+    def __init__(self, type_, text_, layer_, f_intent_, f_value_):
+        self.type_    = str(type_)
+        self.text     = str(text_)
+        self.layer    = [layer_]
+        self.f_intent = f_intent_
+        self.f_value  = f_value_
 
     def is_text(self, text):
-        return text == " ".join(self.p_text)
-
-    @property
-    def text(self):
-        return self.p_text
+        return self.text == str(text)
 
     @property
     def type(self):
-        if not self.f_intent and not self.f_value:
-            return "Null"
-        if self.f_intent and not self.f_value:
-            return "Intent"
-        if self.f_intent and self.f_value:
-            return "IntentAndMeaning"
-        if not self.f_intent and self.f_value:
-            return "Meaning"
+        if self.type_ == "Represent":
+            return self.type_
+        if self.type_ == "NodeInt":
+            if self.f_value:
+                return self.type_, "IntentAndMeaning"
+            else:
+                return self.type_, "Intent"
+        if self.type_ == "NodeVal":
+            if self.f_value:
+                return self.type_, "Meaning"
+            else:
+                return self.type_, "Null"
 
     @property
     def is_intent(self):
-        return self.f_intent
+        if self.f_intent is not None:
+            return self.f_intent
+        return False
 
     @property
     def is_meaning(self):
-        return self.f_value
+        if self.f_value is not None:
+            return self.f_value
+        return False
 
 
 class GraphEdge:
-    class TypeEdge(Enum):
-        Syntax = 0
-        Named = 1
-
-    def __init__(self, text, type):
-        self.p_text = text
-        self.f_type = type
-
-    @property
-    def text(self):
-        return self.p_text
-
-    @property
-    def type(self):
-        return self.f_type
-
-    @property
-    def is_syntax(self):
-        return self.f_type == self.TypeEdge.Syntax
-
-    @property
-    def is_named(self):
-        return self.f_type == self.TypeEdge.Named
+    def __init__(self, type_, text_):
+        self.type  = type_
+        self.text  = text_
