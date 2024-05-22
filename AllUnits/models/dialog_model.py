@@ -27,9 +27,9 @@ class IntentValue:
 
 
 class Scene:
-    def __init__(self, name=None, children=None, pass_conditions=None,
-                 answer=None, questions=None,
-                 clarifying_question=None, theme=None):
+    def __init__(self, name = None, children = None, pass_conditions = None,
+                 answer = None, questions = None,
+                 clarifying_question = None, available_intents_list = None):
         self.name = name
         self.children = []
         self.pass_conditions = []
@@ -37,7 +37,7 @@ class Scene:
         self.answer = answer
         self.questions = []
         self.clarifying_question = clarifying_question
-        self.theme = theme
+        self.available_intents_list = available_intents_list
         if children is not None:
             for child in children:
                 self.add_child(child)
@@ -56,6 +56,12 @@ class Scene:
 
     def set_clarifying_question(self, clarifying_question):
         self.clarifying_question = clarifying_question
+
+    def add_intent_in_list(self, intent):
+        if self.available_intents_list is None:
+            self.available_intents_list = [intent]
+        else:
+            self.available_intents_list.append(intent)
 
     def add_child(self, node):
         assert isinstance(node, Scene)
@@ -258,6 +264,13 @@ class Scene:
         for child in self.children:
             return child.pass_to_children(key_words)
 
+    def count_descendants(self, counter, descendant_list):
+        if self.children is not None:
+            for child in self.children:
+                counter += 1
+                descendant_list.append(child)
+        return counter, descendant_list
+
 
 class SceneTree:
     def __init__(self, root):
@@ -287,27 +300,34 @@ class SceneTree:
         all_scenes += self.root.get_pretty_children(all_scenes)
         return all_scenes
 
-    def scene_add(self, parent_scene, name=None, children=None,
-                  pass_conditions=None, answer=None, questions=None,
-                  clarifying_question=None, theme=None):
-        new_scene = Scene(name=name, children=children,
-                          pass_conditions=pass_conditions, answer=answer,
-                          questions=questions,
-                          clarifying_question=clarifying_question,
-                          theme=theme)
+    def get_final_nodes(self):
+        all_scenes += self.root.get_pretty_children(all_scenes)
+
+    def scene_add(self, parent_scene, name = None, children = None,
+                  pass_conditions = None, answer = None, questions = None,
+                  clarifying_question = None):
+        new_scene = Scene(name = name, children = children,
+                          pass_conditions = pass_conditions, answer = answer,
+                          questions = questions,
+                          clarifying_question = clarifying_question)
+
         parent_scene.add_child(new_scene)
         return new_scene
 
     def find_scene(self, intents):
         self.root.check_scene_rec(intents)
 
+    def get_scenes_list(self):
+        counter, scenes_list = self.root.count_descendants(0, [self])
+        return counter, scenes_list
+
 
 def main():
-    # # Десериализация pickle
-    # with open("save_files/pickle_test.PKL", "rb") as f:
-    #     tree = pc.load(f)
+    # Десериализация pickle
+    with open("save_files/pickle_test.PKL", "rb") as f:
+         tree = pc.load(f)
 
-
+    '''
     main_scene = Scene(name = "срок_приема_подготовки",
                        answer=["Да"],
                        pass_conditions=[["приём"]],
@@ -331,8 +351,13 @@ def main():
     sub1.add_child(sub11)
     tree = SceneTree(main_scene)
     tree.set_height_tree()
+    '''
 
 
+
+    # Сериализация pickle
+    with open("save_files/pickle_test.PKL", "wb") as f:
+        pc.dump(tree, f)
     # # Сериализация pickle
     # with open("save_files/pickle_test.PKL", "wb") as f:
     #     pc.dump(tree, f)
@@ -359,6 +384,9 @@ def get_text_scenes(dialog_tree):
 def get_testing_text_scenes(dialog_tree):
     return dialog_tree.get_testing_pretty_nodes()
 
+
+def get_final_text_scenes(dialog_tree):
+    return dialog_tree.get_final_nodes()
 
 def get_root(dialog_tree):
     return dialog_tree.root
