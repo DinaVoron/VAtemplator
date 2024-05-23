@@ -140,6 +140,11 @@ def find_all_paths(graph, current_node, visited, path, paths):
     visited[current_node] = True
     path.append(current_node)
 
+    print("node")
+    print(current_node.text)
+    print(path)
+    print(paths)
+
     for neighbor in graph[current_node]:
         if neighbor in visited and not visited[neighbor] and one_layer(neighbor, current_node):
             find_all_paths(graph, neighbor, visited, path, paths)
@@ -153,11 +158,12 @@ def find_all_paths(graph, current_node, visited, path, paths):
 def check_intent_tree(dialog_tree, paths):
     new_arr = []
     for i in range(len(paths)):
-        arr = []
-        for j in range(len(paths[i])):
-            arr.append(paths[i][j].text)
-        if not dialog_tree.find_scene(arr):
-            new_arr.append(paths[i])
+        if len(paths[i]) > 1:
+            arr = []
+            for j in range(len(paths[i])):
+                arr.append(paths[i][j].text)
+            if not dialog_tree.find_scene(arr):
+                new_arr.append(arr)
     return new_arr
 
 
@@ -183,10 +189,15 @@ def find_all_chains(dialog_tree, edges):
     path = []
     paths = []
 
+    print("edges")
+    for edge in edges:
+        print(edge[0])
+        print(edge[0].text)
+        print(edge[1])
+        print(edge[1].text)
+
     for node in graph:
         find_all_paths(graph, node, visited, path, paths)
-
-    print(paths)
 
     paths = check_intent_tree(dialog_tree, paths)
 
@@ -194,9 +205,9 @@ def find_all_chains(dialog_tree, edges):
 
 
 def graph_verify(dialog_tree, graph):
-    print("Верификация графа...")
     edges = list(graph.edges_data)
     chains = find_all_chains(dialog_tree, edges)
+    print(chains)
     return chains
 
 

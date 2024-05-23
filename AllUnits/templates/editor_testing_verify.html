@@ -15,9 +15,9 @@
     <section>
         <p class="section__p">
         {% for j in range(len(intents[i]) - 1) %}
-            {{ intents[i][j].text }},
+            {{ intents[i][j] }},
         {% endfor %}
-        {{ intents[i][len(intents[i]) - 1].text }}
+        {{ intents[i][len(intents[i]) - 1] }}
         </p>
     </section>
     {% endif %}

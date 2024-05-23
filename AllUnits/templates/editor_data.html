@@ -22,7 +22,9 @@
     {{ render_menu() }}
     <main>
         <form action="{{ url_for('editor_data') }}">
-            <h4>Аналитика</h4>
+            <article class="testing-article">
+                <h4 class="testing-article__header">Аналитика</h4>
+            </article>
             <article class="testing-article">
                 <div class="testing-article__header">Период</div>
                 <section>
@@ -36,7 +38,7 @@
                 <figure>
                     <svg width="125" height="125">
                         <circle cx="62" cy="62" r="57" stroke="#D6C153" stroke-width="10" fill="#F0F4EF"/>
-                        <text x="38" y="70" class="time-text">{{ time }}</text>
+                        <text x="47" y="70" class="time-text">{{ time }}</text>
                     </svg>
                 </figure>
             </article>
