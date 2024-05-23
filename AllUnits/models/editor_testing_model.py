@@ -38,7 +38,6 @@ def get_questions(node):
 
         res.append(question_text)
 
-
     return res
 
 
@@ -62,7 +61,10 @@ def get_ok(log_tree, answers, questions):
                 if (elem.tag != "place"
                         and elem.tag != "time"
                         and elem.tag != "date"):
-                    question_text += elem.text + " "
+                    if elem.text is None:
+                        question_text += " "
+                    else:
+                        question_text += elem.text + " "
             questions_arr.append(question_text)
         answers_tree = log.findall("answer")
         for answer in answers_tree:
@@ -96,10 +98,15 @@ def automatic_testing():
         input_answers.append([])
         input_answers_end = len(input_answers) - 1
         for question in question_session:
-            dialog_all = dialog(scene, question, graph)
-            answer = dialog_all[0]
-            input_answers[input_answers_end].append(answer)
-            scene = find_scene_by_name(dialog_all[1], dialog_tree)
+            if scene is not None:
+                dialog_all = dialog(scene, question, graph)
+                answer = dialog_all[0]
+                input_answers[input_answers_end].append(answer)
+                scene = find_scene_by_name(dialog_all[1], dialog_tree)
+            else:
+                answer = "Не можем найти сцену..."
+                input_answers[input_answers_end].append(answer)
+                scene = None
 
     res = len(question_arr)
     q_len = len(question_arr)
@@ -131,5 +138,4 @@ def pass_testing(root):
 
 def pass_testing_rec(res, elem):
     for child in elem.children:
-
         pass_testing_rec(res, elem)

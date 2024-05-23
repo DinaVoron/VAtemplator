@@ -160,7 +160,6 @@ def editor_testing():
         return html
 
     if session["type"] == "verify":
-        print("verify")
         intents = graph_verify(dialog_tree, graph)
         html = render_template(
             "editor_testing_verify.html",

@@ -70,10 +70,15 @@ article #chat #chat-field {
     border:				1px solid var(--main-color_1);
     background-color:	var(--main-color_background_2);
 	width:				100%;
-	height:				600px;
+	height:				80vh;
     margin:				var(--margin-h) 0;
     padding:			calc(2 * var(--margin-h)) calc(2 * var(--margin-w));
     box-sizing: 		border-box;
+}
+@media (max-height: 600px) {
+    article #chat #chat-field {
+	    height:	        60vh;
+    }
 }
 
 
