@@ -1,0 +1,35 @@
+<!-- block-chat -->
+
+<chat id="chat" data-scene="{{ scene_name }}">
+    <section>
+        <h1>Чат :: {{ scene_name }}</h1>
+        <div class="buttons-container">
+            <div class="button" id="end-dialog" onclick="end_dialog();">Завершить диалог</div>
+            <div class="button" style="display:none" id="end-dialog-successfully" onclick="rating_dialog('OK');">Успешно</div>
+            <div class="button" style="display:none" id="end-dialog-unsuccessfully" onclick="rating_dialog('ERR');">Неудачно</div>
+        </div>
+    </section>
+    <section>
+        <div id="chat-field">
+            <div class="message-container">
+                <div class="answer">
+                    {{ message }}
+                </div>
+            </div>
+        </div>
+        <div id="chat-tools">
+            <input type="text" id="request">
+            <div class="icon" id="voice-start">
+                <div></div>
+            </div>
+            <div class="icon" id="voice-stop" style="display:none">
+                <div></div>
+            </div>
+            <div class="icon" id="send">
+                <div></div>
+            </div>
+        </div>
+    </section>
+</chat>
+
+<script src="/static/script/script_chat.js"></script>

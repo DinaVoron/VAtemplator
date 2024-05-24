@@ -4,120 +4,251 @@
 	/* Функциональные цвета */
 
 	/* Цвета стили */
-    --chat-color_funct_1:			var(--main-color_3);
-    --chat-color_funct_2:			var(--main-color_4);
+    --chat-color_funct_1:	var(--main-color_3);
+    --chat-color_funct_2:	var(--main-color_4);
 
 	/* Размер */
-	--chat-size_icon:				1.6em;
+	--chat-size_icon:		25px;
 
-    --chat-width_article:			calc(100% - var(--tabs-width));
-    --chat-height_article:			100%;
-
-	/*
-    --graph-color_funct_3:			#FFEF00;
-
-    *//*
-
-    --graph-color_background_2:		var(--main-color_5);													*//* Заголовок таблицы *//*
-    --graph-color_background_3:		color-mix(in srgb, var(--main-color_1)  8%, transparent);				*//* Строки таблицы *//*
-    --graph-color_background_4:		color-mix(in srgb, var(--main-color_1) 20%, var(--main-color_2));		*//* Кластер / Токен *//*
-    --graph-color_background_5:		color-mix(in srgb, var(--main-color_1) 40%, transparent);				*//* Неизменный *//*
-
-    --graph-color_select:			color-mix(in srgb, var(--main-color_2) 40%, var(--graph-color_funct_1));
-    --graph-color_select_related:	color-mix(in srgb, var(--main-color_2) 80%, var(--graph-color_funct_1));
-    --graph-color_parent:			color-mix(in srgb, var(--main-color_2) 40%, var(--graph-color_funct_2));
-    --graph-color_child:			color-mix(in srgb, var(--main-color_2) 40%, var(--graph-color_funct_3));
-
-	*//*
-	--graph-size_icon:				24px;
-
-    --graph-width_aside:			calc(100% - var(--tabs-width) - var(--graph-width_article));
-    --graph-height_aside:			100%;*/
-
+    --chat-width:			calc(100% - var(--tabs-width));
+    --chat-height:			100%;
 }
 
 /*
-* Основная панель чата :: article
+* Основная панель чата :: chat
 */
 
-article {
+chat {
+    display:			flex;
+    flex-direction:		column;
+
     background-color: 	var(--main-color_background_3);
     border-radius:		8px;
     box-sizing:			border-box;
-    width: 				calc(var(--chat-width_article)  - 2 * var(--margin-w));
-    height: 			calc(var(--chat-height_article) - 2 * var(--margin-h));
-    margin:				var(--margin-h) var(--margin-w);
-    padding:			var(--margin-h) var(--margin-w);
-}
-article section > div {
-    display: 			flex;
+    width: 				calc(var(--chat-width)  - 2 * var(--margin_m));
+    height: 			calc(var(--chat-height) - 2 * var(--margin_l));
+    margin:				var(--margin_l) var(--margin_m);
+    padding:			var(--margin_l) var(--margin_m);
 }
 
 /*
-* Основная панель чата :: article :: chat
+* Основная панель чата :: chat :: section:nth-of-type(1)
 */
 
-article #chat {
-	/* ... */
+chat > section:nth-of-type(1) {
+    display:			flex;
+    align-items:		center;
+    justify-content:	space-between;
+    margin-bottom:		var(--margin_l);
+    padding:			var(--margin_m);
+    background-color:	color-mix(in srgb, var(--white) 40%, transparent);
+    border-radius:		8px;
+    border-bottom:		1px solid color-mix(in srgb, var(--main-color_1) 20%, transparent);
+}
+
+chat > section:first-of-type .buttons-container {
+    display:			flex;
+    align-items:		center;
+}
+
+chat > section:first-of-type .button {
+    margin-left:		var(--margin_m);
 }
 
 /*
-* Основная панель чата :: article :: chat :: chat-field
+* Основная панель чата :: chat :: section:nth-of-type(2)
 */
 
-article #chat #chat-field {
-    display: 			block;
-    border:				1px solid var(--main-color_1);
-    background-color:	var(--main-color_background_2);
-	width:				100%;
-	height:				80vh;
-    margin:				var(--margin-h) 0;
-    padding:			calc(2 * var(--margin-h)) calc(2 * var(--margin-w));
-    box-sizing: 		border-box;
+chat > section:nth-of-type(2) {
+    display:			flex;
+    flex-direction:		column;
+    flex:				1;
+    border-radius:		8px;
+    overflow:			hidden;
 }
+
+/*
+* Основная панель чата :: chat :: section:nth-of-type(2) :: chat-field
+*/
+
+chat > section:nth-of-type(2) #chat-field {
+    flex:				1;
+    overflow-y:			auto;
+    padding:			var(--margin_m);
+    background-color:	var(--white);
+    border-bottom:		1px solid color-mix(in srgb, var(--main-color_1) 20%, transparent);
+}
+/*
 @media (max-height: 600px) {
-    article #chat #chat-field {
+    chat > section:nth-of-type(2) #chat-field {
 	    height:	        60vh;
     }
 }
+*/
 
-
-article #chat #chat-field .answer, .question {
-	padding:			calc(var(--margin-h) / 1.5) calc(var(--margin-w) / 1.5) calc(1.5 * var(--margin-h));
-    border-radius: 		4px;
-	clear:				both;
+chat > section:nth-of-type(2) #chat-field .message-container {
+    display:			flex;
+    margin-bottom:		var(--margin_l);
 }
-article #chat #chat-field .answer {
+
+chat > section:nth-of-type(2) #chat-field .answer, .question {
+	padding:			var(--margin_m) var(--margin_h);
+    border-radius:		4px;
+    max-width:			80%;
+}
+
+chat > section:nth-of-type(2) #chat-field .answer {
+    margin-right:		auto;
+    background-color:	#f0f0f0;
+    padding-left:		calc(2 * var(--margin_h));
+}
+
+chat > section:nth-of-type(2) #chat-field .question {
+    margin-left:		auto;
+    background-color:	#e0f7fa;
+    border:				1px solid #007BFF;
+    padding-right:		calc(2 * var(--margin_h));
+}
+/*
+.answer {
     border:				1px solid var(--chat-color_funct_1);
     background-color:	color-mix(in srgb, var(--chat-color_funct_1) 80%, transparent);
-    padding-left:		calc(2 * var(--margin-w));
-    float:				left;
 
 }
-article #chat #chat-field .question {
+.question {
     border:				1px solid var(--chat-color_funct_2);
     background-color:	color-mix(in srgb, var(--chat-color_funct_2) 80%, transparent);
-    padding-right:		calc(2 * var(--margin-w));
-    float:				right;
+}*/
+
+/*
+* Основная панель чата :: chat :: section:nth-of-type(2) :: chat-tools
+*/
+
+chat > section:nth-of-type(2) #chat-tools {
+    display:			flex;
+	align-items:		center;
+    padding:			calc((var(--margin_h) + var(--margin_m)) / 2);
+    background-color:	color-mix(in srgb, var(--white) 40%, transparent);
+}
+
+chat > section:nth-of-type(2) #chat-tools input[type="text"] {
+    flex:				1;
+    padding:			var(--margin_h);
+    border:				1px solid color-mix(in srgb, var(--main-color_1) 16%, transparent);
+    border-radius:		5px;
+    margin-right:		var(--margin_m);
 }
 
 /*
-* Основная панель чата :: article :: chat :: chat-tools
+* Основная панель чата :: chat :: section:nth-of-type(2) :: chat-tools - Иконки
 */
 
-#request {
-	width: 100%;
+chat > section:nth-of-type(2) #chat-tools .icon {
+	display:			flex;
+	justify-content:	center;
+	align-items:		center;
+    width: 				calc(1.5 * var(--chat-size_icon));
+    height:				calc(1.5 * var(--chat-size_icon));
+    background-color: 	var(--main-color_icon_3);
+    border-radius:		50%;
+    margin-left:		calc((var(--margin_h) + var(--margin_m)) / 2);
+    transition:			all 0.25s ease;
 }
 
+chat > section:nth-of-type(2) #chat-tools .icon:hover {
+    background-color: 	var(--main-color_icon_4);
+}
+
+chat > section:nth-of-type(2) #chat-tools #voice-start > div, #voice-stop > div, #send > div {
+    background-color: 	var(--main-color_icon_2);
+    width: 				var(--chat-size_icon);
+    height:				var(--chat-size_icon);
+}
+
+#voice-start > div {
+    -webkit-mask: 		url(../images/frame-voice.svg) no-repeat center;
+    mask: 				url(../images/frame-voice.svg) no-repeat center;
+    mask-size: 			contain;
+}
+#voice-stop > div {
+    -webkit-mask: 		url(../images/frame-voice-active.svg) no-repeat center;
+    mask: 				url(../images/frame-voice-active.svg) no-repeat center;
+    mask-size: 			contain;
+}
+#send > div {
+    -webkit-mask: 		url(../images/frame-send.svg) no-repeat center;
+    mask: 				url(../images/frame-send.svg) no-repeat center;
+    mask-size: 			contain;
+}
+
+/*#voice-start, #voice-stop, #send {
+    width: 40px;
+    height: 40px;
+    background-color: #007BFF;
+    border-radius: 50%;
+    margin-left: 10px;
+    cursor: pointer;
+}*/
+
+/*#voice-start, #voice-stop, #send {
+    width: 40px;
+    height: 40px;
+    background-color: #007BFF;
+    border-radius: 50%;
+    margin-left: 10px;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    mask-size: cover;
+    mask-position: center;
+    -webkit-mask-size: cover;
+    -webkit-mask-position: center;
+}*/
+
+/*#voice-start, #voice-stop, #send {
+    width: 40px;
+    height: 40px;
+    background-color: #007BFF;
+    border-radius: 50%;
+    margin-left: 10px;
+    cursor: pointer;
+    mask-size: cover;
+    mask-position: center;
+    -webkit-mask-size: cover;
+    -webkit-mask-position: center;
+}
+
+
+*//* Adding specific styles for each button *//*
+#voice-start {
+    *//*background-image: url('../images/frame-voice.svg');*//*
+    mask-image: url('../images/frame-voice.svg');
+    -webkit-mask-image: url('../images/frame-voice.svg');
+}
+
+#voice-stop {
+    *//*background-image: url('../images/frame-voice-active.svg');*//*
+    mask-image: url('../images/frame-voice-active.svg');
+    -webkit-mask-image: url('../images/frame-voice-active.svg');
+}
+
+#send {
+    *//*background-image: url('../images/frame-send.svg');*//*
+    mask-image: url('../images/frame-send.svg');
+    -webkit-mask-image: url('../images/frame-send.svg');
+}*/
+
+
+
+
+
 /*
-* Основная панель чата :: article :: chat :: chat-tools - Иконки
-*/
 
 article #chat #chat-tools div {
     background-color: 	var(--main-color_icon_1);
     width: 				var(--chat-size_icon);
     height:				var(--chat-size_icon);
-    margin:				var(--margin-h) var(--margin-w);
+    margin:				var(--margin_l) var(--margin_m);
 }
 #voice-start {
     -webkit-mask: 		url(../images/frame-voice.svg) no-repeat center;
@@ -133,4 +264,4 @@ article #chat #chat-tools div {
     -webkit-mask: 		url(../images/frame-send.svg) no-repeat center;
     mask: 				url(../images/frame-send.svg) no-repeat center;
     mask-size: 			contain;
-}
+}*/

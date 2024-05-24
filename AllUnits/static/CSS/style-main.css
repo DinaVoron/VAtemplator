@@ -7,6 +7,9 @@
     --main-color_5:				#344966;
     --main-color_6:				#B4CDED;
 
+    --black:					#000000;
+    --white:                    #FFFFFF;
+
     /* Цвета стили */
     --main-color_background_1:	var(--main-color_1);	/* Темный  */
     --main-color_background_2:	var(--main-color_2);	/* Светлый */
@@ -17,19 +20,22 @@
 
     --main-color_icon_1:		var(--main-color_1);	/* Темный  */
     --main-color_icon_2:		var(--main-color_2);	/* Светлый */
+    --main-color_icon_3:		#0F3F80;
+    --main-color_icon_4:		#4176C0;
 
     --main-color_button_1:		var(--main-color_5);	/* По умолчанию */
     --main-color_button_2:		var(--main-color_6);	/* При наводке */
 
     /* Отступ */
-    --margin-w:			8px;
-    --margin-h:			4px;
+    --margin_l:					4px;
+    --margin_m:					8px;
+    --margin_h:					12px;
 
 	/* Текст */
-	--font_family:		Inter, sans-serif;
-	--font_size_h1:		24px;
-	--font_size_medium:	14px;
-	--font_size_small:	10px;
+	--font_family:				Inter, sans-serif;
+	--font_size_h1:				24px;
+	--font_size_medium:			14px;
+	--font_size_small:			10px;
 
 
 
