@@ -29,7 +29,7 @@ let recognition;
 
 voice_start_btn.addEventListener('click', () => {
 	voice_start_btn.style.display = 'none';
-	voice_stop_btn.style.display  = 'block';
+	voice_stop_btn.style.display  = 'flex';
 	request_field.value           = '';
 
     recognition                = new webkitSpeechRecognition();
@@ -61,7 +61,7 @@ voice_start_btn.addEventListener('click', () => {
 });
 
 voice_stop_btn.addEventListener('click', () => {
-	voice_start_btn.style.display = 'block';
+	voice_start_btn.style.display = 'flex';
 	voice_stop_btn.style.display  = 'none';
 
     recognition.stop();

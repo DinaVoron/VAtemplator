@@ -442,90 +442,95 @@ class Graph:
         Returns:
         - list: Обновленный список запросов с найденной информацией.
         """
-
         # Список для хранения слоев, связанных с запросом
         request_layer = []
-
         # Обработка каждого запроса
         for req in request:
             if req["meaning"] is None:
                 continue
-
             if "type" in req and req["type"] == "REPRESENT":
                 name = f"""REPRESENT::{req["intent"]}"""
-            
-                pass
+                request_layer.append(sorted(list(set(self.__search_represent_filter__(name, req)))))
             else:
                 lemma_intent  = f"""NODE::INT::{req["intent"]}-Intent"""
                 lemma_meaning = f"""NODE::INT::{req["intent"]}-Meaning"""
-
                 if self.graph.has_node(lemma_intent) or self.graph.has_node(lemma_meaning):
-                    layer = []
-                    if self.graph.has_node(lemma_intent):
-                        layer += self.__search_node_filter__(lemma_intent, req)
-                    if self.graph.has_node(lemma_meaning):
-                        layer += self.__search_node_filter__(lemma_meaning, req)
-                    request_layer.append(sorted(list(set(layer))))
+                    request_layer.append(sorted(list(set(
+                        self.__search_node_filter__(lemma_intent, req) +
+                        self.__search_node_filter__(lemma_meaning, req)
+                    ))))
                 else:
                     request_layer.append([])
                     break
-
         # Находим общие слои для всех запросов
         if request_layer:
             request_layer = list(set(request_layer[0]).intersection(*request_layer[1:]))
         else:
             return request
-
         # Обновляем запросы с найденной информацией
         for req in request:
             if req["meaning"] is not None:
                 continue
-
             if "type" in req and req["type"] == "REPRESENT":
                 name = f"""REPRESENT::{req["intent"]}"""
-
-                pass
+                self.__search_represent_update__(name, req, request_layer)
             else:
                 lemma_intent  = f"""NODE::INT::{req["intent"]}-Intent"""
                 lemma_meaning = f"""NODE::INT::{req["intent"]}-Meaning"""
-
-                if self.graph.has_node(lemma_intent):
-                    self.__search_node_update__(lemma_intent, req, request_layer)
-                if self.graph.has_node(lemma_meaning):
-                    self.__search_node_update__(lemma_meaning, req, request_layer)
-
+                self.__search_node_update__(lemma_intent, req, request_layer)
+                self.__search_node_update__(lemma_meaning, req, request_layer)
+            req["meaning"] = list(set(req["meaning"]))
         return request
+
+    def __search_represent_filter__(self, i, request):
+        layer = []
+        if self.graph.has_node(i):  # and request["meaning"] is not None:
+            represent_edge = list(self.graph.in_edges(i))
+            for edge in represent_edge:
+                in_edges  = list(self.graph.in_edges(edge[0]))
+                out_edges = list(self.graph.out_edges(edge[0]))
+                for in_edge in in_edges:
+                    in_node = self.graph.nodes[in_edge[0]]["data"]
+                    if in_node.is_meaning and in_node.text in request["meaning"]:
+                        layer += in_node.layer
+        return sorted(list(set(layer)))
 
     def __search_node_filter__(self, i, request):
         layer = []
-
-        if self.graph.has_node(i) and request["meaning"] is not None:
-            node      = self.graph.nodes[i]
+        if self.graph.has_node(i):  # and request["meaning"] is not None:
             in_edges  = list(self.graph.in_edges(i))
             out_edges = list(self.graph.out_edges(i))
-
-            for mean in request["meaning"]:
-                for edge in in_edges:
-                    node_tmp = self.graph.nodes[edge[0]]["data"]
-                    if node_tmp.is_meaning and node_tmp.is_text(mean):
-                        layer += node_tmp.layer
-
+            for in_edge in in_edges:
+                in_node = self.graph.nodes[in_edge[0]]["data"]
+                if in_node.is_meaning and in_node.text in request["meaning"]:
+                    layer += in_node.layer
         return sorted(list(set(layer)))
 
+    def __search_represent_update__(self, i, request, layer):
+        if self.graph.has_node(i):  # and request["meaning"] is None:
+            represent_edge = list(self.graph.in_edges(i))
+            for edge in represent_edge:
+                in_edges  = list(self.graph.in_edges(edge[0]))
+                out_edges = list(self.graph.out_edges(edge[0]))
+                for in_edge in in_edges:
+                    in_node = self.graph.nodes[in_edge[0]]["data"]
+                    if in_node.is_meaning and has_common_element(in_node.layer, layer):
+                        if request["meaning"] is None:
+                            request["meaning"] = [in_node.text]
+                        else:
+                            request["meaning"].append(in_node.text)
+
     def __search_node_update__(self, i, request, layer):
-        if self.graph.has_node(i) and request["meaning"] is None:
-            node      = self.graph.nodes[i]
+        if self.graph.has_node(i):  # and request["meaning"] is None:
             in_edges  = list(self.graph.in_edges(i))
             out_edges = list(self.graph.out_edges(i))
-
-            for edge in in_edges:
-                node_tmp = self.graph.nodes[edge[0]]["data"]
-
-                if node_tmp.is_meaning and has_common_element(layer, node_tmp.layer):
+            for in_edge in in_edges:
+                in_node = self.graph.nodes[in_edge[0]]["data"]
+                if in_node.is_meaning and has_common_element(in_node.layer, layer):
                     if request["meaning"] is None:
-                        request["meaning"] = [node_tmp.text]
+                        request["meaning"] = [in_node.text]
                     else:
-                        request["meaning"].append(node_tmp.text)
+                        request["meaning"].append(in_node.text)
 
     def is_reference_name(self, name):
         return name in self.reference

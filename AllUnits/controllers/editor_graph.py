@@ -118,6 +118,30 @@ def load_data():
 @app.route("/graph/delete_data", methods=["POST"])
 def delete_data():
     graph.delete_data(request.data.decode("utf-8"))
+
+    # graph.search([
+    #     {
+    #         'type':     "REPRESENT",
+    #         'intent':   "Под",
+    #         'meaning':  ["прикладной математика информатика"]
+    #     },
+    #     {
+    #         'type':     "REPRESENT",
+    #         'intent':   "Год",
+    #         'meaning':  ["2020", "2021"]
+    #     },
+    #     {
+    #         'type':     "REPRESENT",
+    #         'intent':   "Про-Бал",
+    #         'meaning':  None
+    #     },
+    #     {
+    #         'type':     "REPRESENT",
+    #         'intent':   "Бал",
+    #         'meaning':  None
+    #     }
+    # ])
+
     # print("nodes\n",              graph.nodes,              "\n")
     # print("nodes_data\n",         graph.nodes_data,         "\n")
     # print("nodes_intent\n",       graph.nodes_intent,       "\n")
