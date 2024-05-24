@@ -552,21 +552,65 @@ class Graph:
 
     @property
     def nodes_data(self):
-        return [
-            self.graph.nodes[i]["data"] for i in self.graph.nodes
-        ]
+        texts = {}
+        nodes = []
+        for i in self.graph.nodes:
+            node = self.graph.nodes[i]["data"]
+            if node.is_intent:
+                if node.text in texts:
+                    node = GraphNode(
+                        "", node.text,
+                        sorted(list(set(nodes[texts[node.text]].layer + node.layer))),
+                        True, True
+                    )
+                    nodes[texts[node.text]] = node
+                else:
+                    texts[node.text] = len(nodes)
+                    nodes.append(node)
+            else:
+                nodes.append(node)
+        # return [
+        #     self.graph.nodes[i]["data"] for i in self.graph.nodes
+        # ]
+        return nodes
 
     @property
     def nodes_intent(self):
-        return [
-            self.graph.nodes[i]["data"] for i in self.graph.nodes if self.graph.nodes[i]["data"].is_intent
-        ]
+        texts = {}
+        nodes = []
+        for i in self.graph.nodes:
+            if self.graph.nodes[i]["data"].is_intent:
+                node = self.graph.nodes[i]["data"]
+            else:
+                continue
+
+            if node.text in texts:
+                node = GraphNode(
+                    None, node.text,
+                    sorted(list(set(nodes[texts[node.text]].layer + node.layer))),
+                    True, True
+                )
+                nodes[texts[node.text]] = node
+            else:
+                texts[node.text] = len(nodes)
+                nodes.append(node)
+        # return [
+        #     self.graph.nodes[i]["data"] for i in self.graph.nodes if self.graph.nodes[i]["data"].is_intent
+        # ]
+        return nodes
 
     @property
     def nodes_intent_text(self):
-        return [
-            self.graph.nodes[i]["data"].text for i in self.graph.nodes if self.graph.nodes[i]["data"].is_intent
-        ]
+        texts = []
+        for i in self.graph.nodes:
+            if self.graph.nodes[i]["data"].is_intent and self.graph.nodes[i]["data"].text not in texts:
+                texts.append(self.graph.nodes[i]["data"].text)
+            else:
+                continue
+        # return [
+        #     self.graph.nodes[i]["data"].text for i in self.graph.nodes if self.graph.nodes[i]["data"].is_intent
+        # ]
+        return texts
 
     @property
     def nodes_meaning(self):
@@ -599,10 +643,40 @@ class Graph:
 
     @property
     def edges_data(self):
-        nodes = self.graph.nodes
-        return [
-            (nodes[i]["data"], nodes[j]["data"]) for i, j in self.graph.edges
-        ]
+        texts = {}
+        edges = []
+        for i, j in self.graph.edges:
+            node_l = self.graph.nodes[i]["data"]
+            node_r = self.graph.nodes[j]["data"]
+            index_l = node_l.text if node_l.is_intent else f"ID::{i}"
+            index_r = node_r.text if node_r.is_intent else f"ID::{j}"
+            index   = (index_l, index_r)
+            if node_l.is_intent or node_r.is_intent:
+                if index in texts:
+                    edge = edges[texts[index]]
+                    if node_l.is_intent and edge[0].is_meaning != node_l.is_meaning:
+                        node_l = GraphNode(
+                            "", node_l.text,
+                            sorted(list(set(edge[0].layer + node_l.layer))),
+                            True, True
+                        )
+                    if node_r.is_intent and edge[1].is_meaning != node_r.is_meaning:
+                        node_r = GraphNode(
+                            "", node_r.text,
+                            sorted(list(set(edge[1].layer + node_r.layer))),
+                            True, True
+                        )
+                    edges[texts[index]] = (node_l, node_r)
+                else:
+                    texts[index] = len(edges)
+                    edges.append((node_l, node_r))
+            else:
+                edges.append((node_l, node_r))
+        # nodes = self.graph.nodes
+        # return [
+        #     (nodes[i]["data"], nodes[j]["data"]) for i, j in self.graph.edges
+        # ]
+        return edges
 
     def edge_parsing(self, i, j):
         if self.graph.has_edge(i, j):

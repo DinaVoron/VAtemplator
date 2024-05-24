@@ -33,10 +33,10 @@ article {
     background-color:	var(--main-color_background_2);
     border-radius:		8px;
     box-sizing:			border-box;
-    width: 				calc(var(--graph-width_article)  - 2 * var(--margin-w));
-    height: 			calc(var(--graph-height_article) - 2 * var(--margin-h));
-    margin:				var(--margin-h) var(--margin-w);
-    padding:			var(--margin-h) var(--margin-w);
+    width: 				calc(var(--graph-width_article)  - 2 * var(--margin_m));
+    height: 			calc(var(--graph-height_article) - 2 * var(--margin_l));
+    margin:				var(--margin_l) var(--margin_m);
+    padding:			var(--margin_l) var(--margin_m);
 }
 article section > div {
     display: 			flex;
@@ -111,9 +111,9 @@ article li.file-item div.elem-delete {
 */
 
 aside {
-    width: 				calc(var(--graph-width_aside)  - 2 * var(--margin-w));
-    height: 			calc(var(--graph-height_aside) - 2 * var(--margin-h));
-    margin:				var(--margin-h) var(--margin-w);
+    width: 				calc(var(--graph-width_aside)  - 2 * var(--margin_m));
+    height: 			calc(var(--graph-height_aside) - 2 * var(--margin_l));
+    margin:				var(--margin_l) var(--margin_m);
     box-sizing: 		border-box;
 }
 aside section {
@@ -126,7 +126,7 @@ aside section#graph-visible {
 	/* ... */
 }
 aside section#process-data {
-    padding:			var(--margin-h) var(--margin-w);
+    padding:			var(--margin_l) var(--margin_m);
     box-sizing: 		border-box;
 }
 

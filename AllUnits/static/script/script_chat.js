@@ -67,72 +67,90 @@ voice_stop_btn.addEventListener('click', () => {
     recognition.stop();
 });
 
-send_btn.addEventListener('click', () => {
-	const chat = document.getElementById('chat');
+request_field.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        send();
+    }
+});
 
+send_btn.addEventListener('click', () => {
+	send();
+});
+
+function send() {
 	if (request_field.value == "") {
 		return
 	}
+
+	const chat = document.getElementById('chat');
 
 	request_to_server('/chat/send', 'POST', 'json', 'json', {
 		scene:    chat.dataset.scene,
 		question: request_field.value
 	})
     .then(data => {
-    	document.querySelector("article h1").innerHTML = "Чат :: " + data.scene_name;
-    	chat.dataset.scene                             = data.scene_name;
+    	document.querySelector("chat h1").innerHTML = "Чат :: " + data.scene_name;
+    	chat.dataset.scene                          = data.scene_name;
+    	create_message(data.question, 'question');
+    	create_message(data.answer, 'answer');
+    	request_field.value = "";
 
-    	let question         = document.createElement('div');
-        question.textContent = data.question;
-        question.classList.add('question');
-        document.getElementById("chat-field").appendChild(question);
-
-    	let answer           = document.createElement('div');
-        answer.textContent   = data.answer;
-        answer.classList.add('answer');
-        document.getElementById("chat-field").appendChild(answer);
-
-    	request_field.value = ""
+    	scrollToBottom();
     })
     .catch(error => {
         console.error('Ошибка при отправке запроса на сервер:', error);
     });
-});
+}
+
+function scrollToBottom() {
+    document.getElementById("chat-field").scrollTop = document.getElementById("chat-field").scrollHeight;
+}
 
 function end_dialog() {
 	document.getElementById('end-dialog').style.display                = 'none';
-	document.getElementById('end-dialog-successfully').style.display   = 'block';
-	document.getElementById('end-dialog-unsuccessfully').style.display = 'block';
+	document.getElementById('end-dialog-successfully').style.display   = 'inline-block';
+	document.getElementById('end-dialog-unsuccessfully').style.display = 'inline-block';
 
-	voice_start_btn.style.display = 'block';
-	voice_stop_btn.style.display  = 'none';
-    recognition.stop();
+	if (recognition) {
+		voice_start_btn.style.display = 'block';
+		voice_stop_btn.style.display  = 'none';
+		recognition.stop();
+	}
 }
 
 function rating_dialog(rating) {
-	document.getElementById('end-dialog').style.display                = 'block';
+	document.getElementById('end-dialog').style.display                = 'inline-block';
 	document.getElementById('end-dialog-successfully').style.display   = 'none';
 	document.getElementById('end-dialog-unsuccessfully').style.display = 'none';
 
-	voice_start_btn.style.display = 'block';
-	voice_stop_btn.style.display  = 'none';
-    recognition.stop();
+	if (recognition) {
+		voice_start_btn.style.display = 'block';
+		voice_stop_btn.style.display  = 'none';
+		recognition.stop();
+	}
 
 	request_to_server('/chat/rating', 'POST', 'text', 'json', rating)
     .then(data => {
-    	document.querySelector("article h1").innerHTML = "Чат :: " + data.scene_name;
-    	chat.dataset.scene                             = data.scene_name;
-
+    	document.querySelector("chat h1").innerHTML = "Чат :: " + data.scene_name;
+    	chat.dataset.scene                              = data.scene_name;
         document.getElementById("chat-field").innerHTML = '';
 
-    	let message         = document.createElement('div');
-        message.textContent = data.message;
-        message.classList.add('answer');
-        document.getElementById("chat-field").appendChild(message);
-
+    	create_message(data.message, 'answer');
     	request_field.value = ""
     })
     .catch(error => {
         console.error('Ошибка при отправке запроса на сервер:', error);
     });
+}
+
+function create_message(text, class_) {
+	let message_container = document.createElement('div');
+	message_container.classList.add('message-container');
+	document.getElementById("chat-field").appendChild(message_container);
+
+	let message = document.createElement('div');
+	message.textContent = text;
+	message.classList.add(class_);
+	message_container.appendChild(message);
 }
