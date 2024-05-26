@@ -544,7 +544,7 @@ class Graph:
                     continue
                 if not is_space and word.is_space:
                     continue
-                content += word.lemma_.lower() + " "
+                content += word.lemma_ + " "
             content = content[:-1] + ". "
 
         return content[:-1]
