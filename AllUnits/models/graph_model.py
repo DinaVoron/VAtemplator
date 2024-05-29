@@ -465,7 +465,7 @@ class Graph:
         # Находим общие слои для всех запросов
         if request_layer:
             request_layer = list(set(request_layer[0]).intersection(*request_layer[1:]))
-        else:
+        if not request_layer:
             return request
         # Обновляем запросы с найденной информацией
         for req in request:
