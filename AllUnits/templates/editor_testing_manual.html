@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Тестирование</title>
     <link rel="stylesheet" href="static/css/style-main.css">
     <link rel="stylesheet" href="static/css/style-tabs.css">
@@ -24,7 +25,7 @@
     {% macro render_questions() %}
     {% for i in range(len(user_questions)) %}
         <label>
-            <textarea class="questions-textarea" name="questions" cols="57" rows="2">{{ user_questions[i] }}</textarea>
+            <textarea class="questions-textarea" name="questions" cols="80" rows="2">{{ user_questions[i] }}</textarea>
             {% if is_answer %}
             <div class="answer-area">
                 Ответ: {{ answers[i] }}
@@ -35,6 +36,14 @@
         </label>
     {% endfor %}
     {% endmacro %}
+    <!--####################################################################################################-->
+    <!--####################################################################################################-->
+    <!--####################################################################################################-->
+    <link rel="stylesheet" href="static/css/style-chat.css">
+    <script src="/static/script/script_main.js"></script>
+    <!--####################################################################################################-->
+    <!--####################################################################################################-->
+    <!--####################################################################################################-->
 </head>
 <body>
     {{ render_menu() }}
@@ -66,11 +75,18 @@
                         {% endif %}
                     </section>
                 </article>
-                <article  class="testing-article">
+                <article  class="testing-article testing-article_chat">
                     <div class="testing-article__header">Ручное тестирование</div>
                     <div class="frame-div">
-                        <iframe class="frame-div__iframe" src="{{ url_for('editor_chat') }}">
-                        </iframe>
+                        <!--####################################################################################################-->
+                        <!--####################################################################################################-->
+                        <!--####################################################################################################-->
+                        {% include "__block_chat.html" %}
+                        <!--<iframe class="frame-div__iframe" src="{{ url_for('editor_chat') }}">
+                        </iframe>-->
+                        <!--####################################################################################################-->
+                        <!--####################################################################################################-->
+                        <!--####################################################################################################-->
                     </div>
                 </article>
             </section>
@@ -83,7 +99,7 @@
             questions = document.getElementById("questions_section");
             newTextarea = document.createElement("label");
             newTextarea.innerHTML = `
-                <textarea class="questions-textarea" name="questions" cols="57" rows="2"></textarea>
+                <textarea class="questions-textarea" name="questions" cols="80" rows="2"></textarea>
             `;
             questions.appendChild(newTextarea);
         };

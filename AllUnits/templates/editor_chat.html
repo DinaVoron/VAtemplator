@@ -7,35 +7,12 @@
     <link rel="stylesheet" href="static/css/style-main.css">
     <link rel="stylesheet" href="static/css/style-tabs.css">
     <link rel="stylesheet" href="static/css/style-chat.css">
+
+    <script src="/static/script/script_main.js"></script>
 </head>
 <body>
     {% include "__block_tabs.html" %}
 
-    <article>
-        <section>
-            <h1>Чат :: {{ scene_name }}</h1>
-        </section>
-
-        <section id="chat" data-scene="{{ scene_name }}">
-            <div id="chat-field">
-                <div class="answer">{{ message }}</div>
-            </div>
-            <div id="chat-tools">
-                <input type="text" id="request">
-                <div id="voice-start"></div>
-                <div id="voice-stop" style="display:none"></div>
-                <div id="send"></div>
-            </div>
-        </section>
-
-        <section>
-            <div class="button" id="end-dialog" onclick="end_dialog();">Завершить диалог</div>
-            <div class="button" style="display:none" id="end-dialog-successfully" onclick="rating_dialog('OK');">Успешно</div>
-            <div class="button" style="display:none" id="end-dialog-unsuccessfully" onclick="rating_dialog('ERR');">Неудачно</div>
-        </section>
-    </article>
-
-    <script src="/static/script/script_main.js"></script>
-    <script src="/static/script/script_chat.js"></script>
+    {% include "__block_chat.html" %}
 </body>
 </html>

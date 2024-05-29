@@ -6,6 +6,9 @@ class GraphNode:
         self.f_intent = f_intent_
         self.f_value  = f_value_
 
+    def __repr__(self):
+        return f"{self.text} {self.layer}"
+
     def is_text(self, text):
         return self.text == str(text)
 
@@ -23,6 +26,7 @@ class GraphNode:
                 return self.type_, "Meaning"
             else:
                 return self.type_, "Null"
+        return None
 
     @property
     def is_intent(self):

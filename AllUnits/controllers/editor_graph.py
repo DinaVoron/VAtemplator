@@ -118,6 +118,41 @@ def load_data():
 @app.route("/graph/delete_data", methods=["POST"])
 def delete_data():
     graph.delete_data(request.data.decode("utf-8"))
+
+    # print(graph.processing_text("Какой проходной балл по направлению ."))
+
+    # graph.search([
+    #     {
+    #         'type':     "REPRESENT",
+    #         'intent':   "Под",
+    #         'meaning':  ["прикладной математика информатика"]
+    #     },
+    #     {
+    #         'type':     "REPRESENT",
+    #         'intent':   "Год",
+    #         'meaning':  ["2020", "2021"]
+    #     },
+    #     {
+    #         'type':     "REPRESENT",
+    #         'intent':   "Про-Бал",
+    #         'meaning':  None
+    #     },
+    #     {
+    #         'type':     "REPRESENT",
+    #         'intent':   "Бал",
+    #         'meaning':  None
+    #     }
+    # ])
+
+    # print("nodes\n",              graph.nodes,              "\n")
+    # print("nodes_data\n",         graph.nodes_data,         "\n")
+    # print("nodes_intent\n",       graph.nodes_intent,       "\n")
+    # print("nodes_intent_text\n",  graph.nodes_intent_text,  "\n")
+    # print("nodes_meaning\n",      graph.nodes_meaning,      "\n")
+    # print("nodes_meaning_text\n", graph.nodes_meaning_text, "\n")
+    # print("edges\n",              graph.edges,              "\n")
+    # print("edges_data\n",         graph.edges_data,         "\n")
+
     return make_response("", 200)
 
 

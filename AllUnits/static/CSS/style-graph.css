@@ -7,7 +7,7 @@
     --graph-color_funct_3:			#FFEF00;
 
     /* Цвета стили */
-    --graph-color_background_1:		var(--main-color_5);													/* Заголовок таблицы */
+    --graph-color_background_1:		color-mix(in srgb, var(--main-color_1) 75%, var(--main-color_5));		/* Заголовок таблицы */
     --graph-color_background_2:		color-mix(in srgb, var(--main-color_1)  8%, transparent);				/* Строки таблицы */
     --graph-color_background_5:		color-mix(in srgb, var(--main-color_1) 40%, transparent);				/* Неизменный */
 
@@ -33,10 +33,10 @@ article {
     background-color:	var(--main-color_background_2);
     border-radius:		8px;
     box-sizing:			border-box;
-    width: 				calc(var(--graph-width_article)  - 2 * var(--margin-w));
-    height: 			calc(var(--graph-height_article) - 2 * var(--margin-h));
-    margin:				var(--margin-h) var(--margin-w);
-    padding:			var(--margin-h) var(--margin-w);
+    width: 				calc(var(--graph-width_article)  - 2 * var(--margin_m));
+    height: 			calc(var(--graph-height_article) - 2 * var(--margin_l));
+    margin:				var(--margin_l) var(--margin_m);
+    padding:			var(--margin_l) var(--margin_m);
 }
 article section > div {
     display: 			flex;
@@ -111,23 +111,16 @@ article li.file-item div.elem-delete {
 */
 
 aside {
-    width: 				calc(var(--graph-width_aside)  - 2 * var(--margin-w));
-    height: 			calc(var(--graph-height_aside) - 2 * var(--margin-h));
-    margin:				var(--margin-h) var(--margin-w);
-    box-sizing: 		border-box;
+    background-color: 	var(--main-color_background_3);
+    border-radius:		8px;
+    box-sizing:			border-box;
+    width: 				calc(var(--graph-width_aside)  - 2 * var(--margin_m));
+    height: 			calc(var(--graph-height_aside) - 2 * var(--margin_l));
+    margin:				var(--margin_l) var(--margin_m);
+    padding:			var(--margin_l) var(--margin_m);
 }
 aside section {
-	width:				100%;
-	height:				100%;
-    margin: 			0;
-    padding: 			0;
-}
-aside section#graph-visible {
-	/* ... */
-}
-aside section#process-data {
-    padding:			var(--margin-h) var(--margin-w);
-    box-sizing: 		border-box;
+    overflow:			hidden;
 }
 
 /*
@@ -135,7 +128,11 @@ aside section#process-data {
 */
 
 aside #graph-visible {
-	/* ... */
+    border-radius:		8px;
+    box-sizing:			border-box;
+	width:				100%;
+	height:				100%;
+    overflow:			hidden;
 }
 
 /*
@@ -143,89 +140,211 @@ aside #graph-visible {
 */
 
 aside #process-data {
-	/* ... */
+    display:			flex;
+    flex-direction:		column;
+    border-radius:		8px;
+    box-sizing:			border-box;
+	width:				100%;
+	height:				100%;
 }
 
 /*
-* Основная панель содержимого :: aside :: process-data :: content-container
+* Основная панель содержимого :: aside :: process-data :: div:nth-of-type(1)
 */
 
-aside #process-data #content-container {
-	/* ... */
+aside #process-data > div:nth-of-type(1) {
+    display:			flex;
+    justify-content:	space-between;
+    background-color:	color-mix(in srgb, var(--white) 40%, transparent);
+    border-bottom:		1px solid color-mix(in srgb, var(--main-color_1) 20%, transparent);
+    border-radius:		8px;
+    margin-bottom:		var(--margin_h);
+    padding:			var(--margin_m);
 }
-aside #process-data #content-container swap {
+
+aside #process-data > div:nth-of-type(1) .buttons-container {
+	display:			flex;
+	align-items:		center;
+}
+aside #process-data > div:nth-of-type(1) .button {
+	margin-left:		var(--margin_m);
+}
+
+/*
+* Основная панель содержимого :: aside :: process-data :: div:nth-of-type(2)
+*/
+
+aside #process-data > div:nth-of-type(2) {
+    display:			flex;
+    flex-direction:		row-reverse; /* row-reverse */
+    flex:				1;
+    border-radius:		8px;
+    overflow:			hidden;
+}
+
+/*
+* Основная панель содержимого :: aside :: process-data :: div:nth-of-type(2) :: content-container
+*/
+
+aside #process-data > div:nth-of-type(2) #content-container {
+    background-color:	var(--white);
+    border:				1px solid color-mix(in srgb, var(--main-color_1) 20%, transparent);
+    border-radius:		8px;
+    box-sizing:			border-box;
+    width:				42%;
+    margin:				0;
+    margin-left:		var(--margin_l);
+    padding:			var(--margin_m) var(--margin_h);
+    overflow-y:			auto;
+}
+
+/*
+* Основная панель содержимого :: aside :: process-data :: div:nth-of-type(2) :: content-container - Выделение
+*/
+
+aside #process-data > div:nth-of-type(2) #content-container swap {
     font-weight:		bold;
     border-radius:		3px;
-    padding:			3px 5px;
+    padding:			calc(var(--margin_l) / 2) var(--margin_m);
+}
+aside #process-data > div:nth-of-type(2) #content-container .select {
+    border-left:		1px solid color-mix(in srgb, var(--graph-color_select) 80%, var(--main-color_1));
+    border-right:		1px solid color-mix(in srgb, var(--graph-color_select) 80%, var(--main-color_1));
+    border-bottom:		1px solid color-mix(in srgb, var(--graph-color_select) 40%, var(--main-color_1));
+	background-color:	color-mix(in srgb, var(--graph-color_select) 80%, transparent);
+}
+aside #process-data > div:nth-of-type(2) #content-container .select_related {
+    border-left:		1px solid color-mix(in srgb, var(--graph-color_select_related) 80%, var(--main-color_1));
+    border-right:		1px solid color-mix(in srgb, var(--graph-color_select_related) 80%, var(--main-color_1));
+    border-bottom:		1px solid color-mix(in srgb, var(--graph-color_select_related) 40%, var(--main-color_1));
+	background-color:	color-mix(in srgb, var(--graph-color_select_related) 80%, transparent);
+}
+aside #process-data > div:nth-of-type(2) #content-container .parent {
+    border-left:		1px solid color-mix(in srgb, var(--graph-color_parent) 80%, var(--main-color_1));
+    border-right:		1px solid color-mix(in srgb, var(--graph-color_parent) 80%, var(--main-color_1));
+    border-bottom:		1px solid color-mix(in srgb, var(--graph-color_parent) 40%, var(--main-color_1));
+	background-color:	color-mix(in srgb, var(--graph-color_parent) 80%, transparent);
+}
+aside #process-data > div:nth-of-type(2) #content-container .child {
+    border-left:		1px solid color-mix(in srgb, var(--graph-color_child) 80%, var(--main-color_1));
+    border-right:		1px solid color-mix(in srgb, var(--graph-color_child) 80%, var(--main-color_1));
+    border-bottom:		1px solid color-mix(in srgb, var(--graph-color_child) 40%, var(--main-color_1));
+	background-color:	color-mix(in srgb, var(--graph-color_child) 80%, transparent);
 }
 
 /*
-* Основная панель содержимого :: aside :: process-data :: cluster-container
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0) 49.9%, green 49.9%, green 60%, rgba(0, 0, 0, 0) 60% ), linear-gradient(45deg, green 10%, rgba(0, 0, 0, 0) 10% );
+    background-size: 0.5em 0.5em;
+
+	background: content-box radial-gradient(crimson, transparent);
 */
 
-aside #process-data #cluster-container {
-	/* ... */
-}
+/*
+* Основная панель содержимого :: aside :: process-data :: div:nth-of-type(2) ::  cluster-container
+*/
 
-aside #process-data #cluster-container table {
+aside #process-data > div:nth-of-type(2) #cluster-container {
+	border:				1px solid #ddd;
+    border-radius:		8px;
+    box-sizing:			border-box;
+    width:				58%;
+    margin:				0;
+    margin-right:		var(--margin_l);
+	position:			relative;
+    overflow-y:			auto;
+}
+aside #process-data > div:nth-of-type(2) #cluster-container table {
     width:				100%;
-    border-collapse:	collapse;
+    border-collapse:	collapse; /* separate; */
+    border-spacing:		0;
 }
-aside #process-data #cluster-container th, td {
-    border:				1px solid var(--main-color_1);
-    padding:			8px;
-    text-align:			left;
-}
-aside #process-data #cluster-container th {
+aside #process-data > div:nth-of-type(2) #cluster-container thead {
 	color:				var(--main-color_text_2);
     background-color:	var(--graph-color_background_1);
-    text-align:			center;
+	position:			sticky;
+	top:				0;
+	z-index:			1;
 }
-aside #process-data #cluster-container div {
+aside #process-data > div:nth-of-type(2) #cluster-container thead tr {
+    box-sizing:			border-box;
+	margin:				0px;
+	background-clip:	padding-box;
+	vertical-align:		middle;
+	text-align:			center;
+}
+aside #process-data > div:nth-of-type(2) #cluster-container tbody tr {
+    border-bottom:		1px solid color-mix(in srgb, var(--main-color_1) 10%, transparent);
+    box-sizing:			border-box;
+	margin:				0px;
+	cursor:				pointer;
+}
+aside #process-data > div:nth-of-type(2) #cluster-container tbody tr:nth-child(even) {
+	background-color:	#F9F9F9;
+}
+aside #process-data > div:nth-of-type(2) #cluster-container th, td {
+    box-sizing:			border-box;
+	margin:				0px;
+    padding:			var(--margin_l) var(--margin_m);
+}
+aside #process-data > div:nth-of-type(2) #cluster-container thead tr:nth-of-type(1) th:nth-child(even) {
+    background-color:	color-mix(in srgb, var(--main-color_5) 20%, transparent);
+}
+aside #process-data > div:nth-of-type(2) #cluster-container thead tr:nth-of-type(2) th {
+    background-color:	color-mix(in srgb, var(--main-color_5) 10%, transparent);
+}
+aside #process-data > div:nth-of-type(2) #cluster-container thead tr:nth-of-type(2) th:nth-of-type(3) {
+    background-color:	color-mix(in srgb, var(--main-color_5) 30%, transparent);
+}
+aside #process-data > div:nth-of-type(2) #cluster-container thead tr:nth-of-type(2) th:nth-of-type(4) {
+    background-color:	color-mix(in srgb, var(--main-color_5) 30%, transparent);
+}
+aside #process-data > div:nth-of-type(2) #cluster-container td {
+	text-align:			left;
+}
+aside #process-data > div:nth-of-type(2) #cluster-container input[type="text"] {
+    border-radius:		3px;
+    border:				1px solid #808080;
+    width:				100%;
+    box-sizing:			border-box;
+    padding:			var(--margin_l);
+
+}
+aside #process-data > div:nth-of-type(2) #cluster-container div[draggable] {
     display:			inline-block;
-    border-radius:		2px;
-    margin-right:		5px;
+    background-color:	#F0F0F0;
+    border:				1px solid #DDDDDD;
+    border-radius:		4px;
+    margin-right:		var(--margin_l);
+    padding:			calc(var(--margin_l) / 2) var(--margin_l);
+    cursor:				grab;
+}
+aside #process-data > div:nth-of-type(2) #cluster-container div[draggable]:hover {
+    background-color:	#D0D0D0;
+}
+aside #process-data > div:nth-of-type(2) #cluster-container .data-disabled {
+    color:				#AAAAAA;
+    text-decoration:	line-through;
 }
 
 /*
-* Основная панель содержимого :: aside :: process-data - Выделение
+* Основная панель содержимого :: aside :: process-data :: div:nth-of-type(2) ::  cluster-container - Выделение
 */
 
-aside #process-data tr:nth-child(even) {
-	background-color:	var(--graph-color_background_2);
+aside #process-data > div:nth-of-type(2) #cluster-container tr.select {
+	background-color:	color-mix(in srgb, var(--graph-color_select) 75%, transparent);
 }
-aside #process-data tr.select:nth-child(even) {
-	background-color:	var(--graph-color_select);
+aside #process-data > div:nth-of-type(2) #cluster-container tr.parent {
+	background-color:	color-mix(in srgb, var(--graph-color_parent) 80%, transparent);
 }
-aside #process-data tr.parent:nth-child(even) {
-	background-color:	var(--graph-color_parent);
+aside #process-data > div:nth-of-type(2) #cluster-container tr.child {
+	background-color:	color-mix(in srgb, var(--graph-color_child) 80%, transparent);
 }
-aside #process-data tr.child:nth-child(even) {
-	background-color:	var(--graph-color_child);
+aside #process-data > div:nth-of-type(2) #cluster-container tr.select:nth-child(even) {
+	background-color:	color-mix(in srgb, var(--graph-color_select) 50%, transparent);
 }
-aside #process-data .select {
-    border:				1px solid color-mix(in srgb, var(--main-color_1) 20%, var(--graph-color_select));
-	background-color:	var(--graph-color_select);
+aside #process-data > div:nth-of-type(2) #cluster-container tr.parent:nth-child(even) {
+	background-color:	color-mix(in srgb, var(--graph-color_parent) 60%, transparent);
 }
-aside #process-data .select_related {
-    border:				1px dashed color-mix(in srgb, var(--main-color_1) 20%, var(--graph-color_select));
-	background-color:	var(--graph-color_select_related);
-}
-aside #process-data .parent {
-    border:				1px solid color-mix(in srgb, var(--main-color_1) 20%, var(--graph-color_parent));
-	background-color:	var(--graph-color_parent);
-}
-aside #process-data .child {
-    border:				1px solid color-mix(in srgb, var(--main-color_1) 20%, var(--graph-color_child));
-	background-color:	var(--graph-color_child);
-}
-
-
-
-
-
-aside #process-data td.data-disabled {
-	background-color: dimgrey;
-	color: linen;
-	opacity: 1;
+aside #process-data > div:nth-of-type(2) #cluster-container tr.child:nth-child(even) {
+	background-color:	color-mix(in srgb, var(--graph-color_child) 60%, transparent);
 }
