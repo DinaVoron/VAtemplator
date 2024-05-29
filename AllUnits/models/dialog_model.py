@@ -375,13 +375,13 @@ def main():
     tree.set_height_tree()
     '''
 
-    main_scene = Scene(name="проверка направлений",
+    main_scene = Scene(name="проверка_направлений",
                        answer=["Да"],
                        questions=[[IntentTemplate("срок"),
                                    IntentTemplate("приём")]],
                        available_intents_list=['направление'],
                        clarifying_question=["Не найден ответ в main"])
-    sub1 = Scene(name="проверка балла направления", pass_conditions=[["месяц"]],
+    sub1 = Scene(name="проверка_балла_направления", pass_conditions=[["месяц"]],
                  answer= [IntentTemplate("балл"),
                           IntentValue("балл")],
                  available_intents_list=['направление', 'балл'],

@@ -84,10 +84,10 @@ def editor_tree():
     new_scene = dialog_tree.final_pass_to_scene(intents)
     print(new_scene)
     list_dict_intents = []
-    question_intents = ['направление', 'балл']
+    question_intents = ['Под', 'Бал']
     for intent in question_intents:
-        list_dict_intents.append({"intent":intent, "meaning": None})
-    list_dict_intents = graph.search(list_dict_intents)
+        list_dict_intents.append({"intent":intent, "meaning": None, "type": "REPRESENT"})
+    list_dict_intents = graph.search(list_dict_intents, flag=True) # flag - true, если без значений
     print(list_dict_intents)
     #
     html = render_template(
