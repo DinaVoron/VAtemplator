@@ -2,7 +2,10 @@ from app import app, graph, dialog_tree
 from flask import render_template, request
 from models.dialog_model import (get_text_scenes, get_root, get_scene_name,
                                  find_scene_by_name, get_scene_everything,
-                                 add_child, save_tree, add_scene, delete_scene)
+                                 add_child, save_tree, add_scene, delete_scene,
+                                 find_intents)
+import json
+import jsons
 
 
 @app.route("/", methods=["get", "post"])
@@ -11,6 +14,8 @@ def editor_tree():
     #text_scenes = all_scenes.split('\n')
     all_tree = dialog_tree
     scenes_count, scenes_list = dialog_tree.get_scenes_list()
+    json_scenes_list = jsons.dump(scenes_list)
+    json_scenes_list = jsons.load(json_scenes_list)
 
     # Если сцена не выбрана
     if request.values.get("go_to_scene"):
@@ -64,7 +69,27 @@ def editor_tree():
         current_scene.add_intent_in_list(request.values.get("graph_intents"))
 
     graph_intents = graph.nodes_intent_text
+    graph_full_intents = graph.nodes_intent
 
+    graph_intent = graph_full_intents[0]
+    #print(type(graph_intent))
+    print(graph_intent.__dict__)
+    #print(graph.nodes_meaning[0].__dict__)
+
+    # проверочный код, убрать
+    question = 'направление подготовки и год c баллом'
+    intents = find_intents(graph_intents, question)
+    print(intents)
+    print(dialog_tree.root.check_to_enter(intents))
+    new_scene = dialog_tree.final_pass_to_scene(intents)
+    print(new_scene)
+    list_dict_intents = []
+    question_intents = ['направление', 'балл']
+    for intent in question_intents:
+        list_dict_intents.append({"intent":intent, "meaning": None})
+    list_dict_intents = graph.search(list_dict_intents)
+    print(list_dict_intents)
+    #
     html = render_template(
         "editor_tree.html",
         current_page='editor_tree',
@@ -77,6 +102,6 @@ def editor_tree():
         child_scene_name = child_scene_name,
 
         graph_intents = graph_intents,
-        scenes_list = scenes_list
+        json_scenes_list = json_scenes_list
     )
     return html
