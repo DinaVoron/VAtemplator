@@ -52,7 +52,7 @@ chat > section:nth-of-type(1) {
     }
 }
 
-chat > section:first-of-type .button {
+chat > section:nth-of-type(1) .button {
     margin-left:		var(--margin_m);
 }
 

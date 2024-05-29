@@ -34,6 +34,7 @@
 	/* Текст */
 	--font_family:				Inter, sans-serif;
 	--font_size_h1:				24px;
+	--font_size_h2:				20px;
 	--font_size_medium:			14px;
 	--font_size_small:			10px;
 
@@ -68,17 +69,17 @@ body .no_text_select {
 	user-select:			none;
 }
 body .shadow {
-	-webkit-box-shadow:		3px 1px 5px 0px rgba(0,0,0,.75);
-	-moz-box-shadow:		3px 1px 5px 0px rgba(0,0,0,.75);
-	-o-box-shadow:			3px 1px 5px 0px rgba(0,0,0,.75);
-	box-shadow:				3px 1px 5px 0px rgba(0,0,0,.75);
+	-webkit-box-shadow:		4px 2px 8px 0px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow:		4px 2px 8px 0px rgba(0, 0, 0, 0.6);
+	-o-box-shadow:			4px 2px 8px 0px rgba(0, 0, 0, 0.6);
+	box-shadow:				4px 2px 8px 0px rgba(0, 0, 0, 0.6);
 }
 
 body {
     color:					var(--main-color_text_1);
 	font-family:			var(--font_family);
     font-size:				var(--font_size_medium);
-    line-height:			1.5;
+    line-height:			1.6;
     text-align: 			justify;
 }
 h1, h2, h3, h4, h5, h6 {
@@ -90,7 +91,11 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
     font-size:				var(--font_size_h1);
 }
+h2 {
+    font-size:				var(--font_size_h2);
+}
 p {
+	margin:					0;
     margin-bottom:			0.5em;
     padding: 				0;
 }
