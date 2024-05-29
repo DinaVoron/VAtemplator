@@ -11,7 +11,7 @@
     {% endmacro %}
 
     {% macro render_log_block(state_name, amount, state) %}
-    <div class="logs__div logs_{{ state }}">
+    <div class="logs__div logs_{{ state }} shadow">
         {{ state_name }}<br><br>
         {{ amount }}/{{ all_amount }} диалогов<br><br>
         <button class="logs__button" value="open_{{ state }}" name="open_{{ state }}">Посмотреть логи</button>
@@ -61,8 +61,8 @@
                 <div class="testing-article__header">Логи</div>
                 <section class="logs">
                     {{ render_log_block("Успех", success_amount, "ok") }}
-                    {{ render_log_block("Провал", not_found_amount, "nf") }}
                     {{ render_log_block("Ошибка", error_amount, "err") }}
+                    {{ render_log_block("Провал", not_found_amount, "nf") }}
                 </section>
             </article>
         </form>

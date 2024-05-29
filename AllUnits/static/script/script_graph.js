@@ -262,76 +262,18 @@ function event_cancel() {
 
 
 
-/*
-function get_table_data() {
-    var table = document.querySelector("#table table");
-    var data = [];
-    var rows = table.querySelectorAll('tbody tr');
-    rows.forEach(function(row) {
-        var row_data = {};
-        var cells = row.querySelectorAll('td');
-        cells.forEach(function(cell) {
-            var value = cell.textContent;
-            if (cell.hasAttribute('data-bool')) {
-                value = cell.getAttribute('data-bool') === 'true';
-            }
-            row_data[cell.cellIndex] = value;
-        });
-        data.push(row_data);
-    });
-    return data;
-}
-
-function create_table(table, json_data) {
-    const thead = document.createElement('thead');
-    const tbody = document.createElement('tbody');
-    const thead_row = document.createElement('tr');
-    const tbody_obj = {};
-    Object.keys(json_data).forEach(function(key) {
-        const th = document.createElement('th');
-        th.textContent = key;
-        thead_row.appendChild(th);
-        Object.keys(json_data[key]).forEach(sub_key => {
-            if (!tbody_obj[sub_key]) {
-                tbody_obj[sub_key] = [];
-            }
-            tbody_obj[sub_key].push(json_data[key][sub_key]);
-        });
-    });
-    thead.appendChild(thead_row);
-    Object.values(tbody_obj).forEach(function(row) {
-        const tbody_row = document.createElement('tr');
-        Object.values(row).forEach(function(value) {
-            const td = document.createElement('td');
-            td.textContent = value;
-            if (value === true || value === false) {
-                td.addEventListener('click', function() {
-                    toggle_boolean_value(td);
-                });
-            }
-            tbody_row.appendChild(td);
-        });
-        tbody.appendChild(tbody_row);
-    });
-    table.appendChild(thead);
-    table.appendChild(tbody);
-}
-
-function clear_table() {
-    document.querySelector("#table table").innerHTML = "";
-}
-
-function toggle_boolean_value(cell) {
-    cell.textContent = cell.textContent === 'true' ? 'false' : 'true';
-}
-*/
-
 function swap_display(display) {
     if (display === "graph-visible") {
-        document.getElementById("graph-visible").style.display = "block";
+    	document.querySelector("article").style.display = "block";
+    	document.querySelector("aside").style.width = "calc(var(--graph-width_aside) - 2 * var(--margin_m))";
+
+        document.getElementById("graph-visible").style.display = "flex";
         document.getElementById("process-data").style.display =  "none";
     } else {
+    	document.querySelector("article").style.display = "none";
+    	document.querySelector("aside").style.width = "calc(var(--graph-width_aside) - 2 * var(--margin_m) + var(--graph-width_article))";
+
         document.getElementById("graph-visible").style.display = "none";
-        document.getElementById("process-data").style.display =  "block";
+        document.getElementById("process-data").style.display =  "flex";
     }
 }

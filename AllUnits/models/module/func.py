@@ -84,7 +84,7 @@ def create_html_cluster(graph, data):
 
     return f"""
         <table>
-            <thead>{thead}</thead>
+            <thead>{thead}<tr><th style="height: 1px; padding: 0px; background-color: black;" colspan="8"></th></tr></thead>
             <tbody>{tbody}</tbody>
         </table>
     """

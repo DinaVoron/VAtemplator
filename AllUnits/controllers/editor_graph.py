@@ -119,6 +119,8 @@ def load_data():
 def delete_data():
     graph.delete_data(request.data.decode("utf-8"))
 
+    # print(graph.processing_text("Какой проходной балл по направлению ."))
+
     # graph.search([
     #     {
     #         'type':     "REPRESENT",
