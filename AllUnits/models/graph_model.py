@@ -532,6 +532,23 @@ class Graph:
                     else:
                         request["meaning"].append(in_node.text)
 
+    def processing_text(self, text, is_stop=True, is_punct=False, is_space=False):
+        doc = self.nlp(text)
+        content = ""
+
+        for sent in doc.sents:
+            for word in sent:
+                if not is_stop and word.is_stop:
+                    continue
+                if not is_punct and word.is_punct:
+                    continue
+                if not is_space and word.is_space:
+                    continue
+                content += word.lemma_ + " "
+            content = content[:-1] + ". "
+
+        return content[:-1]
+
     def is_reference_name(self, name):
         return name in self.reference
 

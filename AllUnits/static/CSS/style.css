@@ -25,13 +25,13 @@ main {
     gap: 1em;
 }
 .logs_ok {
-    background-color: #00cc00;
+    background-color: #AAF5C5;
 }
 .logs_err {
-    background-color: #cc0000;
+    background-color: #F55040;
 }
 .logs_nf {
-    background-color: #e1ebf8;
+    background-color: #FFDD50;
 }
 .logs__div {
     padding: 0.5em;
