@@ -3,7 +3,9 @@ from models.editor_data_model import send_log
 import pickle as pc
 import speech_recognition as sr
 import pyttsx3
+import pymorphy3
 
+morph = pymorphy3.MorphAnalyzer()
 engine = pyttsx3.init("sapi5")
 voices = engine.getProperty("voices")
 engine.setProperty("voice", voices[0].id)
@@ -271,6 +273,11 @@ class Scene:
                 descendant_list.append(child)
         return counter, descendant_list
 
+    # проверка входа в сцену, необходимо совпадение только по интентам, а не значениям
+    def check_to_enter(self, only_intents):
+        if set(self.available_intents_list) <= set(only_intents):
+            return True
+
 
 class SceneTree:
     def __init__(self, root):
@@ -318,14 +325,31 @@ class SceneTree:
         self.root.check_scene_rec(intents)
 
     def get_scenes_list(self):
-        counter, scenes_list = self.root.count_descendants(0, [self])
+        counter, scenes_list = self.root.count_descendants(0, [self.root])
         return counter, scenes_list
+
+    # новый переход по сценам, параметр - найденные из речи интенты, graphnode
+    def final_pass_to_scene(self, only_intents):
+        # проверить принадлежность сцене, затем проверить принадлежность ее потомкам
+        current_scene = self.root
+        if not (current_scene.check_to_enter(only_intents)):
+            return False
+        starter = True
+        while starter:
+            starter = False
+            if current_scene.check_to_enter(only_intents):
+                for child in current_scene.children:
+                    if child.check_to_enter(only_intents):
+                        current_scene = child
+                        starter = True
+        return current_scene
+
 
 
 def main():
     # Десериализация pickle
-    with open("save_files/pickle_test.PKL", "rb") as f:
-         tree = pc.load(f)
+    #with open("save_files/pickle_test.PKL", "rb") as f:
+     #    tree = pc.load(f)
 
     '''
     main_scene = Scene(name = "срок_приема_подготовки",
@@ -352,6 +376,22 @@ def main():
     tree = SceneTree(main_scene)
     tree.set_height_tree()
     '''
+
+    main_scene = Scene(name="проверка_направлений",
+                       answer=["Да"],
+                       questions=[IntentTemplate("срок"),
+                                   IntentTemplate("приём")],
+                       available_intents_list=['направление'],
+                       clarifying_question=["Не найден ответ в main"])
+    sub1 = Scene(name="проверка_балла_направления", pass_conditions=["месяц"],
+                 answer= [IntentTemplate("балл"),
+                          IntentValue("балл")],
+                 available_intents_list=['направление', 'балл'],
+                 questions=[IntentTemplate("балл"), IntentTemplate("направление")]
+                 )
+    tree = SceneTree(main_scene)
+    main_scene.add_child(sub1)
+    tree.set_height_tree()
 
 
 
@@ -654,3 +694,21 @@ def dialog(current_scene, question_text, graph):
     # print(intent_list)
     new_scene_name = pass_scene(current_scene, intent_list)
     return [answer, new_scene_name, question_intent_dict, intent_list]
+
+# поиск интентов в вопросе по интентам графа
+def find_intents(all_intents_text, question_text):
+    question_intents = []
+    for intent in all_intents_text:
+        if intent in question_text:
+            question_intents.append(intent)
+    return question_intents
+
+
+def make_words_normal(question):
+    question_list = question.split(' ')
+    normal_list = []
+    normal_question = ''
+    for word in question_list:
+        normal_list.append(morph.parse(word)[0].normal_form)
+    normal_question = ' '.join(normal_list)
+    return normal_question

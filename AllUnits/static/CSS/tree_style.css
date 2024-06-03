@@ -1,12 +1,22 @@
+:root {
+    --tree-width_aside:			calc(100% - var(--tabs-width));
+    --tree-height_aside:		100%;
+}
+
+main {
+    width: var(--tree-width_aside);
+    height: var(--tree-height_aside);
+}
+
+
 textarea {
-  width: 300px;
-  height: 100px;
+  resize: none;
 }
 
 .tree_print {
     display: flex;
-    flex-grow: 2;
-    min-width: 400px;
+    /* min-width: 400px; */
+    flex-basis: 60%;
     border: 1px solid black;
 }
 
@@ -16,8 +26,9 @@ textarea {
 
 .scene_options {
     display: flex;
-    flex-grow: 1;
     border: 1px solid black;
+    flex-basis: 40%;
+    flex-wrap: wrap;
 }
 
 .super_flex {
@@ -64,7 +75,7 @@ ul, #treeUL {
     border-radius: 8px;
     min-height: 30px;
     display: inline-block;
-    user-select: none; /* Prevent text selection */
+    user-select: none;
     background-color: #344966;
     color: white;
 }
@@ -96,9 +107,11 @@ ul, #treeUL {
     cursor: pointer;
     border: 1px solid black;
     border-radius: 8px;
+    font-size: 20px;
 }
 
 .empty_caret {
+    cursor: pointer;
     display: inline-block;
     border-radius: 8px;
     background-color: #344966;
