@@ -432,7 +432,7 @@ class Graph:
 
         self.static_layer -= layer_step
 
-    def search(self, request):
+    def search(self, request, flag=False):
         """
         Функция для поиска информации в графе на основе запроса.
 
@@ -443,30 +443,33 @@ class Graph:
         - list: Обновленный список запросов с найденной информацией.
         """
         # Список для хранения слоев, связанных с запросом
-        request_layer = []
-        # Обработка каждого запроса
-        for req in request:
-            if req["meaning"] is None:
-                continue
-            if "type" in req and req["type"] == "REPRESENT":
-                name = f"""REPRESENT::{req["intent"]}"""
-                request_layer.append(sorted(list(set(self.__search_represent_filter__(name, req)))))
-            else:
-                lemma_intent  = f"""NODE::INT::{req["intent"]}-Intent"""
-                lemma_meaning = f"""NODE::INT::{req["intent"]}-Meaning"""
-                if self.graph.has_node(lemma_intent) or self.graph.has_node(lemma_meaning):
-                    request_layer.append(sorted(list(set(
-                        self.__search_node_filter__(lemma_intent, req) +
-                        self.__search_node_filter__(lemma_meaning, req)
-                    ))))
+        if flag:
+            request_layer = list(range(self.static_layer))
+        else:
+            request_layer = []
+            # Обработка каждого запроса
+            for req in request:
+                if req["meaning"] is None:
+                    continue
+                if "type" in req and req["type"] == "REPRESENT":
+                    name = f"""REPRESENT::{req["intent"]}"""
+                    request_layer.append(sorted(list(set(self.__search_represent_filter__(name, req)))))
                 else:
-                    request_layer.append([])
-                    break
-        # Находим общие слои для всех запросов
-        if request_layer:
-            request_layer = list(set(request_layer[0]).intersection(*request_layer[1:]))
-        if not request_layer:
-            return request
+                    lemma_intent  = f"""NODE::INT::{req["intent"]}-Intent"""
+                    lemma_meaning = f"""NODE::INT::{req["intent"]}-Meaning"""
+                    if self.graph.has_node(lemma_intent) or self.graph.has_node(lemma_meaning):
+                        request_layer.append(sorted(list(set(
+                            self.__search_node_filter__(lemma_intent, req) +
+                            self.__search_node_filter__(lemma_meaning, req)
+                        ))))
+                    else:
+                        request_layer.append([])
+                        break
+            # Находим общие слои для всех запросов
+            if request_layer:
+                request_layer = list(set(request_layer[0]).intersection(*request_layer[1:]))
+            if not request_layer:
+                return request
         # Обновляем запросы с найденной информацией
         for req in request:
             if req["meaning"] is not None:
@@ -479,7 +482,7 @@ class Graph:
                 lemma_meaning = f"""NODE::INT::{req["intent"]}-Meaning"""
                 self.__search_node_update__(lemma_intent, req, request_layer)
                 self.__search_node_update__(lemma_meaning, req, request_layer)
-            req["meaning"] = list(set(req["meaning"]))
+            req["meaning"] = list(set(req["meaning"])) if req["meaning"] else None
         return request
 
     def __search_represent_filter__(self, i, request):

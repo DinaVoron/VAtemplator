@@ -1,0 +1,12 @@
+<question><date>2024-05-29</date><time>10:30:31</time><text>направление инженерия имеет балл </text><place>срок_приема_подготовки</place></question>
+<answer><date>2024-05-29</date><time>10:30:32</time><text> На срок None приём None</text><place>срок_приема_подготовки</place></answer>
+<question><date>2024-05-29</date><time>10:30:32</time><text>направление инженерия имеет балл </text><place>срок_приема_подготовки</place></question>
+<answer><date>2024-05-29</date><time>10:30:32</time><text> На срок None приём None</text><place>срок_приема_подготовки</place></answer>
+<question><date>2024-05-29</date><time>10:30:32</time><text>какой балл у</text><value>курс</value><text>3 </text><place>срок_приема_за_месяц</place></question>
+<answer><date>2024-05-29</date><time>10:30:33</time><text> На срок None приём ['курс'] подготовка None</text><place>срок_приема_за_месяц</place></answer>
+<question><date>2024-05-29</date><time>10:30:33</time><text> </text><place>срок_приема_подготовки</place></question>
+<answer><date>2024-05-29</date><time>10:30:33</time><text /><place>срок_приема_подготовки</place></answer>
+<question><date>2024-05-29</date><time>10:30:33</time><text>яысс </text><place>срок_приема_подготовки</place></question>
+<answer><date>2024-05-29</date><time>10:30:33</time><text /><place>срок_приема_подготовки</place></answer>
+<question><date>2024-05-29</date><time>10:30:33</time><text>ss </text><place>срок_приема_подготовки</place></question>
+<answer><date>2024-05-29</date><time>10:30:34</time><text /><place>срок_приема_подготовки</place></answer>
