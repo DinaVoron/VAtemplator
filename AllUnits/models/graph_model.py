@@ -144,10 +144,12 @@ class Graph:
         - filename (str): Имя файла для сохранения.
         """
         with open(filename, 'wb') as file:
-            pickle.dump(self, file)
+            pickle.dump({
+                "graph": self.graph, "documents": self.documents, "reference": self.reference,
+                "static_index": self.static_index, "static_layer": self.static_layer,
+            }, file)
 
-    @staticmethod
-    def load(filename):
+    def load(self, filename):
         """
         Загружает объект Graph из файла.
 
@@ -158,7 +160,12 @@ class Graph:
         - Graph: Загруженный объект Graph.
         """
         with open(filename, 'rb') as file:
-            return pickle.load(file)
+            data = pickle.load(file)
+            self.graph        = data["graph"]
+            self.documents    = data["documents"]
+            self.reference    = data["reference"]
+            self.static_index = data["static_index"]
+            self.static_index = data["static_index"]
 
     def process_data(self, document):
         """
@@ -442,6 +449,10 @@ class Graph:
         Returns:
         - list: Обновленный список запросов с найденной информацией.
         """
+        print()
+        print(request, flag)
+        print()
+
         # Список для хранения слоев, связанных с запросом
         if flag:
             request_layer = list(range(self.static_layer))
@@ -465,6 +476,9 @@ class Graph:
                     else:
                         request_layer.append([])
                         break
+            print(request_layer)
+            print()
+
             # Находим общие слои для всех запросов
             if request_layer:
                 request_layer = list(set(request_layer[0]).intersection(*request_layer[1:]))
