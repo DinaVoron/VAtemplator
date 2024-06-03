@@ -271,6 +271,10 @@ main {
     cursor:					pointer;
     transition:				all 0.25s ease;
 }
+.button:hover {
+    background-color:		color-mix(in srgb, var(--main-color_button_1) 70%, var(--main-color_button_2));
+    border-color:			color-mix(in srgb, var(--main-color_button_1) 70%, var(--main-color_button_2));
+}
 /* end */
 
 /* testing-buttons */

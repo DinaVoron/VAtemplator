@@ -4,6 +4,8 @@ import pymorphy3
 from datetime import date
 import re
 
+from models.module.func import has_common_element
+
 
 def get_scenes(dialog_tree):
     res = []
@@ -140,13 +142,8 @@ def find_all_paths(graph, current_node, visited, path, paths):
     visited[current_node] = True
     path.append(current_node)
 
-    print("node")
-    print(current_node.text)
-    print(path)
-    print(paths)
-
     for neighbor in graph[current_node]:
-        if neighbor in visited and not visited[neighbor] and one_layer(neighbor, current_node):
+        if neighbor in visited and not visited[neighbor]:
             find_all_paths(graph, neighbor, visited, path, paths)
 
     paths.append(path.copy())
@@ -170,31 +167,21 @@ def check_intent_tree(dialog_tree, paths):
 def find_all_chains(dialog_tree, edges):
     graph = {}
     for edge in edges:
-        if edge[0].is_intent and edge[0] not in graph:
+        if edge[0] not in graph:
             graph[edge[0]] = []
 
-        if edge[1].is_intent and edge[1] not in graph:
+        if edge[1] not in graph:
             graph[edge[1]] = []
 
-        if edge[0].is_intent:
-            if edge[1].is_intent:
-                graph[edge[0]].append(edge[1])
-
         if edge[1].is_intent:
-            if edge[0].is_intent:
-                if edge[1] in graph:
-                    graph[edge[1]].append(edge[1])
+            graph[edge[0]].append(edge[1])
+
+        if edge[1] in graph:
+            graph[edge[1]].append(edge[1])
 
     visited = {node: False for node in graph}
     path = []
     paths = []
-
-    print("edges")
-    for edge in edges:
-        print(edge[0])
-        print(edge[0].text)
-        print(edge[1])
-        print(edge[1].text)
 
     for node in graph:
         find_all_paths(graph, node, visited, path, paths)
@@ -205,8 +192,22 @@ def find_all_chains(dialog_tree, edges):
 
 
 def graph_verify(dialog_tree, graph):
-    edges = list(graph.edges_data)
+    nodes = graph.nodes
+    edges = []
+    for i in nodes:
+        for j in nodes:
+            if i != j:
+                if nodes[i]['data'].is_intent and nodes[j]['data'].is_intent:
+                    if one_layer(nodes[i]['data'], nodes[j]['data']):
+                        edges.append([nodes[i]['data'], nodes[j]['data']])
     chains = find_all_chains(dialog_tree, edges)
+
+    tmp = []
+    for i in chains:
+        if list(set(i)) not in tmp:
+            tmp.append(list(set(i)))
+    chains = tmp
+
     print(chains)
     return chains
 
