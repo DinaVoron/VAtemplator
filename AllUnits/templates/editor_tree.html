@@ -75,16 +75,16 @@
 
             <form method="get">
                 <p> Данные сцены</p>
-                <input type="hidden" id = hidden_scene_name value="{{current_scene.name}}">
+                <input type="hidden" id = hidden_scene_name>
                 <input type="hidden" id = add_scene value="1">
                 <!--<br><textarea id = parent_scene_name> </textarea> Имя родительской сцены-->
-                <br><textarea id = scene_name value="{{current_scene.name}}"> </textarea>Имя сцены
-                <br><textarea id = pass_conditions value="{{current_scene.pass_conditions}}"> </textarea>Условия перехода
-                <br><textarea id = answer rows="4" cols="50" value="{{current_scene.answer}}"> </textarea> Шаблон ответа
-                <br><textarea id = questions rows="4" cols="50" value="{{current_scene.questions}}"> </textarea> Шаблоны вопроса
-                <br><textarea id = available_intents value="{{current_scene.available_intents_list}}"> </textarea> Интенты сцены
+                <br><textarea id = scene_name> </textarea>Имя сцены
+                <br><textarea id = pass_conditions> </textarea>Условия перехода
+                <br><textarea id = answer rows="4" cols="50"> </textarea> Шаблон ответа
+                <br><textarea id = questions rows="4" cols="50"> </textarea> Шаблоны вопроса
+                <br><textarea id = available_intents> </textarea> Интенты сцены
                 <br>
-                <br><textarea id = clarifying_question value="{{current_scene.clarifying_question}}"> </textarea> Уточняющий вопрос
+                <br><textarea id = clarifying_question> </textarea> Уточняющий вопрос
                 <br><input type="submit" value="Добавить сцену">
             </form>
             <form method="get">
@@ -125,15 +125,16 @@
 
             <form method="get">
                 <p> Новая сцена</p>
-                <input type="hidden" id = hidden_scene_name_new value="{{current_scene.name}}">
+                <input type="hidden" id = hidden_scene_parent>
+                <input type="hidden" id = hidden_scene_name_new>
                 <input type="hidden" id = add_scene_new value="1">
                 <br><textarea id = scene_name_new value="{{current_scene.name}}"> </textarea> Имя сцены
                 <!--<br><textarea id = pass_conditions_new value="{{current_scene.pass_conditions}}"> </textarea> Условия перехода-->
-                <br><textarea id = answer_new rows="4" cols="50" value="{{current_scene.answer}}"> </textarea> Шаблон ответа
-                <br><textarea id = questions_new rows="4" cols="50" value="{{current_scene.questions}}"> </textarea> Шаблоны вопроса
-                <br><textarea id = available_intents_new value="{{current_scene.available_intents_list}}"> </textarea> Интенты сцены
+                <br><textarea id = answer_new rows="4" cols="50"> </textarea> Шаблон ответа
+                <br><textarea id = questions_new rows="4" cols="50"> </textarea> Шаблоны вопроса
+                <br><textarea id = available_intents_new> </textarea> Интенты сцены
                 <br>
-                <br><textarea id = clarifying_question_new value="{{current_scene.clarifying_question}}"> </textarea> Уточняющий вопрос
+                <br><textarea id = clarifying_question_new> </textarea> Уточняющий вопрос
                 <br><input type="submit" value="Добавить сцену">
             </form>
             <form method="get">
@@ -159,6 +160,7 @@
         var hidden_first_name = document.getElementById("hidden_scene_name");
         hidden_first_name.value = scenes_list[0].name;
         var first_name = document.getElementById("scene_name");
+        var question_part;
         first_name.value = scenes_list[0].name;
         /*
         <br><textarea id = pass_conditions value="{{current_scene.pass_conditions}}"> </textarea>Условия перехода
@@ -168,10 +170,53 @@
                 <br>
                 <br><textarea id = clarifying_question value="{{current_scene.clarifying_question}}"> </textarea> Уточняющий вопрос
         */
-        document.getElementById("pass_conditions").value = scenes_list[0].pass_conditions;
-        document.getElementById("answer").value = scenes_list[0].answer;
-        document.getElementById("questions").value = scenes_list[0].questions;
+        // Корневая сцена
+        /*
+        document.getElementById("answer").value = scenes_list[j].answer;
+        document.getElementById("questions").value = scenes_list[j].questions;
+        */
+        // Ответ сцены
+        document.getElementById("answer").value = '';
+        answer_part = "";
+        var full_answer_first = scenes_list[0].answer;
+        for (answer in full_answer_first) {
+            if (typeof full_answer_first[answer] == "string") {
+                answer_part += full_answer_first[answer];
+            } else {
+                if (Object.hasOwn(full_answer_first[answer], "value")) {
+                    answer_part += "Значение ";
+                }
+                else {
+                    answer_part += "Интент ";
+                }
+                answer_part += full_answer_first[answer].name;
+            }
+            answer_part += ", ";
+        }
+        document.getElementById("answer").value = answer_part;
+
+        // Вопрос сцены
+        document.getElementById("questions").value = '';
+        question_part = "";
+        var full_question_first = scenes_list[0].questions;
+        for (question in full_question_first) {
+            if (typeof full_question_first[question] == "string") {
+                question_part += full_question_first[question];
+            } else {
+                if (Object.hasOwn(full_question_first[question], "value")) {
+                    question_part += "Значение ";
+                }
+                else {
+                    question_part += "Интент ";
+                }
+                question_part += full_question_first[question].name;
+            }
+            question_part += ", ";
+        }
+        document.getElementById("questions").value = question_part;
+        // Доступные интенты (переходы)
         document.getElementById("available_intents").value = scenes_list[0].available_intents_list;
+        // Уточняющий вопрос
         document.getElementById("clarifying_question").value = scenes_list[0].clarifying_question;
 
 
@@ -230,9 +275,52 @@
                 for (j = 0; j < scenes_list.length; j++) {
                     if (name_id == scenes_list[j].name) {
                         document.getElementById("pass_conditions").value = scenes_list[j].pass_conditions;
+                        /*
                         document.getElementById("answer").value = scenes_list[j].answer;
                         document.getElementById("questions").value = scenes_list[j].questions;
+                        */
+                        // Ответ сцены
+                        document.getElementById("answer").value = '';
+                        answer_part = "";
+                        var full_answer = scenes_list[j].answer;
+                        for (answer in full_answer) {
+                            if (typeof full_answer[answer] == "string") {
+                                answer_part += full_answer[answer];
+                            } else {
+                                if (Object.hasOwn(full_answer[answer], "value")) {
+                                    answer_part += "Значение ";
+                                }
+                                else {
+                                    answer_part += "Интент ";
+                                }
+                                answer_part += full_answer[answer].name;
+                            }
+                            answer_part += ", ";
+                        }
+                        document.getElementById("answer").value = answer_part;
+
+                        // Вопрос сцены
+                        document.getElementById("questions").value = '';
+                        question_part = "";
+                        var full_question = scenes_list[j].questions;
+                        for (question in full_question) {
+                            if (typeof full_question[question] == "string") {
+                                question_part += full_question[question];
+                            } else {
+                                if (Object.hasOwn(full_question[question], "value")) {
+                                    question_part += "Значение ";
+                                }
+                                else {
+                                    question_part += "Интент ";
+                                }
+                                question_part += full_question[question].name;
+                            }
+                            question_part += ", ";
+                        }
+                        document.getElementById("questions").value = question_part;
+                        // Доступные интенты (переходы)
                         document.getElementById("available_intents").value = scenes_list[j].available_intents_list;
+                        // Уточняющий вопрос
                         document.getElementById("clarifying_question").value = scenes_list[j].clarifying_question;
                     }
                 }

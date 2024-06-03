@@ -3,7 +3,9 @@ from models.editor_data_model import send_log
 import pickle as pc
 import speech_recognition as sr
 import pyttsx3
+import pymorphy3
 
+morph = pymorphy3.MorphAnalyzer()
 engine = pyttsx3.init("sapi5")
 voices = engine.getProperty("voices")
 engine.setProperty("voice", voices[0].id)
@@ -377,11 +379,11 @@ def main():
 
     main_scene = Scene(name="проверка_направлений",
                        answer=["Да"],
-                       questions=[[IntentTemplate("срок"),
-                                   IntentTemplate("приём")]],
+                       questions=[IntentTemplate("срок"),
+                                   IntentTemplate("приём")],
                        available_intents_list=['направление'],
                        clarifying_question=["Не найден ответ в main"])
-    sub1 = Scene(name="проверка_балла_направления", pass_conditions=[["месяц"]],
+    sub1 = Scene(name="проверка_балла_направления", pass_conditions=["месяц"],
                  answer= [IntentTemplate("балл"),
                           IntentValue("балл")],
                  available_intents_list=['направление', 'балл'],
@@ -700,3 +702,13 @@ def find_intents(all_intents_text, question_text):
         if intent in question_text:
             question_intents.append(intent)
     return question_intents
+
+
+def make_words_normal(question):
+    question_list = question.split(' ')
+    normal_list = []
+    normal_question = ''
+    for word in question_list:
+        normal_list.append(morph.parse(word)[0].normal_form)
+    normal_question = ' '.join(normal_list)
+    return normal_question

@@ -3,7 +3,7 @@ from flask import render_template, request
 from models.dialog_model import (get_text_scenes, get_root, get_scene_name,
                                  find_scene_by_name, get_scene_everything,
                                  add_child, save_tree, add_scene, delete_scene,
-                                 find_intents)
+                                 find_intents, make_words_normal)
 import json
 import jsons
 
@@ -34,7 +34,7 @@ def editor_tree():
     else:
         current_scene = get_root(dialog_tree = dialog_tree)
         scene_name = get_scene_name(current_scene)
-        scene_stats = get_scene_everything(current_scene)
+        #scene_stats = get_scene_everything(current_scene)
 
     if request.values.get("add_child_scene"):
         child_scene_name = (request.values.get("child_scene_name"))
@@ -77,19 +77,46 @@ def editor_tree():
     #print(graph.nodes_meaning[0].__dict__)
 
     # проверочный код, убрать
-    question = 'направление подготовки и год c баллом'
-    intents = find_intents(graph_intents, question)
-    print(intents)
-    print(dialog_tree.root.check_to_enter(intents))
-    new_scene = dialog_tree.final_pass_to_scene(intents)
+    question = 'направление подготовки за год c баллом 200'
+    question_normal = make_words_normal(question)
+    print(question_normal + ' - вопрос в нормальной форме')
+    question_intents = find_intents(graph_intents, question_normal)
+    print('интенты')
+    print(question_intents)
+    print(dialog_tree.root.check_to_enter(question_intents))
+    new_scene = dialog_tree.final_pass_to_scene(question_intents)
     print(new_scene)
     list_dict_intents = []
-    question_intents = ['Под', 'Бал']
+    question_references = []
     for intent in question_intents:
-        list_dict_intents.append({"intent":intent, "meaning": None, "type": "REPRESENT"})
-    list_dict_intents = graph.search(list_dict_intents, flag=True) # flag - true, если без значений
+        question_references.append(graph.get_reference_lemma(intent))
+
+    print(question_references)
+    question_references.remove("Нап") # ломается на "Нап"
+    #question_references = ['Под', 'Бал']
+    for intent in question_references:
+        list_dict_intents.append({'intent':intent, 'meaning': None, 'type': 'REPRESENT'}) # represent - представление
     print(list_dict_intents)
+    list_dict_intents_possible = graph.search(list_dict_intents, flag=True) # flag - true, если без значений
+    # найдены возможные значения, проверить в вопросе
+    print(list_dict_intents_possible)
+    list_dict_intents_meaning_found = []
+    for intent in list_dict_intents_possible:
+        remaining_meaning = []
+        for meaning in intent['meaning']:
+            if meaning in question_normal:
+                remaining_meaning.append(meaning)
+        if not remaining_meaning:
+            remaining_meaning = None
+        intent_dict = {'intent': intent['intent'], 'meaning': remaining_meaning}
+        list_dict_intents_meaning_found.append(intent_dict)
+    print(list_dict_intents_meaning_found)
+    print(graph.reference)
+    list_dict_intents_final = graph.search(list_dict_intents_meaning_found)
+    print(list_dict_intents_final)
+    print(question_normal)
     #
+    print(json_scenes_list)
     html = render_template(
         "editor_tree.html",
         current_page='editor_tree',
@@ -98,7 +125,7 @@ def editor_tree():
         all_tree = all_tree,
         current_scene = current_scene,
         scene_name = scene_name,
-        scene_stats = scene_stats,
+        #scene_stats = scene_stats,
         child_scene_name = child_scene_name,
 
         graph_intents = graph_intents,
