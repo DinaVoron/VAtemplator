@@ -92,7 +92,7 @@ def editor_tree():
         question_references.append(graph.get_reference_lemma(intent))
 
     print(question_references)
-    question_references.remove("Нап") # ломается на "Нап"
+    #question_references.remove("Нап") # ломается на "Нап"
     #question_references = ['Под', 'Бал']
     for intent in question_references:
         list_dict_intents.append({'intent':intent, 'meaning': None, 'type': 'REPRESENT'}) # represent - представление
@@ -103,20 +103,21 @@ def editor_tree():
     list_dict_intents_meaning_found = []
     for intent in list_dict_intents_possible:
         remaining_meaning = []
-        for meaning in intent['meaning']:
-            if meaning in question_normal:
-                remaining_meaning.append(meaning)
+        if intent['meaning'] != None:
+            for meaning in intent['meaning']:
+                if meaning in question_normal:
+                    remaining_meaning.append(meaning)
         if not remaining_meaning:
             remaining_meaning = None
         intent_dict = {'intent': intent['intent'], 'meaning': remaining_meaning}
         list_dict_intents_meaning_found.append(intent_dict)
     print(list_dict_intents_meaning_found)
-    print(graph.reference)
+    #print(graph.reference)
     list_dict_intents_final = graph.search(list_dict_intents_meaning_found)
     print(list_dict_intents_final)
-    print(question_normal)
+    #print(question_normal)
     #
-    print(json_scenes_list)
+    #print(json_scenes_list)
     html = render_template(
         "editor_tree.html",
         current_page='editor_tree',

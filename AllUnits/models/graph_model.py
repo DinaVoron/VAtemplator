@@ -483,7 +483,7 @@ class Graph:
                 lemma_meaning = f"""NODE::INT::{req["intent"]}-Meaning"""
                 self.__search_node_update__(lemma_intent, req, request_layer)
                 self.__search_node_update__(lemma_meaning, req, request_layer)
-            req["meaning"] = list(set(req["meaning"]))
+            req["meaning"] = list(set(req["meaning"])) if req["meaning"] else None
         return request
 
     def __search_represent_filter__(self, i, request):
