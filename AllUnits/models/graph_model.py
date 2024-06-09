@@ -167,6 +167,11 @@ class Graph:
             self.static_index = data["static_index"]
             self.static_layer = data["static_layer"]
 
+        print(self.documents)
+        print(self.reference)
+        print(self.static_index)
+        print(self.static_layer)
+
     def process_data(self, document):
         """
         Функция для обработки данных из указанного документа.
