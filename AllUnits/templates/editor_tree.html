@@ -73,21 +73,22 @@
             {% endif %}
             -->
 
-            <form method="get">
+            <form method="post">
                 <p> Данные сцены</p>
-                <input type="hidden" id = hidden_scene_name>
-                <input type="hidden" id = add_scene value="1">
-                <!--<br><textarea id = parent_scene_name> </textarea> Имя родительской сцены-->
-                <br><textarea id = scene_name> </textarea>Имя сцены
-                <br><textarea id = pass_conditions> </textarea>Условия перехода
-                <br><textarea id = answer rows="4" cols="50"> </textarea> Шаблон ответа
-                <br><textarea id = questions rows="4" cols="50"> </textarea> Шаблоны вопроса
-                <br><textarea id = available_intents> </textarea> Интенты сцены
+                <input type="hidden" name = hidden_scene_name id = hidden_scene_name>
+                <!-- <input type="hidden" id = add_scene value="1">
+                <br><textarea id = parent_scene_name> </textarea> Имя родительской сцены-->
+                <br><textarea name = scene_name id = scene_name> </textarea>Имя сцены
+                <!--<br><textarea id = pass_conditions> </textarea>Условия перехода-->
+                <br><textarea name = answer id = answer rows="4" cols="50"> </textarea> Шаблон ответа
+                <br><textarea name = questions id = questions rows="4" cols="50"> </textarea> Шаблоны вопроса
+                <br><textarea name = available_intents id = available_intents> </textarea> Интенты сцены
                 <br>
-                <br><textarea id = clarifying_question> </textarea> Уточняющий вопрос
-                <br><input type="submit" value="Добавить сцену">
+                <br><textarea name = clarifying_question id = clarifying_question> </textarea> Уточняющий вопрос
+                <br><input type="submit" name= "change_scene" value="Изменить сцену">
+
             </form>
-            <form method="get">
+            <form method="post">
                 <select>
                     <optgroup label="graph_intents">
                         {% for graph_intent in graph_intents %}
@@ -97,7 +98,7 @@
                 </select>
                 <br><input type="submit" value="Добавить интент">
             </form>
-            <form method="get">
+            <form method="post">
                 <p> Удаление сцены (и ее потомков)!!!</p>
                 <input type="hidden" name = delete_scene value="1">
                 <input type="hidden" name = hidden_scene_name value="1">
@@ -123,21 +124,19 @@
             {% endif %}
             -->
 
-            <form method="get">
+            <form method="post">
                 <p> Новая сцена</p>
-                <input type="hidden" id = hidden_scene_parent>
-                <input type="hidden" id = hidden_scene_name_new>
-                <input type="hidden" id = add_scene_new value="1">
-                <br><textarea id = scene_name_new value="{{current_scene.name}}"> </textarea> Имя сцены
+                <br><textarea name = scene_parent id = scene_parent rows="4" cols="50"> </textarea> Родительская сцена
+                <!--<input type="hidden" id = hidden_scene_name_new>-->
+                <br><textarea name = scene_name_new id = scene_name_new value="{{current_scene.name}}"> </textarea> Имя сцены
                 <!--<br><textarea id = pass_conditions_new value="{{current_scene.pass_conditions}}"> </textarea> Условия перехода-->
-                <br><textarea id = answer_new rows="4" cols="50"> </textarea> Шаблон ответа
-                <br><textarea id = questions_new rows="4" cols="50"> </textarea> Шаблоны вопроса
-                <br><textarea id = available_intents_new> </textarea> Интенты сцены
-                <br>
-                <br><textarea id = clarifying_question_new> </textarea> Уточняющий вопрос
-                <br><input type="submit" value="Добавить сцену">
+                <br><textarea name = answer_new id = answer_new rows="4" cols="50"> </textarea> Шаблон ответа
+                <br><textarea name = questions_new id = questions_new rows="4" cols="50"> </textarea> Шаблоны вопроса
+                <br><textarea name = available_intents_new id = available_intents_new> </textarea> Интенты сцены
+                <br><textarea name = clarifying_question_new id = clarifying_question_new> </textarea> Уточняющий вопрос
+                <br><input type="submit" name="add_scene" value="Добавить сцену">
             </form>
-            <form method="get">
+            <form method="post">
                 <select>
                     <optgroup label="graph_intents">
                         {% for graph_intent in graph_intents %}
@@ -150,9 +149,9 @@
         <!-- </div> -->
         </div>
     </main>
-    <form method="get">
-        <input type="hidden" name = save_tree value="1">
-        <br><input type="submit" value="Сохранить дерево">
+    <form method="post">
+        <!--<input type="hidden" name = save_tree value="1">-->
+        <br><input type="submit" name="save_tree" value="Сохранить дерево">
     </form>
 
     <script>
@@ -162,6 +161,7 @@
         var first_name = document.getElementById("scene_name");
         var question_part;
         first_name.value = scenes_list[0].name;
+        document.getElementById("scene_parent").value = first_name.value;
         /*
         <br><textarea id = pass_conditions value="{{current_scene.pass_conditions}}"> </textarea>Условия перехода
                 <br><textarea id = answer rows="4" cols="50" value="{{current_scene.answer}}"> </textarea> Шаблон ответа
@@ -191,7 +191,7 @@
                 }
                 answer_part += full_answer_first[answer].name;
             }
-            answer_part += ", ";
+            answer_part += " | ";
         }
         document.getElementById("answer").value = answer_part;
 
@@ -211,13 +211,29 @@
                 }
                 question_part += full_question_first[question].name;
             }
-            question_part += ", ";
+            question_part += " | ";
         }
         document.getElementById("questions").value = question_part;
         // Доступные интенты (переходы)
         document.getElementById("available_intents").value = scenes_list[0].available_intents_list;
         // Уточняющий вопрос
-        document.getElementById("clarifying_question").value = scenes_list[0].clarifying_question;
+        question_part = "";
+        var clarifying_full_question = scenes_list[0].clarifying_question;
+        for (question in clarifying_full_question) {
+            if (typeof clarifying_full_question[question] == "string") {
+                question_part += clarifying_full_question[question];
+            } else {
+                if (Object.hasOwn(clarifying_full_question[question], "value")) {
+                    question_part += "Значение ";
+                }
+                else {
+                    question_part += "Интент ";
+                }
+                question_part += clarifying_full_question[question].name;
+            }
+            question_part += " | ";
+        }
+        document.getElementById("clarifying_question").value = question_part;
 
 
         var toggler = document.getElementsByClassName("caret");
@@ -271,11 +287,12 @@
                 document.getElementById("scene_name").value = name_id;
                 hidden_name = document.getElementById("hidden_scene_name");
                 hidden_name.value = name_id;
+                document.getElementById("scene_parent").value = name_id;
                 /* поиск по имени выбранной сцены в списке сцен */
                 for (j = 0; j < scenes_list.length; j++) {
                     if (name_id == scenes_list[j].name) {
-                        document.getElementById("pass_conditions").value = scenes_list[j].pass_conditions;
                         /*
+                        document.getElementById("pass_conditions").value = scenes_list[j].pass_conditions;
                         document.getElementById("answer").value = scenes_list[j].answer;
                         document.getElementById("questions").value = scenes_list[j].questions;
                         */
@@ -295,7 +312,7 @@
                                 }
                                 answer_part += full_answer[answer].name;
                             }
-                            answer_part += ", ";
+                            answer_part += " | ";
                         }
                         document.getElementById("answer").value = answer_part;
 
@@ -315,13 +332,30 @@
                                 }
                                 question_part += full_question[question].name;
                             }
-                            question_part += ", ";
+                            question_part += " | ";
                         }
                         document.getElementById("questions").value = question_part;
                         // Доступные интенты (переходы)
                         document.getElementById("available_intents").value = scenes_list[j].available_intents_list;
                         // Уточняющий вопрос
-                        document.getElementById("clarifying_question").value = scenes_list[j].clarifying_question;
+                        document.getElementById("clarifying_question").value = '';
+                        question_part = "";
+                        clarifying_full_question = scenes_list[j].clarifying_question;
+                        for (question in clarifying_full_question) {
+                            if (typeof clarifying_full_question[question] == "string") {
+                                question_part += clarifying_full_question[question];
+                            } else {
+                                if (Object.hasOwn(clarifying_full_question[question], "value")) {
+                                    question_part += "Значение ";
+                                }
+                                else {
+                                    question_part += "Интент ";
+                                }
+                                question_part += clarifying_full_question[question].name;
+                            }
+                            question_part += " | ";
+                        }
+                        document.getElementById("clarifying_question").value = question_part;
                     }
                 }
             });
