@@ -3,7 +3,8 @@ from flask import render_template, request
 from models.dialog_model import (get_text_scenes, get_root, get_scene_name,
                                  find_scene_by_name, get_scene_everything,
                                  add_child, save_tree, add_scene, delete_scene,
-                                 find_intents, make_words_normal, Scene)
+                                 find_intents, make_words_normal, Scene,
+                                 new_dialog)
 import json
 import jsons
 
@@ -74,9 +75,11 @@ def editor_tree():
 
     graph_intent = graph_full_intents[0]
     #print(type(graph_intent))
-    print(graph_intent.__dict__)
+    #print(graph_intent.__dict__)
     #print(graph.nodes_meaning[0].__dict__)
-
+    #question = 'направление подготовки за год c баллом 200'
+    #question = 'направление подготовки'
+    #new_dialog(question, graph, dialog_tree)
     '''
     # проверочный код, убрать
     question = 'направление подготовки за год c баллом 200'

@@ -414,14 +414,14 @@ def main():
     '''
 
     main_scene = Scene(name="проверка_направлений",
-                       answer=["Да"],
-                       questions=[IntentTemplate("срок"),
-                                   IntentTemplate("приём")],
+                       answer=[IntentValue("направление")],
+                       questions=[IntentTemplate("направление")],
                        available_intents_list=['направление'],
                        clarifying_question=["Не найден ответ в main"])
     sub1 = Scene(name="проверка_балла_направления", pass_conditions=["месяц"],
                  answer= [IntentTemplate("балл"),
-                          IntentValue("балл")],
+                          IntentValue("балл"), IntentTemplate("направление"),
+                          IntentValue("направление")],
                  available_intents_list=['направление', 'балл'],
                  questions=[IntentTemplate("балл"), IntentTemplate("направление")]
                  )
@@ -730,6 +730,59 @@ def dialog(current_scene, question_text, graph):
     # print(intent_list)
     new_scene_name = pass_scene(current_scene, intent_list)
     return [answer, new_scene_name, question_intent_dict, intent_list]
+
+def new_dialog(question, graph, dialog_tree):
+    graph_intents = graph.nodes_intent_text
+    #question = 'направление подготовки за год c баллом 200'
+    question_normal = make_words_normal(question)
+    question_intents = find_intents(graph_intents, question_normal)
+    # сцена с шаблоном ответа
+    new_scene = dialog_tree.final_pass_to_scene(question_intents)
+    scene_intents = []
+    if new_scene:
+        for intent in new_scene.questions:
+            if type(intent) == IntentTemplate:
+                scene_intents.append(intent.name)
+
+    #print(new_scene)
+    list_dict_intents = []
+    question_references = []
+    for intent in scene_intents:
+        question_references.append(graph.get_reference_lemma(intent))
+
+    for intent in question_references:
+        list_dict_intents.append({'intent':intent, 'meaning': None, 'type': 'REPRESENT'}) # represent - представление
+    list_dict_intents_possible = graph.search(list_dict_intents, flag=True) # flag - true, если без значений
+    # найдены возможные значения, проверить в вопросе
+    list_dict_intents_meaning_found = []
+    for intent in list_dict_intents_possible:
+        remaining_meaning = []
+        if intent['meaning'] != None:
+            for meaning in intent['meaning']:
+                if meaning in question_normal:
+                    remaining_meaning.append(meaning)
+        if not remaining_meaning:
+            remaining_meaning = None
+        intent_dict = {'intent': intent['intent'], 'meaning': remaining_meaning, 'type': 'REPRESENT'}
+        list_dict_intents_meaning_found.append(intent_dict)
+    list_dict_intents_final = graph.search(list_dict_intents_meaning_found)
+    answer = ''
+    if new_scene:
+        for word in new_scene.answer:
+            if type(word) == IntentTemplate:
+                answer += word.name
+            if type(word) == IntentValue:
+                for intent_from_dict in list_dict_intents_final:
+                    if intent_from_dict['intent'] == graph.get_reference_lemma(word.name):
+                        answer += str(intent_from_dict['meaning'])
+            if isinstance(word, str):
+                answer += intent
+            answer += ' '
+    print(new_scene.name)
+    print(list_dict_intents_meaning_found)
+    print([answer, new_scene.name, list_dict_intents_final, scene_intents])
+    send_log("answer", answer, False, new_scene.name)
+    return [answer, new_scene.name, list_dict_intents_final, scene_intents]
 
 # поиск интентов в вопросе по интентам графа
 def find_intents(all_intents_text, question_text):
