@@ -40,6 +40,11 @@ article {
 }
 article section > div {
     display: 			flex;
+    align-items:		center;
+    justify-content:	space-between;
+}
+article section > div > div {
+    display: 			flex;
 }
 
 article ul.file-list {
@@ -77,14 +82,25 @@ article li.file-item div + div {
 * Основная панель управления :: article - Иконки
 */
 
-#update-directory {
+#update-directory, #save, #load {
     background-color: 	var(--main-color_icon_1);
     width: 				var(--graph-size_icon);
     height:				var(--graph-size_icon);
     margin: 			5px;
-
+}
+#update-directory {
     -webkit-mask: 		url(../images/frame-sync.svg) no-repeat center;
     mask: 				url(../images/frame-sync.svg) no-repeat center;
+    mask-size: 			contain;
+}
+#save {
+    -webkit-mask: 		url(../images/frame-save.svg) no-repeat center;
+    mask: 				url(../images/frame-save.svg) no-repeat center;
+    mask-size: 			contain;
+}
+#load {
+    -webkit-mask: 		url(../images/frame-load.svg) no-repeat center;
+    mask: 				url(../images/frame-load.svg) no-repeat center;
     mask-size: 			contain;
 }
 article li.file-item div.elem-load {
