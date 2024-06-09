@@ -70,6 +70,22 @@ function event_update_directory() {
     }
 }
 
+function save_graph() {
+    request_to_server('/graph/save', 'GET', null, null, null)
+    .then(data => {
+		event_update_directory();
+    })
+    .catch(error => console.error('Ошибка:', error));
+}
+
+function load_graph() {
+    request_to_server('/graph/load', 'GET', null, null, null)
+    .then(data => {
+		event_update_directory();
+    })
+    .catch(error => console.error('Ошибка:', error));
+}
+
 function event_upload_document() {
     if (document.getElementById('upload-document').files[0]) {
         var form = new FormData();

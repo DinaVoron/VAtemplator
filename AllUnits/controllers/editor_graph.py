@@ -1,6 +1,6 @@
 import os
 import spacy
-from app import app, graph
+from app import app, graph, Graph
 from flask import current_app, jsonify, make_response, render_template, request
 from werkzeug.utils import secure_filename
 from models.module.func import create_html_content, create_html_cluster, has_common_element  # create_cluster_tr_html,
@@ -167,6 +167,19 @@ def handle_update_document():
 @app.route("/graph/update_reference")
 def handle_update_reference():
     return make_response(graph.get_documents(), 200)
+
+
+@app.route("/graph/save")
+def handle_save():
+    graph.save("save_files/graph.pkl")
+    return make_response("", 200)
+
+
+@app.route("/graph/load")
+def handle_load():
+    if os.path.exists("save_files/graph.pkl"):
+        graph.load("save_files/graph.pkl")
+    return make_response("", 200)
 
 
 @app.route("/graph/upload_document", methods=["POST"])
