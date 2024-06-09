@@ -414,9 +414,9 @@ def main():
     '''
 
     main_scene = Scene(name="проверка_направлений",
-                       answer=[IntentValue("направление")],
-                       questions=[IntentTemplate("направление")],
-                       available_intents_list=['направление'],
+                       answer=[IntentValue("балл")],
+                       questions=[IntentTemplate("балл")],
+                       available_intents_list=['балл'],
                        clarifying_question=["Не найден ответ в main"])
     sub1 = Scene(name="проверка_балла_направления", pass_conditions=["месяц"],
                  answer= [IntentTemplate("балл"),
@@ -752,7 +752,11 @@ def new_dialog(question, graph, dialog_tree):
 
     for intent in question_references:
         list_dict_intents.append({'intent':intent, 'meaning': None, 'type': 'REPRESENT'}) # represent - представление
+    print(list_dict_intents)
+    print('в граф для возможных')
     list_dict_intents_possible = graph.search(list_dict_intents, flag=True) # flag - true, если без значений
+    print(list_dict_intents_possible)
+    print("list_dict_intents_possible")
     # найдены возможные значения, проверить в вопросе
     list_dict_intents_meaning_found = []
     for intent in list_dict_intents_possible:
