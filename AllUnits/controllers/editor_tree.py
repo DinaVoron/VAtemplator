@@ -3,7 +3,7 @@ from flask import render_template, request
 from models.dialog_model import (get_text_scenes, get_root, get_scene_name,
                                  find_scene_by_name, get_scene_everything,
                                  add_child, save_tree, add_scene, delete_scene,
-                                 find_intents, make_words_normal)
+                                 find_intents, make_words_normal, Scene)
 import json
 import jsons
 
@@ -46,7 +46,7 @@ def editor_tree():
             add_child(current_scene, child_scene, dialog_tree = dialog_tree)
     else:
         child_scene_name = None
-
+    '''
     if request.values.get("add_scene"):
         add_name = request.values.get("scene_name")
         add_parent = request.values.get("parent_scene_name")
@@ -61,6 +61,7 @@ def editor_tree():
                   clarifying_question = add_clarifying_question,
                   dialog_tree = dialog_tree
                   )
+    '''
 
     if request.values.get("save_tree"):
         save_tree("save_files/pickle_test.PKL", dialog_tree = dialog_tree)
@@ -76,6 +77,7 @@ def editor_tree():
     print(graph_intent.__dict__)
     #print(graph.nodes_meaning[0].__dict__)
 
+    '''
     # проверочный код, убрать
     question = 'направление подготовки за год c баллом 200'
     question_normal = make_words_normal(question)
@@ -109,7 +111,7 @@ def editor_tree():
                     remaining_meaning.append(meaning)
         if not remaining_meaning:
             remaining_meaning = None
-        intent_dict = {'intent': intent['intent'], 'meaning': remaining_meaning}
+        intent_dict = {'intent': intent['intent'], 'meaning': remaining_meaning, 'type': 'REPRESENT'}
         list_dict_intents_meaning_found.append(intent_dict)
     print(list_dict_intents_meaning_found)
     #print(graph.reference)
@@ -117,7 +119,43 @@ def editor_tree():
     print(list_dict_intents_final)
     #print(question_normal)
     #
-    #print(json_scenes_list)
+    '''
+    # Изменение сцены
+    if request.values.get("change_scene"):
+        old_scene_name = request.values.get("hidden_scene_name")
+        new_scene_name = request.values.get("scene_name")
+        answer = request.values.get("answer")
+        questions = request.values.get("questions")
+        available_intents = request.values.get("available_intents")
+        clarifying_question = request.values.get("clarifying_question")
+
+        scene = dialog_tree.to_scene(old_scene_name)
+        scene.answer = scene.set_answer(answer)
+        scene.questions = scene.set_question(questions)
+        scene.available_intents_list = available_intents.split(",")
+        scene.clarifying_question = scene.set_clarifying_question(clarifying_question)
+        scene.name = new_scene_name
+
+    # добавление сцены
+    if request.values.get("add_scene"):
+        parent_scene_name = request.values.get("scene_parent")
+        scene_name = request.values.get("scene_name_new")
+        answer = request.values.get("answer_new")
+        questions = request.values.get("questions_new")
+        available_intents = request.values.get("available_intents_new")
+        clarifying_question = request.values.get("clarifying_question_new")
+
+        scene = Scene(name=scene_name)
+        parent_scene = dialog_tree.to_scene(parent_scene_name)
+        scene.answer = scene.set_answer(answer)
+        scene.questions = scene.set_question(questions)
+        scene.available_intents_list = available_intents.split(",")
+        scene.clarifying_question = scene.set_clarifying_question(clarifying_question)
+        parent_scene.add_child(scene)
+
+    if request.values.get("save_tree"):
+        print('Сохранить')
+
     html = render_template(
         "editor_tree.html",
         current_page='editor_tree',

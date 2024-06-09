@@ -51,13 +51,49 @@ class Scene:
                 self.add_question(question)
 
     def set_answer(self, answer):
-        self.answer = answer
+        answer = answer.removesuffix(' | ')
+        answer_list = answer.split(' | ')
+        answer_list_final = []
+        for answer_word in answer_list:
+            if "Интент" in answer_word:
+                answer_list_final.append(IntentTemplate(name=answer_word.split("Интент ")[1]))
+            elif "Значение" in answer_word:
+                answer_list_final.append(IntentValue(name=answer_word.split("Значение ")[1]))
+            else:
+                answer_list_final.append(answer_word)
+
+        self.answer = answer_list_final
+
+    def set_question(self, question):
+        question = question.removesuffix(' | ')
+        question_list = question.split(' | ')
+        question_list_final = []
+        for question_word in question_list:
+            if "Интент" in question_word:
+                question_list_final.append(
+                    IntentTemplate(name=question_word.split("Интент ")[1]))
+            else:
+                question_list_final.append(
+                    IntentValue(name=question_word.split("Значение ")[1]))
+        self.question = question_list_final
 
     def set_name(self, name):
         self.name = name
 
     def set_clarifying_question(self, clarifying_question):
-        self.clarifying_question = clarifying_question
+        clarifying_question = clarifying_question.removesuffix(' | ')
+        question_list = clarifying_question.split(' | ')
+        question_list_final = []
+        for question_word in question_list:
+            if "Интент" in question_word:
+                question_list_final.append(
+                    IntentTemplate(name=question_word.split("Интент ")[1]))
+            elif "Значение" in question_word:
+                question_list_final.append(
+                    IntentValue(name=question_word.split("Значение ")[1]))
+            else:
+                question_list_final.append(question_word)
+        self.clarifying_question = question_list_final
 
     def add_intent_in_list(self, intent):
         if self.available_intents_list is None:
@@ -707,7 +743,6 @@ def find_intents(all_intents_text, question_text):
 def make_words_normal(question):
     question_list = question.split(' ')
     normal_list = []
-    normal_question = ''
     for word in question_list:
         normal_list.append(morph.parse(word)[0].normal_form)
     normal_question = ' '.join(normal_list)
