@@ -451,6 +451,7 @@ class Graph:
         """
         print()
         print(request, flag)
+        print(self.static_layer)
         print()
 
         # Список для хранения слоев, связанных с запросом
