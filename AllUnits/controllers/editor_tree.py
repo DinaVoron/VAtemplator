@@ -73,7 +73,7 @@ def editor_tree():
     graph_intents = graph.nodes_intent_text
     graph_full_intents = graph.nodes_intent
 
-    graph_intent = graph_full_intents[0]
+    #   graph_intent = graph_full_intents[0]
     #print(type(graph_intent))
     #print(graph_intent.__dict__)
     #print(graph.nodes_meaning[0].__dict__)

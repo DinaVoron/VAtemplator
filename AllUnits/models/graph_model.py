@@ -165,7 +165,7 @@ class Graph:
             self.documents    = data["documents"]
             self.reference    = data["reference"]
             self.static_index = data["static_index"]
-            self.static_index = data["static_index"]
+            self.static_layer = data["static_layer"]
 
     def process_data(self, document):
         """
