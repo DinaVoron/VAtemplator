@@ -6,12 +6,10 @@
     <link rel="stylesheet" href="static/css/style-main.css">
     <link rel="stylesheet" href="static/css/style-tabs.css">
     <link rel="stylesheet" href="/static/CSS/tree_style.css">
-
-
-    {% macro render_tree(scene) %}
+    {% macro render_tree(scene, counter) %}
         {% if scene.children != [] %}
             <li><div class="caret">
-                <span class="caret_name">{{ scene.name }}</span>
+                <span class="caret_name" id={{scene.name}}>{{ scene.name }}</span>
                 <div class="scene_adder" style="display: flex; justify-content: right;
                 align-items: right; float: right;">+</div>
             </div>
@@ -22,8 +20,8 @@
                 </ul>
             </li>
             {% else %}
-            <li> <div class="empty_caret" style="border: 1px solid black;"><span class="caret_name">{{ scene.name }}</span>
-            <br><div class="scene_adder" style="display: flex; justify-content: right;
+            <li> <div class="empty_caret" style="border: 1px solid black;"><span class="caret_name" id={{scene.name}}>{{ scene.name }}</span>
+                <div class="scene_adder" style="display: flex; justify-content: right;
                 align-items: right; float: right;">+</div>
             </div>
             </li>
@@ -32,146 +30,336 @@
 </head>
 <body>
     {% include '__block_tabs.html' %}
-    <div class = "super_flex">
-    <div class = "tree_print" style="background-color:#F0F4EF;">
-    <!--
-    {% for scene in text_scenes %}
-        <p> {{scene}} </p>
+    <main class = "super_flex">
+        <div class = "tree_print" style="background-color:#F0F4EF;">
+        <!--
+        {% for scene in text_scenes %}
+            <p> {{scene}} </p>
+            {% endfor %}
+        -->
+            <ul id="treeUL">
+            {{ render_tree(all_tree.root) }}
+            </ul>
+        </div>
+
+        <!--
+        <div class= "scene_print">
+        <p> {{ all_scenes }} </p>
+        <p> Сейчас в сцене - {{ scene_name }} </p>
+        <p> Порядок: потомки, переходы, ответ, вопросы </p>
+        {% for stat in scene_stats %}
+            <p> {{stat}} </p>
         {% endfor %}
-    -->
-        <ul id="treeUL">
-        {{ render_tree(all_tree.root) }}
-        </ul>
-    </div>
+        </div>
+        -->
+        <!-- <div style="display: flex; flex-grow: 1; border: 1px solid black; flex-basis: 40%;"> -->
+        <div class = "scene_options" id= "scene_options">
+            <!--
+            <form method="get">
+                <input type="hidden" name = go_to_scene value="1">
+                <textarea name = scene_name value="Имя сцены"> </textarea>
+                <input type="submit" value="Перейти в сцену">
+            </form>
+            <br>
+            -->
+            <!--
+            <form method="get">
+                <input type="hidden" name = add_child_scene value="1">
+                <textarea name = child_scene_name> </textarea>Имя сцены
+                <input type="submit" value="Добавить потомка">
+            </form>
+            {% if child_scene_name != None %}
+                <p> Успешно добавлена в потомки сцены {{ scene_name }} сцена {{ child_scene_name }}</p>
+            {% endif %}
+            -->
 
-    <!--
-    <div class= "scene_print">
-    <p> {{ all_scenes }} </p>
-    <p> Сейчас в сцене - {{ scene_name }} </p>
-    <p> Порядок: потомки, переходы, ответ, вопросы </p>
-    {% for stat in scene_stats %}
-        <p> {{stat}} </p>
-    {% endfor %}
-    </div>
-    -->
-    <div class = "scene_options" id= "scene_options">
-    <form method="get">
-        <input type="hidden" name = go_to_scene value="1">
-        <input type="text" name = scene_name value="Имя сцены">
-        <input type="submit" value="Перейти в сцену">
-    </form>
-    <br>
-    <form method="get">
-        <input type="hidden" name = add_child_scene value="1">
-        <input type="text" name = child_scene_name> Имя сцены
-        <input type="submit" value="Добавить потомка">
-    </form>
-    {% if child_scene_name != None %}
-        <p> Успешно добавлена в потомки сцены {{ scene_name }} сцена {{ child_scene_name }}</p>
-    {% endif %}
+            <form method="post">
+                <p> Данные сцены</p>
+                <input type="hidden" name = hidden_scene_name id = hidden_scene_name>
+                <!-- <input type="hidden" id = add_scene value="1">
+                <br><textarea id = parent_scene_name> </textarea> Имя родительской сцены-->
+                <br><textarea name = scene_name id = scene_name> </textarea>Имя сцены
+                <!--<br><textarea id = pass_conditions> </textarea>Условия перехода-->
+                <br><textarea name = answer id = answer rows="4" cols="50"> </textarea> Шаблон ответа
+                <br><textarea name = questions id = questions rows="4" cols="50"> </textarea> Шаблоны вопроса
+                <br><textarea name = available_intents id = available_intents> </textarea> Интенты сцены
+                <br>
+                <br><textarea name = clarifying_question id = clarifying_question> </textarea> Уточняющий вопрос
+                <br><input type="submit" name= "change_scene" value="Изменить сцену">
 
-        <form method="get">
-        <p> Данные сцены</p>
-        <input type="hidden" name = add_scene value="1">
-            <br><input type="text" name = parent_scene_name> Имя родительской сцены
-        <br><input type="text" name = scene_name value="{{current_scene.name}}"> Имя сцены
-        <br><input type="text" name = pass_conditions value="{{current_scene.pass_conditions}}"> Условия перехода
-        <br><textarea name = answer rows="4" cols="50" value="{{current_scene.answer}}"> </textarea> Шаблон ответа
-        <br><textarea name = questions rows="4" cols="50" value="{{current_scene.questions}}"> </textarea> Шаблоны вопроса
-            <br><input type="text" name = available_intents value="{{current_scene.available_intents_list}}"> Интенты сцены
-        <br>
-        <br><input type="text" name = clarifying_question value="{{current_scene.clarifying_question}}"> Уточняющий вопрос
-        <br><input type="submit" value="Добавить сцену">
-    </form>
+            </form>
+            <form method="post">
+                <select>
+                    <optgroup label="graph_intents">
+                        {% for graph_intent in graph_intents %}
+                            <option value="{{graph_intent}}"> {{graph_intent}} </option>
+                        {% endfor %}
+                    </optgroup>
+                </select>
+                <br><input type="submit" value="Добавить интент">
+            </form>
+            <form method="post">
+                <p> Удаление сцены (и ее потомков)!!!</p>
+                <input type="hidden" name = delete_scene value="1">
+                <input type="hidden" name = hidden_scene_name value="1">
+                <br><input type="submit" value="Удалить сцену">
+            </form>
+        </div>
 
-    </div>
-    </div>
-    <div class = "scene_options" id="scene_to_add" style="display:none;">
-        <form method="get">
-        <input type="hidden" name = go_to_scene value="1">
-        <input type="text" name = scene_name value="Имя сцены">
-        <input type="submit" value="Перейти в сцену">
-    </form>
-    <br>
-    <form method="get">
-        <input type="hidden" name = add_child_scene value="1">
-        <input type="text" name = child_scene_name> Имя сцены
-        <input type="submit" value="Добавить потомка">
-    </form>
-    {% if child_scene_name != None %}
-        <p> Успешно добавлена в потомки сцены {{ scene_name }} сцена {{ child_scene_name }}</p>
-    {% endif %}
+        <div class = "scene_options" id="scene_to_add" style="display:none;">
+            <!--
+            <form method="get">
+                <input type="hidden" name = go_to_scene value="1">
+                <textarea name = scene_name value="Имя сцены"> </textarea>
+                <input type="submit" value="Перейти в сцену">
+            </form>
+            <br>
+            <form method="get">
+                <input type="hidden" name = add_child_scene value="1">
+                <textarea name = child_scene_name> </textarea> Имя сцены
+                <input type="submit" value="Добавить потомка">
+            </form>
+            {% if child_scene_name != None %}
+                <p> Успешно добавлена в потомки сцены {{ scene_name }} сцена {{ child_scene_name }}</p>
+            {% endif %}
+            -->
 
-
-        <form method="get">
-        <p> Новая сцена</p>
-        <input type="hidden" name = add_scene value="1">
-        <br><input type="text" name = scene_name value="{{current_scene.name}}"> Имя сцены
-        <br><input type="text" name = pass_conditions value="{{current_scene.pass_conditions}}"> Условия перехода
-        <br><textarea name = answer rows="4" cols="50" value="{{current_scene.answer}}"> </textarea> Шаблон ответа
-        <br><textarea name = questions rows="4" cols="50" value="{{current_scene.questions}}"> </textarea> Шаблоны вопроса
-            <br><input type="text" name = available_intents value="{{current_scene.available_intents_list}}"> Интенты сцены
-        <br>
-        <br><input type="text" name = clarifying_question value="{{current_scene.clarifying_question}}"> Уточняющий вопрос
-        <br><input type="submit" value="Добавить сцену">
-    </form>
-        <form method="get">
-            <select>
-                <optgroup label="graph_intents">
-                    {% for graph_intent in graph_intents %}
-                        <option value="{{graph_intent}}"> {{graph_intent}} </option>
-                    {% endfor %}
-                </optgroup>
-            </select>
-            <br><input type="submit" value="Добавить интент">
-        </form>
-    <form method="get">
-        <p> Удаление сцены (и ее потомков)!!!</p>
-        <input type="hidden" name = delete_scene value="1">
-        <input type="hidden" name = hidden_scene_name value="1">
-        <br><input type="submit" value="Удалить сцену">
-    </form>
-    </div>
-    <form method="get">
-        <input type="hidden" name = save_tree value="1">
-        <br><input type="submit" value="Сохранить дерево">
+            <form method="post">
+                <p> Новая сцена</p>
+                <br><textarea name = scene_parent id = scene_parent rows="4" cols="50"> </textarea> Родительская сцена
+                <!--<input type="hidden" id = hidden_scene_name_new>-->
+                <br><textarea name = scene_name_new id = scene_name_new value="{{current_scene.name}}"> </textarea> Имя сцены
+                <!--<br><textarea id = pass_conditions_new value="{{current_scene.pass_conditions}}"> </textarea> Условия перехода-->
+                <br><textarea name = answer_new id = answer_new rows="4" cols="50"> </textarea> Шаблон ответа
+                <br><textarea name = questions_new id = questions_new rows="4" cols="50"> </textarea> Шаблоны вопроса
+                <br><textarea name = available_intents_new id = available_intents_new> </textarea> Интенты сцены
+                <br><textarea name = clarifying_question_new id = clarifying_question_new> </textarea> Уточняющий вопрос
+                <br><input type="submit" name="add_scene" value="Добавить сцену">
+            </form>
+            <form method="post">
+                <select>
+                    <optgroup label="graph_intents">
+                        {% for graph_intent in graph_intents %}
+                            <option value="{{graph_intent}}"> {{graph_intent}} </option>
+                        {% endfor %}
+                    </optgroup>
+                </select>
+                <br><input type="submit" value="Добавить интент">
+            </form>
+        <!-- </div> -->
+        </div>
+    </main>
+    <form method="post">
+        <!--<input type="hidden" name = save_tree value="1">-->
+        <br><input type="submit" name="save_tree" value="Сохранить дерево">
     </form>
 
-<script>
-    var toggler = document.getElementsByClassName("caret");
-    var i;
-    for (i = 0; i < toggler.length; i++) {
-        toggler[i].addEventListener("click", function() {
-            this.parentElement.querySelector(".nested").classList.toggle("active");
-            this.classList.toggle("caret-down");
-            element_change = document.getElementById("scene_options");
-            element_add = document.getElementById("scene_to_add");
-            if (element_change.style.display == 'none') {
-                element_add.style.display = 'none';
-                element_change.style.display = 'flex';
+    <script>
+        var scenes_list = JSON.parse('{{json_scenes_list | tojson | safe}}');
+        var hidden_first_name = document.getElementById("hidden_scene_name");
+        hidden_first_name.value = scenes_list[0].name;
+        var first_name = document.getElementById("scene_name");
+        var question_part;
+        first_name.value = scenes_list[0].name;
+        document.getElementById("scene_parent").value = first_name.value;
+        /*
+        <br><textarea id = pass_conditions value="{{current_scene.pass_conditions}}"> </textarea>Условия перехода
+                <br><textarea id = answer rows="4" cols="50" value="{{current_scene.answer}}"> </textarea> Шаблон ответа
+                <br><textarea id = questions rows="4" cols="50" value="{{current_scene.questions}}"> </textarea> Шаблоны вопроса
+                <br><textarea id = available_intents value="{{current_scene.available_intents_list}}"> </textarea> Интенты сцены
+                <br>
+                <br><textarea id = clarifying_question value="{{current_scene.clarifying_question}}"> </textarea> Уточняющий вопрос
+        */
+        // Корневая сцена
+        /*
+        document.getElementById("answer").value = scenes_list[j].answer;
+        document.getElementById("questions").value = scenes_list[j].questions;
+        */
+        // Ответ сцены
+        document.getElementById("answer").value = '';
+        answer_part = "";
+        var full_answer_first = scenes_list[0].answer;
+        for (answer in full_answer_first) {
+            if (typeof full_answer_first[answer] == "string") {
+                answer_part += full_answer_first[answer];
+            } else {
+                if (Object.hasOwn(full_answer_first[answer], "value")) {
+                    answer_part += "Значение ";
+                }
+                else {
+                    answer_part += "Интент ";
+                }
+                answer_part += full_answer_first[answer].name;
             }
-        });
-    }
+            answer_part += " | ";
+        }
+        document.getElementById("answer").value = answer_part;
 
-    var toggler2 = document.getElementsByClassName("scene_adder");
-    var j;
-    var element;
-    for (j = 0; j < toggler2.length; j++) {
-        toggler2[j].addEventListener("click", function() {
-            element_change = document.getElementById("scene_options");
-            element_add = document.getElementById("scene_to_add");
-            if (element_add.style.display == 'none') {
-                element_add.style.display = 'flex';
-                element_change.style.display = 'none';
+        // Вопрос сцены
+        document.getElementById("questions").value = '';
+        question_part = "";
+        var full_question_first = scenes_list[0].questions;
+        for (question in full_question_first) {
+            if (typeof full_question_first[question] == "string") {
+                question_part += full_question_first[question];
+            } else {
+                if (Object.hasOwn(full_question_first[question], "value")) {
+                    question_part += "Значение ";
+                }
+                else {
+                    question_part += "Интент ";
+                }
+                question_part += full_question_first[question].name;
             }
-            /* else {
-                element_add.style.display = 'none';
-                element_change.style.display = 'flex';
-            } */
-        });
-    }
+            question_part += " | ";
+        }
+        document.getElementById("questions").value = question_part;
+        // Доступные интенты (переходы)
+        document.getElementById("available_intents").value = scenes_list[0].available_intents_list;
+        // Уточняющий вопрос
+        question_part = "";
+        var clarifying_full_question = scenes_list[0].clarifying_question;
+        for (question in clarifying_full_question) {
+            if (typeof clarifying_full_question[question] == "string") {
+                question_part += clarifying_full_question[question];
+            } else {
+                if (Object.hasOwn(clarifying_full_question[question], "value")) {
+                    question_part += "Значение ";
+                }
+                else {
+                    question_part += "Интент ";
+                }
+                question_part += clarifying_full_question[question].name;
+            }
+            question_part += " | ";
+        }
+        document.getElementById("clarifying_question").value = question_part;
 
-</script>
 
+        var toggler = document.getElementsByClassName("caret");
+        var i;
+        var j;
+        for (i = 0; i < toggler.length; i++) {
+            toggler[i].addEventListener("click", function() {
+                this.parentElement.querySelector(".nested").classList.toggle("active");
+                this.classList.toggle("caret-down");
+            });
+        }
+
+        console.log(scenes_list[0].children[0].name);
+
+        var element_change = document.getElementById("scene_options");
+        var element_add = document.getElementById("scene_to_add");
+        var toggler_scene = document.getElementsByClassName("caret_name");
+        var i;
+        for (i = 0; i < toggler_scene.length; i++) {
+            toggler_scene[i].addEventListener("click", function() {
+                if (element_change.style.display == 'none') {
+                    element_add.style.display = 'none';
+                    element_change.style.display = 'flex';
+                    name_id = toggler_scene[i].id;
+
+                    var name = document.getElementById("scene_name");
+                    name.innerHTML = name_id;
+
+                    var hidden_name = document.getElementById("hidden_scene_name");
+                    hidden_name.value = name_id;
+                }
+            });
+        }
+
+        var toggler2 = document.getElementsByClassName("scene_adder");
+        var j;
+        var element;
+        for (j = 0; j < toggler2.length; j++) {
+            toggler2[j].addEventListener("click", function() {
+                if (element_add.style.display == 'none') {
+                    element_add.style.display = 'flex';
+                    element_change.style.display = 'none';
+                }
+            });
+        }
+
+        toggler = document.getElementsByClassName("caret_name");
+        for (i = 0; i < toggler.length; i++) {
+            toggler[i].addEventListener("click", function() {
+                name_id = this.id;
+                document.getElementById("scene_name").value = name_id;
+                hidden_name = document.getElementById("hidden_scene_name");
+                hidden_name.value = name_id;
+                document.getElementById("scene_parent").value = name_id;
+                /* поиск по имени выбранной сцены в списке сцен */
+                for (j = 0; j < scenes_list.length; j++) {
+                    if (name_id == scenes_list[j].name) {
+                        /*
+                        document.getElementById("pass_conditions").value = scenes_list[j].pass_conditions;
+                        document.getElementById("answer").value = scenes_list[j].answer;
+                        document.getElementById("questions").value = scenes_list[j].questions;
+                        */
+                        // Ответ сцены
+                        document.getElementById("answer").value = '';
+                        answer_part = "";
+                        var full_answer = scenes_list[j].answer;
+                        for (answer in full_answer) {
+                            if (typeof full_answer[answer] == "string") {
+                                answer_part += full_answer[answer];
+                            } else {
+                                if (Object.hasOwn(full_answer[answer], "value")) {
+                                    answer_part += "Значение ";
+                                }
+                                else {
+                                    answer_part += "Интент ";
+                                }
+                                answer_part += full_answer[answer].name;
+                            }
+                            answer_part += " | ";
+                        }
+                        document.getElementById("answer").value = answer_part;
+
+                        // Вопрос сцены
+                        document.getElementById("questions").value = '';
+                        question_part = "";
+                        var full_question = scenes_list[j].questions;
+                        for (question in full_question) {
+                            if (typeof full_question[question] == "string") {
+                                question_part += full_question[question];
+                            } else {
+                                if (Object.hasOwn(full_question[question], "value")) {
+                                    question_part += "Значение ";
+                                }
+                                else {
+                                    question_part += "Интент ";
+                                }
+                                question_part += full_question[question].name;
+                            }
+                            question_part += " | ";
+                        }
+                        document.getElementById("questions").value = question_part;
+                        // Доступные интенты (переходы)
+                        document.getElementById("available_intents").value = scenes_list[j].available_intents_list;
+                        // Уточняющий вопрос
+                        document.getElementById("clarifying_question").value = '';
+                        question_part = "";
+                        clarifying_full_question = scenes_list[j].clarifying_question;
+                        for (question in clarifying_full_question) {
+                            if (typeof clarifying_full_question[question] == "string") {
+                                question_part += clarifying_full_question[question];
+                            } else {
+                                if (Object.hasOwn(clarifying_full_question[question], "value")) {
+                                    question_part += "Значение ";
+                                }
+                                else {
+                                    question_part += "Интент ";
+                                }
+                                question_part += clarifying_full_question[question].name;
+                            }
+                            question_part += " | ";
+                        }
+                        document.getElementById("clarifying_question").value = question_part;
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>

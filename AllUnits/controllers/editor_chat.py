@@ -1,6 +1,6 @@
 from app import app, graph, dialog_tree
 from flask import render_template, request, make_response, jsonify
-from models.dialog_model import get_root, get_scene_name, find_scene_by_name, dialog
+from models.dialog_model import get_root, get_scene_name, find_scene_by_name, dialog, new_dialog
 from models.editor_data_model import send_res, clean_logs
 
 
@@ -22,7 +22,8 @@ def editor_chat():
 def handle_chat_send():
     current_scene            = find_scene_by_name(request.json.get("scene"), dialog_tree=dialog_tree)
     question                 = request.json.get("question")
-    answer, scene_name, _, _ = dialog(current_scene, question, graph)
+    #answer, scene_name, _, _ = dialog(current_scene, question, graph)
+    answer, scene_name, _, _ = new_dialog(question, graph, dialog_tree)
 
     if find_scene_by_name(scene_name, dialog_tree=dialog_tree) is None:
         scene_name = request.json.get("scene")

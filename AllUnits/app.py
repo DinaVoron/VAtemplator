@@ -16,7 +16,8 @@ app.config['UPLOAD_FOLDER_DOCUMENTS'] = "documents"
 
 # Определение глобальных статических переменных
 if os.path.exists("save_files/graph.pkl"):
-    graph = Graph.load("save_files/graph.pkl")
+    graph = Graph()
+    graph.load("save_files/graph.pkl")
 else:
     graph = Graph()
 
