@@ -130,7 +130,7 @@ def automatic_testing():
 
 
 def get_scene_answer(scene, question):
-    answer = scene.get_work_question(question)
+    answer = scene.get_answer(question, graph)
     return answer
 
 

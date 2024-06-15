@@ -279,12 +279,11 @@ class Scene:
     # Необходимо наличие всех в вопросе
     def check_scene_rec(self, intents):
         intents.sort()
-        for question in self.questions:
-            checklist = []
-            for word in question:
-                if isinstance(word, IntentTemplate):
-                    if word.name in intents:
-                        checklist.append(word.name)
+        checklist = []
+        for value in self.questions:
+            if isinstance(value, IntentTemplate):
+                if value.name in intents:
+                    checklist.append(value.name)
             # оставлены только уникальные интенты
             checklist = list(set(checklist))
             checklist.sort()
