@@ -123,6 +123,20 @@ def editor_tree():
     #print(question_normal)
     #
     '''
+    '''
+    print('проверка ответа')
+    question = 'направление подготовки за год c баллом 200'
+    question_normal = make_words_normal(question)
+    print(question_normal + ' - вопрос в нормальной форме')
+    question_intents = find_intents(graph_intents, question_normal)
+    print('интенты')
+    print(question_intents)
+    print(dialog_tree.root.check_to_enter(question_intents))
+    new_scene = dialog_tree.final_pass_to_scene(question_intents)
+    answer = new_scene.get_answer(question, graph)
+    print(answer)
+    '''
+
     # Изменение сцены
     if request.values.get("change_scene"):
         old_scene_name = request.values.get("hidden_scene_name")
