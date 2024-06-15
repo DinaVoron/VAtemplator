@@ -1,7 +1,7 @@
 from app import app, graph, dialog_tree
 from flask import render_template, request, make_response, jsonify
 from models.dialog_model import get_root, get_scene_name, find_scene_by_name, dialog, new_dialog
-from models.editor_data_model import send_res, clean_logs
+from models.editor_data_model import send_res, clean_logs, send_log
 
 
 @app.route("/chat", methods=["GET"])
@@ -29,6 +29,8 @@ def handle_chat_send():
         scene_name = request.json.get("scene")
     if not answer:
         answer = "Мои соболезнования. Я не нашел ответа на ваш вопрос."
+
+    send_log("answer", answer, False, scene_name)
 
     return make_response(jsonify({
         "scene_name": scene_name, "question": question, "answer": answer,

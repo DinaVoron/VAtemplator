@@ -2,7 +2,7 @@ from app import dialog_tree, graph
 from models.dialog_model import IntentTemplate
 from models.dialog_model import IntentValue
 from models.dialog_model import find_scene_by_name, ask_question
-from models.dialog_model import dialog
+from models.dialog_model import new_dialog
 import xml.etree.ElementTree as ET
 
 
@@ -22,21 +22,24 @@ def get_questions(node):
     if node is None:
         return []
     res = []
-    for question in node.questions:
-        intents = []
-        values = []
-        for item in question:
-            if isinstance(item, IntentTemplate):
-                intents.append(item.name)
-            if isinstance(item, IntentValue):
-                values.append(item.name)
+    intents = []
+    values = []
+    for value in node.questions:
+        print(value)
+        if isinstance(value, IntentTemplate):
+            print("is_intent")
+            intents.append("'" + value.name + "'")
 
-        question_text = "c ключевыми словами " + ", ".join(intents)
+        if isinstance(value, IntentValue):
+            print("is_value")
+            values.append("'" + value.name + "'")
 
-        if len(values) > 0:
-            question_text += " и значениями " + ", ".join(values)
+    question_text = "c ключевыми словами " + ", ".join(intents)
 
-        res.append(question_text)
+    if len(values) > 0:
+        question_text += " и значениями " + ", ".join(values)
+
+    res.append(question_text)
 
     return res
 
@@ -99,7 +102,7 @@ def automatic_testing():
         input_answers_end = len(input_answers) - 1
         for question in question_session:
             if scene is not None:
-                dialog_all = dialog(scene, question, graph)
+                dialog_all = new_dialog(question, graph, dialog_tree)
                 answer = dialog_all[0]
                 input_answers[input_answers_end].append(answer)
                 scene = find_scene_by_name(dialog_all[1], dialog_tree)
@@ -127,7 +130,7 @@ def automatic_testing():
 
 
 def get_scene_answer(scene, question):
-    answer = scene.get_work_question(question)
+    answer = scene.get_answer(question, graph)
     return answer
 
 
