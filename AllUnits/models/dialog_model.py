@@ -782,10 +782,13 @@ def new_dialog(question, graph, dialog_tree):
             if isinstance(word, str):
                 answer += intent
             answer += ' '
-    print(new_scene.name)
+    # print(new_scene.name)
     print(list_dict_intents_meaning_found)
-    print([answer, new_scene.name, list_dict_intents_final, scene_intents])
-    send_log("answer", answer, False, new_scene.name)
+    # print([answer, new_scene.name, list_dict_intents_final, scene_intents])
+    if new_scene:
+        send_log("answer", answer, False, new_scene.name)
+    else:
+        send_log("answer", answer, False, "None")
     return [answer, new_scene.name, list_dict_intents_final, scene_intents]
 
 # поиск интентов в вопросе по интентам графа
