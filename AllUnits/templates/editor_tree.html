@@ -81,6 +81,7 @@
                 <br><textarea name = scene_name id = scene_name> </textarea>Имя сцены
                 <!--<br><textarea id = pass_conditions> </textarea>Условия перехода-->
                 <br><textarea name = answer id = answer rows="4" cols="50"> </textarea> Шаблон ответа
+                <br><textarea name = short_answer id = short_answer rows="4" cols="50"> </textarea> Шаблон короткого ответа
                 <br><textarea name = questions id = questions rows="4" cols="50"> </textarea> Шаблоны вопроса
                 <br><textarea name = available_intents id = available_intents> </textarea> Интенты сцены
                 <br>
@@ -131,6 +132,7 @@
                 <br><textarea name = scene_name_new id = scene_name_new value="{{current_scene.name}}"> </textarea> Имя сцены
                 <!--<br><textarea id = pass_conditions_new value="{{current_scene.pass_conditions}}"> </textarea> Условия перехода-->
                 <br><textarea name = answer_new id = answer_new rows="4" cols="50"> </textarea> Шаблон ответа
+                <br><textarea name = short_answer_new id = short_answer_new rows="4" cols="50"> </textarea> Шаблон короткого ответа
                 <br><textarea name = questions_new id = questions_new rows="4" cols="50"> </textarea> Шаблоны вопроса
                 <br><textarea name = available_intents_new id = available_intents_new> </textarea> Интенты сцены
                 <br><textarea name = clarifying_question_new id = clarifying_question_new> </textarea> Уточняющий вопрос
@@ -162,19 +164,8 @@
         var question_part;
         first_name.value = scenes_list[0].name;
         document.getElementById("scene_parent").value = first_name.value;
-        /*
-        <br><textarea id = pass_conditions value="{{current_scene.pass_conditions}}"> </textarea>Условия перехода
-                <br><textarea id = answer rows="4" cols="50" value="{{current_scene.answer}}"> </textarea> Шаблон ответа
-                <br><textarea id = questions rows="4" cols="50" value="{{current_scene.questions}}"> </textarea> Шаблоны вопроса
-                <br><textarea id = available_intents value="{{current_scene.available_intents_list}}"> </textarea> Интенты сцены
-                <br>
-                <br><textarea id = clarifying_question value="{{current_scene.clarifying_question}}"> </textarea> Уточняющий вопрос
-        */
+
         // Корневая сцена
-        /*
-        document.getElementById("answer").value = scenes_list[j].answer;
-        document.getElementById("questions").value = scenes_list[j].questions;
-        */
         // Ответ сцены
         document.getElementById("answer").value = '';
         answer_part = "";
@@ -194,6 +185,26 @@
             answer_part += " | ";
         }
         document.getElementById("answer").value = answer_part;
+
+        // Короткий ответ сцены
+        document.getElementById("short_answer").value = '';
+        short_answer_part = "";
+        var short_full_answer_first = scenes_list[0].short_answer;
+        for (short_answer in short_full_answer_first) {
+            if (typeof short_full_answer_first[short_answer] == "string") {
+                short_answer_part += short_full_answer_first[short_answer];
+            } else {
+                if (Object.hasOwn(short_full_answer_first[short_answer], "value")) {
+                    short_answer_part += "Значение ";
+                }
+                else {
+                    short_answer_part += "Интент ";
+                }
+                short_answer_part += short_full_answer_first[short_answer].name;
+            }
+            short_answer_part += " | ";
+        }
+        document.getElementById("short_answer").value = short_answer_part;
 
         // Вопрос сцены
         document.getElementById("questions").value = '';
@@ -291,11 +302,6 @@
                 /* поиск по имени выбранной сцены в списке сцен */
                 for (j = 0; j < scenes_list.length; j++) {
                     if (name_id == scenes_list[j].name) {
-                        /*
-                        document.getElementById("pass_conditions").value = scenes_list[j].pass_conditions;
-                        document.getElementById("answer").value = scenes_list[j].answer;
-                        document.getElementById("questions").value = scenes_list[j].questions;
-                        */
                         // Ответ сцены
                         document.getElementById("answer").value = '';
                         answer_part = "";
@@ -315,6 +321,26 @@
                             answer_part += " | ";
                         }
                         document.getElementById("answer").value = answer_part;
+
+                        // Короткий ответ сцены
+                        document.getElementById("short_answer").value = '';
+                        short_answer_part = "";
+                        var short_full_answer = scenes_list[j].short_answer;
+                        for (short_answer in short_full_answer) {
+                            if (typeof short_full_answer[short_answer] == "string") {
+                                short_answer_part += short_full_answer[short_answer];
+                            } else {
+                                if (Object.hasOwn(short_full_answer[short_answer], "value")) {
+                                    short_answer_part += "Значение ";
+                                }
+                                else {
+                                    short_answer_part += "Интент ";
+                                }
+                                short_answer_part += short_full_answer[short_answer].name;
+                            }
+                            short_answer_part += " | ";
+                        }
+                        document.getElementById("short_answer").value = short_answer_part;
 
                         // Вопрос сцены
                         document.getElementById("questions").value = '';

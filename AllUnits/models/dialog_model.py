@@ -4,6 +4,7 @@ import pickle as pc
 import speech_recognition as sr
 import pyttsx3
 import pymorphy3
+import random
 
 morph = pymorphy3.MorphAnalyzer()
 engine = pyttsx3.init("sapi5")
@@ -30,7 +31,7 @@ class IntentValue:
 
 class Scene:
     def __init__(self, name = None, children = None, pass_conditions = None,
-                 answer = None, questions = None,
+                 answer = None, questions = None, short_answer = None,
                  clarifying_question = None, available_intents_list = None):
         self.name = name
         self.children = []
@@ -38,6 +39,7 @@ class Scene:
         self.height = 0
         self.answer = answer
         self.questions = []
+        self.short_answer = short_answer
         self.clarifying_question = clarifying_question
         self.available_intents_list = available_intents_list
         if children is not None:
@@ -63,6 +65,20 @@ class Scene:
                 answer_list_final.append(answer_word)
 
         self.answer = answer_list_final
+
+    def set_short_answer(self, answer):
+        answer = answer.removesuffix(' | ')
+        answer_list = answer.split(' | ')
+        answer_list_final = []
+        for answer_word in answer_list:
+            if "Интент" in answer_word:
+                answer_list_final.append(IntentTemplate(name=answer_word.split("Интент ")[1]))
+            elif "Значение" in answer_word:
+                answer_list_final.append(IntentValue(name=answer_word.split("Значение ")[1]))
+            else:
+                answer_list_final.append(answer_word)
+
+        self.short_answer = answer_list_final
 
     def set_question(self, question):
         question = question.removesuffix(' | ')
@@ -314,6 +330,57 @@ class Scene:
         if set(self.available_intents_list) <= set(only_intents):
             return True
 
+    def get_answer(self, question, graph):
+        graph_intents = graph.nodes_intent_text
+        question_normal = make_words_normal(question)
+        question_intents = find_intents(graph_intents, question_normal)
+        # сцена с шаблоном ответа
+        scene_intents = []
+        for intent in self.questions:
+            if type(intent) == IntentTemplate:
+                scene_intents.append(intent.name)
+
+        list_dict_intents = []
+        question_references = []
+        for intent in scene_intents:
+            question_references.append(graph.get_reference_lemma(intent))
+
+        for intent in question_references:
+            list_dict_intents.append({'intent': intent, 'meaning': None,
+                                      'type': 'REPRESENT'})
+        list_dict_intents_possible = graph.search(list_dict_intents,
+                                                  flag=True)
+        # найдены возможные значения, проверить в вопросе
+        list_dict_intents_meaning_found = []
+        for intent in list_dict_intents_possible:
+            remaining_meaning = []
+            if intent['meaning'] != None:
+                for meaning in intent['meaning']:
+                    if meaning in question_normal:
+                        remaining_meaning.append(meaning)
+            if not remaining_meaning:
+                remaining_meaning = None
+            intent_dict = {'intent': intent['intent'],
+                           'meaning': remaining_meaning, 'type': 'REPRESENT'}
+            list_dict_intents_meaning_found.append(intent_dict)
+        list_dict_intents_final = graph.search(list_dict_intents_meaning_found)
+        answer = ''
+        for word in self.answer:
+            if type(word) == IntentTemplate:
+                answer += word.name
+            if type(word) == IntentValue:
+                for intent_from_dict in list_dict_intents_final:
+                    if intent_from_dict[
+                        'intent'] == graph.get_reference_lemma(
+                            word.name):
+                        answer += str(intent_from_dict['meaning'])
+            if isinstance(word, str):
+                answer += word
+            answer += ' '
+
+        return answer
+
+
 
 class SceneTree:
     def __init__(self, root):
@@ -384,8 +451,8 @@ class SceneTree:
 
 def main():
     # Десериализация pickle
-    #with open("save_files/pickle_test.PKL", "rb") as f:
-     #    tree = pc.load(f)
+    with open("save_files/pickle_test.PKL", "rb") as f:
+        tree = pc.load(f)
 
     '''
     main_scene = Scene(name = "срок_приема_подготовки",
@@ -412,22 +479,30 @@ def main():
     tree = SceneTree(main_scene)
     tree.set_height_tree()
     '''
-
+    '''
     main_scene = Scene(name="проверка_направлений",
                        answer=[IntentValue("балл")],
                        questions=[IntentTemplate("балл")],
                        available_intents_list=['балл'],
-                       clarifying_question=["Не найден ответ в main"])
+                       clarifying_question=["Не найден ответ в main"],
+                       short_answer=["короткий", IntentValue("балл")])
     sub1 = Scene(name="проверка_балла_направления", pass_conditions=["месяц"],
                  answer= [IntentTemplate("балл"),
-                          IntentValue("балл"), IntentTemplate("направление"),
+                          IntentValue("балл"), IntentTemplate("направление подготовка"),
                           IntentValue("направление")],
+                 short_answer=["Короткий", IntentTemplate("балл"),
+                          IntentValue("балл"), IntentTemplate("направление подготовка"),
+                          IntentValue("направление подготовка")],
                  available_intents_list=['направление', 'балл'],
-                 questions=[IntentTemplate("балл"), IntentTemplate("направление")]
+                 questions=[IntentTemplate("балл"), IntentTemplate("направление подготовка")],
+                 clarifying_question=["Не получилось найти ответ, найдены:", IntentTemplate("балл"), ":",
+                          IntentValue("балл"), IntentTemplate("направление подготовка"), ":",
+                          IntentValue("направление подготовка")]
                  )
     tree = SceneTree(main_scene)
     main_scene.add_child(sub1)
     tree.set_height_tree()
+    '''
 
 
 
@@ -435,9 +510,6 @@ def main():
     with open("save_files/pickle_test.PKL", "wb") as f:
         pc.dump(tree, f)
     # # Сериализация pickle
-    # with open("save_files/pickle_test.PKL", "wb") as f:
-    #     pc.dump(tree, f)
-
     return tree
 
 
@@ -731,7 +803,8 @@ def dialog(current_scene, question_text, graph):
     new_scene_name = pass_scene(current_scene, intent_list)
     return [answer, new_scene_name, question_intent_dict, intent_list]
 
-def new_dialog(question, graph, dialog_tree):
+# previous_intents - контекст при уточняющем вопросе
+def new_dialog(question, graph, dialog_tree, previous_intents = None):
     graph_intents = graph.nodes_intent_text
     #question = 'направление подготовки за год c баллом 200'
     question_normal = make_words_normal(question)
@@ -772,23 +845,59 @@ def new_dialog(question, graph, dialog_tree):
     list_dict_intents_final = graph.search(list_dict_intents_meaning_found)
     answer = ''
     if new_scene:
-        for word in new_scene.answer:
-            if type(word) == IntentTemplate:
-                answer += word.name
-            if type(word) == IntentValue:
-                for intent_from_dict in list_dict_intents_final:
-                    if intent_from_dict['intent'] == graph.get_reference_lemma(word.name):
-                        answer += str(intent_from_dict['meaning'])
-            if isinstance(word, str):
-                answer += intent
-            answer += ' '
-    # print(new_scene.name)
+        # выбор короткого и длинного ответа
+        random_answer = random.randint(0, 1)
+        if random_answer == 0:
+            for word in new_scene.answer:
+                if type(word) == IntentTemplate:
+                    answer += word.name
+                if type(word) == IntentValue:
+                    for intent_from_dict in list_dict_intents_final:
+                        if intent_from_dict['intent'] == graph.get_reference_lemma(word.name):
+                            if intent_from_dict['meaning'] is not None:
+                                answer += str(intent_from_dict['meaning'])
+                            else:
+                                # Уточняющий вопрос
+                                clarifying_question = (use_clarifying_question
+                                                       (new_scene,
+                                                        list_dict_intents_final, graph))
+                                return [clarifying_question, new_scene.name, list_dict_intents_final, scene_intents]
+                if isinstance(word, str):
+                    answer += word
+                answer += ' '
+        else:
+            for word in new_scene.short_answer:
+                if type(word) == IntentTemplate:
+                    answer += word.name
+                if type(word) == IntentValue:
+                    for intent_from_dict in list_dict_intents_final:
+                        if intent_from_dict['intent'] == graph.get_reference_lemma(word.name):
+                            if intent_from_dict[
+                                'intent'] == graph.get_reference_lemma(
+                                    word.name):
+                                if intent_from_dict['meaning'] is not None:
+                                    answer += str(intent_from_dict['meaning'])
+                                else:
+                                    # Уточняющий вопрос
+                                    clarifying_question = (
+                                        use_clarifying_question
+                                        (new_scene,
+                                         list_dict_intents_final, graph))
+                                    return [clarifying_question,
+                                            new_scene.name,
+                                            list_dict_intents_final,
+                                            scene_intents]
+                if isinstance(word, str):
+                    answer += word
+                answer += ' '
+
+    #print(new_scene.name)
     print(list_dict_intents_meaning_found)
-    # print([answer, new_scene.name, list_dict_intents_final, scene_intents])
-    if new_scene:
-        send_log("answer", answer, False, new_scene.name)
-    else:
-        send_log("answer", answer, False, "None")
+    #print([answer, new_scene.name, list_dict_intents_final, scene_intents])
+    if isinstance(new_scene, bool):
+        send_log("answer", answer, False, new_scene)
+        return [answer, new_scene, list_dict_intents_final, scene_intents]
+    send_log("answer", answer, False, new_scene.name)
     return [answer, new_scene.name, list_dict_intents_final, scene_intents]
 
 # поиск интентов в вопросе по интентам графа
@@ -807,3 +916,20 @@ def make_words_normal(question):
         normal_list.append(morph.parse(word)[0].normal_form)
     normal_question = ' '.join(normal_list)
     return normal_question
+
+def use_clarifying_question(scene, intents_dict, graph):
+    clarifying_question_return = ''
+    for word in scene.clarifying_question:
+        if type(word) == IntentTemplate:
+            clarifying_question_return += word.name
+        if type(word) == IntentValue:
+            for intent_from_dict in intents_dict:
+                if intent_from_dict['intent'] == graph.get_reference_lemma(
+                        word.name):
+                    clarifying_question_return += str(intent_from_dict['meaning'])
+                # Уточняющий вопрос
+                # return []
+        if isinstance(word, str):
+            clarifying_question_return += word
+        clarifying_question_return += ' '
+    return clarifying_question_return
