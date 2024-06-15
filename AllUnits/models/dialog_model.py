@@ -812,6 +812,7 @@ def dialog(current_scene, question_text, graph):
 
 # previous_intents - контекст при уточняющем вопросе
 def new_dialog(question, graph, dialog_tree, previous_intents = None):
+
     graph_intents = graph.nodes_intent_text
     #question = 'направление подготовки за год c баллом 200'
     question_normal = make_words_normal(question)
@@ -839,6 +840,12 @@ def new_dialog(question, graph, dialog_tree, previous_intents = None):
     print("list_dict_intents_possible")
     # найдены возможные значения, проверить в вопросе
     list_dict_intents_meaning_found = []
+
+    if isinstance(new_scene, bool):
+        send_log("question", question, list_dict_intents, "Нет")
+    else:
+        send_log("question", question, list_dict_intents, new_scene.name)
+
     for intent in list_dict_intents_possible:
         remaining_meaning = []
         if intent['meaning'] != None:
@@ -902,9 +909,7 @@ def new_dialog(question, graph, dialog_tree, previous_intents = None):
     print(list_dict_intents_meaning_found)
     #print([answer, new_scene.name, list_dict_intents_final, scene_intents])
     if isinstance(new_scene, bool):
-        send_log("answer", answer, False, new_scene)
-        return [answer, new_scene, list_dict_intents_final, scene_intents]
-    send_log("answer", answer, False, new_scene.name)
+        return [answer, "Нет", list_dict_intents_final, scene_intents]
     return [answer, new_scene.name, list_dict_intents_final, scene_intents]
 
 # поиск интентов в вопросе по интентам графа
