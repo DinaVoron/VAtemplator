@@ -208,6 +208,13 @@ main {
     font-size: 1em;
     border: none;
 }
+.testing-nav__item_header {
+    font-size: 1.5em;
+    font-weight: bold;
+    position: relative;
+    top: -0.5em;
+    left: -0.3em;
+}
 .testing-nav__item_selected {
     background: var(--main-color_6);
     border-radius: 0.4em;
@@ -323,4 +330,11 @@ main {
 
 button {
     cursor: pointer;
+}
+
+
+
+chat > section:nth-of-type(1) {
+    flex-direction:     column;
+    align-items:		start;
 }

@@ -73,7 +73,6 @@ def editor_testing():
     user_questions = []
     results = []
     answers.append("")
-    user_questions.append("")
     results.append("")
 
     scenes = get_scenes()
