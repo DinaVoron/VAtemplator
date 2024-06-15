@@ -125,7 +125,7 @@ def editor_tree():
     '''
     '''
     print('проверка ответа')
-    question = 'направление подготовки за год c баллом 200'
+    question = 'направление подготовки за год c баллом'
     question_normal = make_words_normal(question)
     print(question_normal + ' - вопрос в нормальной форме')
     question_intents = find_intents(graph_intents, question_normal)

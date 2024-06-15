@@ -372,7 +372,15 @@ class Scene:
                     if intent_from_dict[
                         'intent'] == graph.get_reference_lemma(
                             word.name):
-                        answer += str(intent_from_dict['meaning'])
+                        if intent_from_dict['meaning'] is not None:
+                            answer += str(intent_from_dict['meaning'])
+                        else:
+                            # Уточняющий вопрос
+                            clarifying_question = (
+                                use_clarifying_question
+                                (self,
+                                 list_dict_intents_final, graph))
+                            return clarifying_question
             if isinstance(word, str):
                 answer += word
             answer += ' '
