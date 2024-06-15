@@ -123,17 +123,33 @@ def editor_tree():
     #print(question_normal)
     #
     '''
+    '''
+    print('проверка ответа')
+    question = 'направление подготовки за год c баллом 200'
+    question_normal = make_words_normal(question)
+    print(question_normal + ' - вопрос в нормальной форме')
+    question_intents = find_intents(graph_intents, question_normal)
+    print('интенты')
+    print(question_intents)
+    print(dialog_tree.root.check_to_enter(question_intents))
+    new_scene = dialog_tree.final_pass_to_scene(question_intents)
+    answer = new_scene.get_answer(question, graph)
+    print(answer)
+    '''
+
     # Изменение сцены
     if request.values.get("change_scene"):
         old_scene_name = request.values.get("hidden_scene_name")
         new_scene_name = request.values.get("scene_name")
         answer = request.values.get("answer")
+        short_answer = request.values.get("short_answer")
         questions = request.values.get("questions")
         available_intents = request.values.get("available_intents")
         clarifying_question = request.values.get("clarifying_question")
 
         scene = dialog_tree.to_scene(old_scene_name)
         scene.answer = scene.set_answer(answer)
+        scene.short_answer = scene.set_short_answer(short_answer)
         scene.questions = scene.set_question(questions)
         scene.available_intents_list = available_intents.split(",")
         scene.clarifying_question = scene.set_clarifying_question(clarifying_question)
@@ -144,6 +160,7 @@ def editor_tree():
         parent_scene_name = request.values.get("scene_parent")
         scene_name = request.values.get("scene_name_new")
         answer = request.values.get("answer_new")
+        short_answer = request.values.get("short_answer_new")
         questions = request.values.get("questions_new")
         available_intents = request.values.get("available_intents_new")
         clarifying_question = request.values.get("clarifying_question_new")
@@ -151,6 +168,7 @@ def editor_tree():
         scene = Scene(name=scene_name)
         parent_scene = dialog_tree.to_scene(parent_scene_name)
         scene.answer = scene.set_answer(answer)
+        scene.short_answer = scene.set_short_answer(short_answer)
         scene.questions = scene.set_question(questions)
         scene.available_intents_list = available_intents.split(",")
         scene.clarifying_question = scene.set_clarifying_question(clarifying_question)
