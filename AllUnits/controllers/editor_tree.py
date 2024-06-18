@@ -20,7 +20,7 @@ def editor_tree():
 
     # Если сцена не выбрана
     if request.values.get("go_to_scene"):
-        scene_name = (request.values.get("scene_name"))
+        scene_name = request.values.get("scene_name")
         current_scene = find_scene_by_name(scene_name,
                                            dialog_tree = dialog_tree)
         if current_scene is None:
@@ -29,9 +29,11 @@ def editor_tree():
         else:
             scene_stats = get_scene_everything(current_scene)
     elif request.values.get("delete_scene"):
-        scene_name = (request.values.get("hidden_scene_name"))
+        scene_name = request.values.get("hidden_scene_name_delete")
         print(scene_name)
+        print("сцена на удаление")
         delete_scene(scene_name, dialog_tree)
+        current_scene = get_root(dialog_tree=dialog_tree)
     else:
         current_scene = get_root(dialog_tree = dialog_tree)
         scene_name = get_scene_name(current_scene)
@@ -174,8 +176,7 @@ def editor_tree():
         scene.clarifying_question = scene.set_clarifying_question(clarifying_question)
         parent_scene.add_child(scene)
 
-    if request.values.get("save_tree"):
-        print('Сохранить')
+    print(request.values.get("delete_scene"))
 
     html = render_template(
         "editor_tree.html",
