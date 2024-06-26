@@ -16,7 +16,7 @@ textarea {
 .tree_print {
     display: flex;
     /* min-width: 400px; */
-    flex-basis: 60%;
+    flex-basis: 50%;
     border: 1px solid black;
 }
 
@@ -27,7 +27,7 @@ textarea {
 .scene_options {
     display: flex;
     border: 1px solid black;
-    flex-basis: 40%;
+    flex-basis: 50%;
     flex-wrap: wrap;
 }
 
@@ -117,4 +117,9 @@ ul, #treeUL {
     background-color: #344966;
     color: white;
     user-select: none; /* Prevent text selection */
+}
+
+.textarea_container {
+    display: flex;
+    align-items: center;
 }
