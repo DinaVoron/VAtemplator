@@ -168,15 +168,10 @@ def find_all_chains(dialog_tree, edges):
     for edge in edges:
         if edge[0] not in graph:
             graph[edge[0]] = []
-
         if edge[1] not in graph:
             graph[edge[1]] = []
-
-        if edge[1].is_intent:
-            graph[edge[0]].append(edge[1])
-
-        if edge[1] in graph:
-            graph[edge[1]].append(edge[1])
+        graph[edge[0]].append(edge[1])
+        graph[edge[1]].append(edge[0])
 
     visited = {node: False for node in graph}
     path = []
@@ -205,12 +200,14 @@ def graph_verify(dialog_tree, graph):
     chains = find_all_chains(dialog_tree, edges)
 
     tmp = []
-    for i in chains:
-        if list(set(i)) not in tmp:
-            tmp.append(list(set(i)))
+    tmp_set = []
+    for chain in chains:
+        list_set = list(set(chain))
+        if list_set not in tmp_set:
+            tmp.append(chain)
+            tmp_set.append(list_set)
     chains = tmp
 
-    print(chains)
     return chains
 
 
