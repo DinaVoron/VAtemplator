@@ -513,8 +513,6 @@ def main():
     '''
 
 
-
-
     #Сериализация pickle
     with open("save_files/pickle_test.PKL", "wb") as f:
         pc.dump(tree, f)
