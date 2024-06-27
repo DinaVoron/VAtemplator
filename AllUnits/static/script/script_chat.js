@@ -108,9 +108,20 @@ function scrollToBottom() {
 }
 
 function end_dialog() {
+
 	document.getElementById('end-dialog').style.display                = 'none';
-	document.getElementById('end-dialog-successfully').style.display   = 'inline-block';
-	document.getElementById('end-dialog-unsuccessfully').style.display = 'inline-block';
+
+    request_to_server('/chat/finish', 'POST', 'json', 'json')
+	.then(data => {
+        if (data.isnf) {
+            request_to_server('/chat/rating', 'POST', 'text', 'json', "NF");
+        } else {
+            document.getElementById('end-dialog-successfully').style.display   = 'inline-block';
+            document.getElementById('end-dialog-unsuccessfully').style.display = 'inline-block';
+        }
+    }).catch(error => {
+        console.error('Ошибка при заполнении логов:', error);
+    });
 
 	if (recognition) {
 		voice_start_btn.style.display = 'block';

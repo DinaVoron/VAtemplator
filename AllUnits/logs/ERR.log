@@ -45,8 +45,10 @@
 
 <log>
 
-</log>
-<log>
+</log>
+
+<log>
+
 <question><date>2024-06-15</date><time>23:36:38</time><text>готов  </text><place>Нет</place></question>
 
 <answer><date>2024-06-15</date><time>23:36:38</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
@@ -54,6 +56,20 @@
 <question><date>2024-06-15</date><time>23:36:41</time><text>исправлен </text><place>Нет</place></question>
 
 <answer><date>2024-06-15</date><time>23:36:41</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
+
+</log>
+
+<log>
+
+<question><date>2024-06-19</date><time>16:42:12</time><text>fdsgdfg</text><place>Нет</place></question>
+
+<answer><date>2024-06-19</date><time>16:42:12</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
+
+</log>
+<log>
+<question><date>2024-06-27</date><time>13:49:23</time><intent>балл</intent><intent>направление</intent><text>почему</text><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-06-27</date><time>13:49:23</time><text>Не получилось найти ответ  найдены </text><intent>балл</intent><text>  None</text><intent>направление</intent><text>  None </text><place>проверка_балла_направления</place></answer>
 
 </log>
 </logs>

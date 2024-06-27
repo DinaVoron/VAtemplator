@@ -30,9 +30,9 @@ class IntentValue:
 
 
 class Scene:
-    def __init__(self, name = None, children = None, pass_conditions = None,
-                 answer = None, questions = None, short_answer = None,
-                 clarifying_question = None, available_intents_list = None):
+    def __init__(self, name=None, children=None, pass_conditions=None,
+                 answer=None, questions=None, short_answer=None,
+                 clarifying_question=None, available_intents_list=None):
         self.name = name
         self.children = []
         self.pass_conditions = []
@@ -58,9 +58,11 @@ class Scene:
         answer_list_final = []
         for answer_word in answer_list:
             if "Интент" in answer_word:
-                answer_list_final.append(IntentTemplate(name=answer_word.split("Интент ")[1]))
+                answer_list_final.append(
+                    IntentTemplate(name=answer_word.split("Интент ")[1]))
             elif "Значение" in answer_word:
-                answer_list_final.append(IntentValue(name=answer_word.split("Значение ")[1]))
+                answer_list_final.append(
+                    IntentValue(name=answer_word.split("Значение ")[1]))
             else:
                 answer_list_final.append(answer_word)
 
@@ -72,9 +74,11 @@ class Scene:
         answer_list_final = []
         for answer_word in answer_list:
             if "Интент" in answer_word:
-                answer_list_final.append(IntentTemplate(name=answer_word.split("Интент ")[1]))
+                answer_list_final.append(
+                    IntentTemplate(name=answer_word.split("Интент ")[1]))
             elif "Значение" in answer_word:
-                answer_list_final.append(IntentValue(name=answer_word.split("Значение ")[1]))
+                answer_list_final.append(
+                    IntentValue(name=answer_word.split("Значение ")[1]))
             else:
                 answer_list_final.append(answer_word)
 
@@ -162,13 +166,15 @@ class Scene:
         print(all_scenes)
         child_counter = 0
         while child_counter < len(self.children) / 2:
-            self.children[child_counter].get_testing_pretty_children(all_scenes)
+            self.children[child_counter].get_testing_pretty_children(
+                all_scenes)
             print(all_scenes)
             child_counter += 1
         all_scenes.append(self.get_testing_pretty())
         print(all_scenes)
         while child_counter < len(self.children):
-            self.children[child_counter].get_testing_pretty_children(all_scenes)
+            self.children[child_counter].get_testing_pretty_children(
+                all_scenes)
             child_counter += 1
             print(all_scenes)
         return all_scenes
@@ -340,6 +346,7 @@ class Scene:
                 scene_intents.append(intent.name)
 
         list_dict_intents = []
+        list_dict_intents_logs = []
         question_references = []
         for intent in scene_intents:
             question_references.append(graph.get_reference_lemma(intent))
@@ -371,7 +378,7 @@ class Scene:
                 for intent_from_dict in list_dict_intents_final:
                     if intent_from_dict[
                         'intent'] == graph.get_reference_lemma(
-                            word.name):
+                        word.name):
                         if intent_from_dict['meaning'] is not None:
                             answer += str(intent_from_dict['meaning'])
                         else:
@@ -386,7 +393,6 @@ class Scene:
             answer += ' '
 
         return answer
-
 
 
 class SceneTree:
@@ -420,13 +426,13 @@ class SceneTree:
     def get_final_nodes(self):
         all_scenes += self.root.get_pretty_children(all_scenes)
 
-    def scene_add(self, parent_scene, name = None, children = None,
-                  pass_conditions = None, answer = None, questions = None,
-                  clarifying_question = None):
-        new_scene = Scene(name = name, children = children,
-                          pass_conditions = pass_conditions, answer = answer,
-                          questions = questions,
-                          clarifying_question = clarifying_question)
+    def scene_add(self, parent_scene, name=None, children=None,
+                  pass_conditions=None, answer=None, questions=None,
+                  clarifying_question=None):
+        new_scene = Scene(name=name, children=children,
+                          pass_conditions=pass_conditions, answer=answer,
+                          questions=questions,
+                          clarifying_question=clarifying_question)
 
         parent_scene.add_child(new_scene)
         return new_scene
@@ -453,7 +459,6 @@ class SceneTree:
                         current_scene = child
                         starter = True
         return current_scene
-
 
 
 def main():
@@ -511,13 +516,10 @@ def main():
     tree.set_height_tree()
     '''
 
-
-
-
-    #Сериализация pickle
+    # Сериализация pickle
     with open("save_files/pickle_test.PKL", "wb") as f:
         pc.dump(tree, f)
-    # Сериализация pickle
+    # # Сериализация pickle
     return tree
 
 
@@ -543,6 +545,7 @@ def get_testing_text_scenes(dialog_tree):
 
 def get_final_text_scenes(dialog_tree):
     return dialog_tree.get_final_nodes()
+
 
 def get_root(dialog_tree):
     return dialog_tree.root
@@ -811,9 +814,14 @@ def dialog(current_scene, question_text, graph):
     new_scene_name = pass_scene(current_scene, intent_list)
     return [answer, new_scene_name, question_intent_dict, intent_list]
 
-# previous_intents - контекст при уточняющем вопросе
-def new_dialog(question, graph, dialog_tree, previous_intents = None):
 
+# previous_intents - контекст при уточняющем вопросе
+# previous_intents_values - контекст для логирования
+def new_dialog(question,
+               graph,
+               dialog_tree,
+               previous_intents=None):
+    scene_intents_values = []
     graph_intents = graph.nodes_intent_text
     #question = 'направление подготовки за год c баллом 200'
     question_normal = make_words_normal(question)
@@ -828,35 +836,45 @@ def new_dialog(question, graph, dialog_tree, previous_intents = None):
 
     #print(new_scene)
     list_dict_intents = []
+    list_dict_intents_logs = []
     question_references = []
     for intent in scene_intents:
+        list_dict_intents_logs.append(intent)
         question_references.append(graph.get_reference_lemma(intent))
 
     for intent in question_references:
-        list_dict_intents.append({'intent':intent, 'meaning': None, 'type': 'REPRESENT'}) # represent - представление
+        list_dict_intents.append({'intent': intent, 'meaning': None,
+                                  'type': 'REPRESENT'})  # represent - представление
+
     print(list_dict_intents)
     print('в граф для возможных')
-    list_dict_intents_possible = graph.search(list_dict_intents, flag=True) # flag - true, если без значений
+    list_dict_intents_possible = graph.search(list_dict_intents,
+                                              flag=True)  # flag - true, если без значений
     print(list_dict_intents_possible)
     print("list_dict_intents_possible")
     # найдены возможные значения, проверить в вопросе
     list_dict_intents_meaning_found = []
 
-    if isinstance(new_scene, bool):
-        send_log("question", question, list_dict_intents, "Нет")
-    else:
-        send_log("question", question, list_dict_intents, new_scene.name)
-
-    for intent in list_dict_intents_possible:
+    for i in range(len(list_dict_intents_possible)):
         remaining_meaning = []
-        if intent['meaning'] != None:
-            for meaning in intent['meaning']:
+        if list_dict_intents_possible[i]['meaning'] is not None:
+            for meaning in list_dict_intents_possible[i]['meaning']:
                 if meaning in question_normal:
                     remaining_meaning.append(meaning)
         if not remaining_meaning:
             remaining_meaning = None
-        intent_dict = {'intent': intent['intent'], 'meaning': remaining_meaning, 'type': 'REPRESENT'}
+        intent_dict = {'intent': list_dict_intents_possible[i]['intent'],
+                       'meaning': remaining_meaning, 'type': 'REPRESENT'}
+        intent_dict_log = {'intent': list_dict_intents_logs[i],
+                       'meaning': remaining_meaning}
         list_dict_intents_meaning_found.append(intent_dict)
+        scene_intents_values.append(intent_dict_log)
+
+    if isinstance(new_scene, bool):
+        send_log("question", question, scene_intents_values, "Нет")
+    else:
+        send_log("question", question, scene_intents_values, new_scene.name)
+
     list_dict_intents_final = graph.search(list_dict_intents_meaning_found)
     answer = ''
     if new_scene:
@@ -868,15 +886,18 @@ def new_dialog(question, graph, dialog_tree, previous_intents = None):
                     answer += word.name
                 if type(word) == IntentValue:
                     for intent_from_dict in list_dict_intents_final:
-                        if intent_from_dict['intent'] == graph.get_reference_lemma(word.name):
+                        if intent_from_dict[
+                            'intent'] == graph.get_reference_lemma(word.name):
                             if intent_from_dict['meaning'] is not None:
                                 answer += str(intent_from_dict['meaning'])
                             else:
                                 # Уточняющий вопрос
                                 clarifying_question = (use_clarifying_question
                                                        (new_scene,
-                                                        list_dict_intents_final, graph))
-                                return [clarifying_question, new_scene.name, list_dict_intents_final, scene_intents]
+                                                        list_dict_intents_final,
+                                                        graph))
+                                return [clarifying_question, new_scene.name,
+                                        list_dict_intents_final, scene_intents, scene_intents_values]
                 if isinstance(word, str):
                     answer += word
                 answer += ' '
@@ -886,10 +907,11 @@ def new_dialog(question, graph, dialog_tree, previous_intents = None):
                     answer += word.name
                 if type(word) == IntentValue:
                     for intent_from_dict in list_dict_intents_final:
-                        if intent_from_dict['intent'] == graph.get_reference_lemma(word.name):
+                        if intent_from_dict[
+                            'intent'] == graph.get_reference_lemma(word.name):
                             if intent_from_dict[
                                 'intent'] == graph.get_reference_lemma(
-                                    word.name):
+                                word.name):
                                 if intent_from_dict['meaning'] is not None:
                                     answer += str(intent_from_dict['meaning'])
                                 else:
@@ -910,8 +932,9 @@ def new_dialog(question, graph, dialog_tree, previous_intents = None):
     print(list_dict_intents_meaning_found)
     #print([answer, new_scene.name, list_dict_intents_final, scene_intents])
     if isinstance(new_scene, bool):
-        return [answer, "Нет", list_dict_intents_final, scene_intents]
-    return [answer, new_scene.name, list_dict_intents_final, scene_intents]
+        return [answer, "Нет", list_dict_intents_final, scene_intents, scene_intents_values]
+    return [answer, new_scene.name, list_dict_intents_final, scene_intents, scene_intents_values]
+
 
 # поиск интентов в вопросе по интентам графа
 def find_intents(all_intents_text, question_text):
@@ -930,6 +953,7 @@ def make_words_normal(question):
     normal_question = ' '.join(normal_list)
     return normal_question
 
+
 def use_clarifying_question(scene, intents_dict, graph):
     clarifying_question_return = ''
     for word in scene.clarifying_question:
@@ -939,7 +963,8 @@ def use_clarifying_question(scene, intents_dict, graph):
             for intent_from_dict in intents_dict:
                 if intent_from_dict['intent'] == graph.get_reference_lemma(
                         word.name):
-                    clarifying_question_return += str(intent_from_dict['meaning'])
+                    clarifying_question_return += str(
+                        intent_from_dict['meaning'])
                 # Уточняющий вопрос
                 # return []
         if isinstance(word, str):
