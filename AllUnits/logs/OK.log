@@ -45,15 +45,19 @@
 
 <log>
 
-<question><date>2024-05-24</date><time>20:42:04</time><text>ss</text><place>срок_приема_подготовки</place></question>
-
-<answer><date>2024-05-24</date><time>20:42:04</time><text /><place>срок_приема_подготовки</place></answer>
-
 </log>
 
 <log>
 
+<question><date>2024-06-27</date><time>12:48:23</time><text>балл направление почему</text><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-06-27</date><time>12:48:24</time><text>Не получилось найти ответ  найдены  балл   None направление   None </text><place>проверка_балла_направления</place></answer>
+
 </log>
 <log>
+<question><date>2024-06-27</date><time>13:51:02</time><intent>направление</intent><intent>балл</intent><value>200</value><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-06-27</date><time>13:51:02</time><intent>балл</intent><text>['200']</text><intent>направление</intent><text>['прикладной математика информатика'] </text><place>проверка_балла_направления</place></answer>
+
 </log>
 </logs>

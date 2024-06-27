@@ -15,7 +15,7 @@
     <main>
         <form id="testing-form" action="{{ url_for('editor_testing') }}">
             <nav class="testing-nav">
-                <div class="testing-nav__item"><b>Тестирование</b></div>
+                <div class="testing-nav__item testing-nav__item_header">Тестирование</div>
                 <button class="testing-nav__item" type="submit" name="set_type" value="manual">Ручное</button>
                 <button class="testing-nav__item" type="submit" name="set_type" value="auto">Автоматическое</button>
                 <button class="testing-nav__item" type="submit" name="set_type" value="verify">Верификация модели ПО</button>

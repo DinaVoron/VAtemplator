@@ -1,17 +1,18 @@
 from app import app, graph, dialog_tree
-from flask import render_template, request, make_response, jsonify
-from models.dialog_model import get_root, get_scene_name, find_scene_by_name, dialog, new_dialog
-from models.editor_data_model import send_res, clean_logs
+from flask import render_template, request, make_response, jsonify, session
+from models.dialog_model import get_root, get_scene_name, find_scene_by_name, \
+    dialog, new_dialog
+from models.editor_data_model import send_res, clean_logs, send_log
 
 
 @app.route("/chat", methods=["GET"])
 def editor_chat():
+    session["nf"] = False
     clean_logs()
 
     html = render_template(
         "editor_chat.html",
         current_page="editor_chat",
-
         scene_name=get_scene_name(get_root(dialog_tree=dialog_tree)),
         message="Приветствую! Я готов ответить на ваши вопросы."
     )
@@ -20,15 +21,20 @@ def editor_chat():
 
 @app.route("/chat/send", methods=["POST"])
 def handle_chat_send():
-    current_scene            = find_scene_by_name(request.json.get("scene"), dialog_tree=dialog_tree)
-    question                 = request.json.get("question")
-    #answer, scene_name, _, _ = dialog(current_scene, question, graph)
-    answer, scene_name, _, _ = new_dialog(question, graph, dialog_tree)
+    current_scene = find_scene_by_name(request.json.get("scene"),
+                                       dialog_tree=dialog_tree)
+    question = request.json.get("question")
+
+    answer, scene_name, _, _, intent_values = new_dialog(question, graph,
+                                                   dialog_tree)
 
     if find_scene_by_name(scene_name, dialog_tree=dialog_tree) is None:
         scene_name = request.json.get("scene")
     if not answer:
         answer = "Мои соболезнования. Я не нашел ответа на ваш вопрос."
+        session["nf"] = True
+
+    send_log("answer", answer, intent_values, scene_name)
 
     return make_response(jsonify({
         "scene_name": scene_name, "question": question, "answer": answer,
@@ -37,9 +43,22 @@ def handle_chat_send():
 
 @app.route("/chat/rating", methods=["POST"])
 def handle_chat_rating():
-    send_res(str(request.data.decode("utf-8")))
+    if session["nf"]:
+        send_res("NF")
+    else:
+        send_res(str(request.data.decode("utf-8")))
     return make_response(jsonify({
-        "scene_name": get_scene_name(get_root(dialog_tree=dialog_tree)), "message": "Приветствую! Я готов ответить на ваши вопросы."
+        "scene_name": get_scene_name(get_root(dialog_tree=dialog_tree)),
+        "message": "Приветствую! Я готов ответить на ваши вопросы."
+    }), 200)
+
+
+@app.route("/chat/finish", methods=["POST"])
+def handle_chat_finish():
+    if session["nf"]:
+        send_res("NF")
+    return make_response(jsonify({
+        "isnf": session["nf"]
     }), 200)
 
 # from app import app, graph, dialog_tree

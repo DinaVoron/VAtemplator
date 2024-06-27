@@ -15,15 +15,18 @@
     <main>
         <form id="testing-form" action="{{ url_for('editor_testing') }}">
             <nav class="testing-nav">
-                <div class="testing-nav__item"><b>Тестирование</b></div>
+                <div class="testing-nav__item testing-nav__item_header">Тестирование</div>
                 <button class="testing-nav__item" type="submit" name="set_type" value="manual">Ручное</button>
                 <button class="testing-nav__item testing-nav__item_selected" type="submit" name="set_type" value="auto">Автоматическое</button>
                 <button class="testing-nav__item" type="submit" name="set_type" value="verify">Верификация модели ПО</button>
             </nav>
             <article class="testing-article">
-                <div class="testing-article__header">Успешные логи</div>
+                <div class="testing-article__header">Тестирование по успешным логам</div>
                 <div class="test_result">{{ test_result }}</div><br>
                 <button value="open_test" name="open_test" class="button">Посмотреть диалоги</button>
+            </article>
+            <article class="testing-article">
+                <div class="testing-article__header">Тестирование переходов по дереву диалога</div>
             </article>
         </form>
     </main>

@@ -82,8 +82,8 @@ def count_errors(start_date, end_date, dialog_tree):
         else:
             proportion = int(100 * (res[scene]['ok'] / all_scores))
             res[scene]['color'] = (
-                        'color-mix(in oklab, var(--color_good_scene)'
-                        + f' {proportion}%, var(--color_bad_scene))')
+                    'color-mix(in oklab, var(--color_good_scene)'
+                    + f' {proportion}%, var(--color_bad_scene))')
     return res
 
 
@@ -138,7 +138,6 @@ def one_layer(fir_node, sec_node):
 
 
 def find_all_paths(graph, current_node, visited, path, paths):
-
     visited[current_node] = True
     path.append(current_node)
 
@@ -169,15 +168,10 @@ def find_all_chains(dialog_tree, edges):
     for edge in edges:
         if edge[0] not in graph:
             graph[edge[0]] = []
-
         if edge[1] not in graph:
             graph[edge[1]] = []
-
-        if edge[1].is_intent:
-            graph[edge[0]].append(edge[1])
-
-        if edge[1] in graph:
-            graph[edge[1]].append(edge[1])
+        graph[edge[0]].append(edge[1])
+        graph[edge[1]].append(edge[0])
 
     visited = {node: False for node in graph}
     path = []
@@ -197,18 +191,23 @@ def graph_verify(dialog_tree, graph):
     for i in nodes:
         for j in nodes:
             if i != j:
-                if nodes[i]['data'].is_intent and nodes[j]['data'].is_intent:
+                if (nodes[i]['data'].is_intent
+                        and not nodes[i]['data'].is_meaning
+                        and nodes[j]['data'].is_intent
+                        and not nodes[j]['data'].is_meaning):
                     if one_layer(nodes[i]['data'], nodes[j]['data']):
                         edges.append([nodes[i]['data'], nodes[j]['data']])
     chains = find_all_chains(dialog_tree, edges)
 
     tmp = []
-    for i in chains:
-        if list(set(i)) not in tmp:
-            tmp.append(list(set(i)))
+    tmp_set = []
+    for chain in chains:
+        list_set = list(set(chain))
+        if list_set not in tmp_set:
+            tmp.append(chain)
+            tmp_set.append(list_set)
     chains = tmp
 
-    print(chains)
     return chains
 
 
