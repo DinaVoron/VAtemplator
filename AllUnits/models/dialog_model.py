@@ -822,6 +822,8 @@ def new_dialog(question,
                dialog_tree,
                previous_intents=None):
     scene_intents_values = []
+    list_dict_intents_logs = []
+    list_dict_intents = []
     graph_intents = graph.nodes_intent_text
     #question = 'направление подготовки за год c баллом 200'
     question_normal = make_words_normal(question)
@@ -833,10 +835,12 @@ def new_dialog(question,
         for intent in new_scene.questions:
             if type(intent) == IntentTemplate:
                 scene_intents.append(intent.name)
+    else:
+        for intent in question_intents:
+            list_dict_intents_logs.append(intent)
+            list_dict_intents.append({'intent': intent, 'meaning': None,
+                                      'type': 'REPRESENT'})  # represent - представление
 
-    #print(new_scene)
-    list_dict_intents = []
-    list_dict_intents_logs = []
     question_references = []
     for intent in scene_intents:
         list_dict_intents_logs.append(intent)
@@ -923,7 +927,8 @@ def new_dialog(question,
                                     return [clarifying_question,
                                             new_scene.name,
                                             list_dict_intents_final,
-                                            scene_intents]
+                                            scene_intents,
+                                            scene_intents_values]
                 if isinstance(word, str):
                     answer += word
                 answer += ' '
@@ -931,6 +936,10 @@ def new_dialog(question,
     #print(new_scene.name)
     print(list_dict_intents_meaning_found)
     #print([answer, new_scene.name, list_dict_intents_final, scene_intents])
+
+    print("scene_intents_values")
+    print(scene_intents_values)
+
     if isinstance(new_scene, bool):
         return [answer, "Нет", list_dict_intents_final, scene_intents, scene_intents_values]
     return [answer, new_scene.name, list_dict_intents_final, scene_intents, scene_intents_values]

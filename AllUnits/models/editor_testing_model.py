@@ -142,3 +142,10 @@ def pass_testing(root):
 def pass_testing_rec(res, elem):
     for child in elem.children:
         pass_testing_rec(res, elem)
+
+
+def pass_test():
+    log_tree = ET.ElementTree.parse("logs/NF.log")
+    for log in log_tree:
+        print(log)
+    return False

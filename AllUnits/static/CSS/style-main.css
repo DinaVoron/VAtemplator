@@ -69,10 +69,10 @@ body .no_text_select {
 	user-select:			none;
 }
 body .shadow {
-	-webkit-box-shadow:		4px 2px 8px 0px rgba(0, 0, 0, 0.6);
-	-moz-box-shadow:		4px 2px 8px 0px rgba(0, 0, 0, 0.6);
-	-o-box-shadow:			4px 2px 8px 0px rgba(0, 0, 0, 0.6);
-	box-shadow:				4px 2px 8px 0px rgba(0, 0, 0, 0.6);
+	-webkit-box-shadow:		2px 2px 50px 0px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow:		2px 2px 50px 0px rgba(0, 0, 0, 0.2);
+	-o-box-shadow:			2px 2px 50px 0px rgba(0, 0, 0, 0.2);
+	box-shadow:				2px 2px 50px 0px rgba(0, 0, 0, 0.2);
 }
 
 body {
