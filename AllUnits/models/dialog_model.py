@@ -1,5 +1,5 @@
 from models.graph_model import Graph
-from models.editor_data_model import send_log
+from models.editor_data_model import send_log, archive_log
 import pickle as pc
 import speech_recognition as sr
 import pyttsx3
@@ -740,6 +740,7 @@ def find_parent(current_scene, find_scene):
 def delete_scene(scene_name, dialog_tree):
     scene = find_scene_by_name(scene_name, dialog_tree)
     parent = find_parent(current_scene=dialog_tree.root, find_scene=scene)
+    archive_log(scene_name)
     if parent is not None:
         parent.children.remove(scene)
 

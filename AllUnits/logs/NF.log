@@ -133,6 +133,42 @@
 
 <answer><date>2024-06-28</date><time>23:34:02</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
 
+</log>
+
+<log>
+
+</log>
+
+<log>
+
+<question><date>2024-06-29</date><time>10:46:30</time><intent>рубль</intent><text>5000000</text><place>Нет</place></question>
+
+<answer><date>2024-06-29</date><time>10:46:31</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
+
+</log>
+
+<log>
+
+</log>
+
+<log>
+
+<question><date>2024-06-29</date><time>10:48:58</time><intent>сумма</intent><text>автокредита банк</text><place>Нет</place></question>
+
+<answer><date>2024-06-29</date><time>10:48:58</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
+
+</log>
+
+<log>
+
+</log>
+
+<log>
+
+<question><date>2024-06-29</date><time>11:09:52</time><intent>рубль</intent><text>8000000</text><place>Нет</place></question>
+
+<answer><date>2024-06-29</date><time>11:09:52</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
+
 </log>
 <log>
 </log>

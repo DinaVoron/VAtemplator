@@ -1,15 +1,8 @@
-<logs>
-<log>
-
-<question><date>2024-04-07</date><time>22:19:17</time><intent>направление</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><place>main</place></question>
-
-<answer><date>2024-04-07</date><time>22:19:19</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
-
-</log>
+<logs>
 
 <log>
 
-<question><date>2024-05-08</date><time>23:15:55</time><intent>направление</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><place>main</place></question>
+<question><date>2024-05-08</date><time>23:15:55</time><intent>napravlenie</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><place>main</place></question>
 
 <answer><date>2024-05-08</date><time>23:15:58</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
 
@@ -21,9 +14,9 @@
 
 <log>
 
-<question><date>2024-05-21</date><time>22:00:57</time><text/><place>срок_приема_подготовки</place></question>
+<question><date>2024-05-21</date><time>22:00:57</time><text /><place>срок_приема_подготовки</place></question>
 
-<answer><date>2024-05-21</date><time>22:00:57</time><text/><place>срок_приема_подготовки</place></answer>
+<answer><date>2024-05-21</date><time>22:00:57</time><text /><place>срок_приема_подготовки</place></answer>
 
 <question><date>2024-05-21</date><time>22:01:27</time><text>Hello</text><place>срок_приема_подготовки</place></question>
 
@@ -35,7 +28,7 @@
 
 <question><date>2024-05-21</date><time>23:52:14</time><text>яысс</text><place>срок_приема_подготовки</place></question>
 
-<answer><date>2024-05-21</date><time>23:52:14</time><text/><place>срок_приема_подготовки</place></answer>
+<answer><date>2024-05-21</date><time>23:52:14</time><text /><place>срок_приема_подготовки</place></answer>
 
 <question><date>2024-05-21</date><time>23:52:23</time><text>Какой я</text><place>срок_приема_подготовки</place></question>
 
@@ -53,11 +46,22 @@
 
 <answer><date>2024-06-27</date><time>12:48:24</time><text>Не получилось найти ответ  найдены  балл   None направление   None </text><place>проверка_балла_направления</place></answer>
 
-</log>
-<log>
+</log>
+
+<log>
+
 <question><date>2024-06-27</date><time>13:51:02</time><intent>направление</intent><intent>балл</intent><value>200</value><place>проверка_балла_направления</place></question>
 
 <answer><date>2024-06-27</date><time>13:51:02</time><intent>балл</intent><text>['200']</text><intent>направление</intent><text>['прикладной математика информатика'] </text><place>проверка_балла_направления</place></answer>
 
-</log>
+</log>
+
+<log type="archive">
+
+<question><date>2024-06-27</date><time>13:51:02</time><intent>направление</intent><intent>балл</intent><value>200</value><place>непон</place></question>
+
+<answer><date>2024-06-27</date><time>13:51:02</time><intent>балл</intent><text>['200']</text><intent>направление</intent><text>['прикладной математика информатика'] </text><place>проверка_балла_направления</place></answer>
+
+</log>
+
 </logs>
