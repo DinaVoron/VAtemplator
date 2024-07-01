@@ -58,15 +58,23 @@ class Scene:
         answer_list_final = []
         for answer_word in answer_list:
             if "Интент" in answer_word:
+                to_add_intent = answer_word.split("Интент ")[1]
                 answer_list_final.append(
-                    IntentTemplate(name=answer_word.split("Интент ")[1]))
+                    IntentTemplate(name=to_add_intent))
             elif "Значение" in answer_word:
+                to_add_intent = answer_word.split("Значение ")[1]
                 answer_list_final.append(
-                    IntentValue(name=answer_word.split("Значение ")[1]))
+                    IntentValue(name=to_add_intent))
             else:
                 answer_list_final.append(answer_word)
 
+        print(answer_list_final)
+        print("лист ответа")
         self.answer = answer_list_final
+        print(self.answer)
+        for ans in self.answer:
+            if isinstance(ans, IntentTemplate):
+                print(ans.name)
 
     def set_short_answer(self, answer):
         answer = answer.removesuffix(' | ')
@@ -92,10 +100,12 @@ class Scene:
             if "Интент" in question_word:
                 question_list_final.append(
                     IntentTemplate(name=question_word.split("Интент ")[1]))
-            else:
+            elif "Значение" in question_word:
                 question_list_final.append(
                     IntentValue(name=question_word.split("Значение ")[1]))
-        self.question = question_list_final
+            else:
+                question_list_final.append(question_word)
+        self.questions = question_list_final
 
     def set_name(self, name):
         self.name = name
@@ -729,16 +739,16 @@ def save_tree(file, dialog_tree):
 
 def find_parent(current_scene, find_scene):
     if current_scene.children is not None:
-        print(current_scene.name)
         for child in current_scene.children:
             if child == find_scene:
                 return current_scene
             else:
-                return find_parent(child, find_scene)
+                find_parent(child, find_scene)
 
 
 def delete_scene(scene_name, dialog_tree):
     scene = find_scene_by_name(scene_name, dialog_tree)
+    print(scene_name)
     parent = find_parent(current_scene=dialog_tree.root, find_scene=scene)
     archive_log(scene_name)
     if parent is not None:

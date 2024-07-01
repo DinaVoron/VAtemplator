@@ -38,7 +38,7 @@
             {% endfor %}
         -->
             <ul id="treeUL">
-            {{ render_tree(all_tree.root) }}
+            {{ render_tree(dialog_tree.root) }}
             </ul>
         </div>
 
@@ -183,6 +183,7 @@
 
     <script>
         var scenes_list = JSON.parse('{{json_scenes_list | tojson | safe}}');
+        console.log(scenes_list);
         var hidden_first_name = document.getElementById("hidden_scene_name");
         hidden_first_name.value = scenes_list[0].name;
         var first_name = document.getElementById("scene_name");
@@ -282,8 +283,6 @@
             });
         }
 
-        console.log(scenes_list[0].children[0].name);
-
         var element_change = document.getElementById("scene_options");
         var element_add = document.getElementById("scene_to_add");
         var toggler_scene = document.getElementsByClassName("caret_name");
@@ -330,7 +329,10 @@
                 document.getElementById("scene_parent").value = name_id;
                 /* поиск по имени выбранной сцены в списке сцен */
                 for (j = 0; j < scenes_list.length; j++) {
-                    if (name_id == scenes_list[j].name) {
+                    console.log(name_id);
+                    if (name_id === scenes_list[j].name) {
+                        console.log(name_id);
+                        console.log(scenes_list[j]);
                         // Ответ сцены
                         document.getElementById("answer").value = '';
                         answer_part = "";
