@@ -56,7 +56,7 @@
 
 </log>
 
-<log type="archive">
+<log archive="2024-07-01">
 
 <question><date>2024-06-27</date><time>13:51:02</time><intent>направление</intent><intent>балл</intent><value>200</value><place>непон</place></question>
 

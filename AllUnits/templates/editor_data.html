@@ -50,8 +50,8 @@
                     &nbsp;&nbsp;&nbsp;
                     {% endfor %}
                     <p class="tree-scene shadow" style="background-color: {{ errs_per_scene[scene['name']]['color'] }}"> {{ scene["name"] }}:
-                        {{ errs_per_scene[scene['name']]['err'] }}
-                        / {{ errs_per_scene[scene['name']]['ok'] }}
+                        {{ errs_per_scene[scene['name']]['ok'] }}
+                        / {{ errs_per_scene[scene['name']]['err'] }}
                         / {{ errs_per_scene[scene['name']]['nf'] }}
                     </p><br>
                 {% endfor %}

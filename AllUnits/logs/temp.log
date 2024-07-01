@@ -52,3 +52,31 @@
 <question><date>2024-06-29</date><time>22:32:45</time><intent>балл</intent><intent>направление</intent><text>почему </text><place>проверка_балла_направления</place></question>
 <question><date>2024-06-29</date><time>22:32:45</time><intent>направление</intent><intent>балл</intent><value>200</value><text /><place>проверка_балла_направления</place></question>
 <question><date>2024-06-29</date><time>22:32:45</time><intent>направление</intent><intent>балл</intent><value>200</value><text /><place>проверка_балла_направления</place></question>
+<question><date>2024-07-01</date><time>18:40:55</time><text>napravlenie инженерия имеет</text><intent>балл</intent><text /><place>проверка_направлений</place></question>
+<question><date>2024-07-01</date><time>18:40:55</time><text>какой</text><intent>балл</intent><text>у курс 3 </text><place>проверка_направлений</place></question>
+<question><date>2024-07-01</date><time>18:40:56</time><text> </text><place>Нет</place></question>
+<question><date>2024-07-01</date><time>18:40:56</time><text>яысс </text><place>Нет</place></question>
+<question><date>2024-07-01</date><time>18:40:56</time><intent>балл</intent><intent>направление</intent><text>почему </text><place>проверка_балла_направления</place></question>
+<question><date>2024-07-01</date><time>18:40:56</time><intent>направление</intent><intent>балл</intent><value>200</value><text /><place>проверка_балла_направления</place></question>
+<question><date>2024-07-01</date><time>18:40:56</time><intent>направление</intent><intent>балл</intent><value>200</value><text /><place>проверка_балла_направления</place></question>
+<question><date>2024-07-01</date><time>18:44:56</time><text>napravlenie инженерия имеет</text><intent>балл</intent><text /><place>проверка_направлений</place></question>
+<question><date>2024-07-01</date><time>18:44:56</time><text>какой</text><intent>балл</intent><text>у курс 3 </text><place>проверка_направлений</place></question>
+<question><date>2024-07-01</date><time>18:44:56</time><text> </text><place>Нет</place></question>
+<question><date>2024-07-01</date><time>18:44:57</time><text>яысс </text><place>Нет</place></question>
+<question><date>2024-07-01</date><time>18:44:57</time><intent>балл</intent><intent>направление</intent><text>почему </text><place>проверка_балла_направления</place></question>
+<question><date>2024-07-01</date><time>18:44:57</time><intent>направление</intent><intent>балл</intent><value>200</value><text /><place>проверка_балла_направления</place></question>
+<question><date>2024-07-01</date><time>18:44:57</time><intent>направление</intent><intent>балл</intent><value>200</value><text /><place>проверка_балла_направления</place></question>
+<question><date>2024-07-01</date><time>18:45:53</time><text>napravlenie инженерия имеет</text><intent>балл</intent><text /><place>проверка_направлений</place></question>
+<question><date>2024-07-01</date><time>18:45:53</time><text>какой</text><intent>балл</intent><text>у курс 3 </text><place>проверка_направлений</place></question>
+<question><date>2024-07-01</date><time>18:45:53</time><text> </text><place>Нет</place></question>
+<question><date>2024-07-01</date><time>18:45:53</time><text>яысс </text><place>Нет</place></question>
+<question><date>2024-07-01</date><time>18:45:54</time><intent>балл</intent><intent>направление</intent><text>почему </text><place>проверка_балла_направления</place></question>
+<question><date>2024-07-01</date><time>18:45:54</time><intent>направление</intent><intent>балл</intent><value>200</value><text /><place>проверка_балла_направления</place></question>
+<question><date>2024-07-01</date><time>18:45:54</time><intent>направление</intent><intent>балл</intent><value>200</value><text /><place>проверка_балла_направления</place></question>
+<question><date>2024-07-01</date><time>18:47:29</time><text>napravlenie инженерия имеет</text><intent>балл</intent><text /><place>проверка_направлений</place></question>
+<question><date>2024-07-01</date><time>18:47:29</time><text>какой</text><intent>балл</intent><text>у курс 3 </text><place>проверка_направлений</place></question>
+<question><date>2024-07-01</date><time>18:47:29</time><text> </text><place>Нет</place></question>
+<question><date>2024-07-01</date><time>18:47:29</time><text>яысс </text><place>Нет</place></question>
+<question><date>2024-07-01</date><time>18:47:29</time><intent>балл</intent><intent>направление</intent><text>почему </text><place>проверка_балла_направления</place></question>
+<question><date>2024-07-01</date><time>18:47:29</time><intent>направление</intent><intent>балл</intent><value>200</value><text /><place>проверка_балла_направления</place></question>
+<question><date>2024-07-01</date><time>18:47:29</time><intent>направление</intent><intent>балл</intent><value>200</value><text /><place>проверка_балла_направления</place></question>

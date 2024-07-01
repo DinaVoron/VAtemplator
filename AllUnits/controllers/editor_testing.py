@@ -2,7 +2,7 @@ from app import app, graph, dialog_tree
 from flask import render_template, request, session
 from models.editor_testing_model import get_scenes, get_questions
 from models.editor_testing_model import get_scene_by_name
-from models.editor_testing_model import automatic_testing
+from models.editor_testing_model import automatic_testing, pass_testing
 from models.editor_testing_model import get_scene_answer
 from models.editor_data_model import graph_verify, archive_log
 from fpdf import FPDF
@@ -131,7 +131,6 @@ def editor_testing():
         makePDF(session["scene"], answers, user_questions)
 
     if session["type"] == "manual":
-        archive_log("непон")
         html = render_template(
             "editor_testing_manual.html",
             scenes=scenes,
@@ -155,6 +154,7 @@ def editor_testing():
         return html
 
     if session["type"] == "auto":
+        pass_result = pass_testing()
         if request.values.get("open_test"):
             subprocess.Popen(["notepad", "logs/test.log"])
             if "test_result" not in session:
@@ -170,7 +170,9 @@ def editor_testing():
         html = render_template(
             "editor_testing_auto.html",
             test_result=test_result,
-            current_page='editor_testing'
+            current_page='editor_testing',
+            pass_result=pass_result,
+            len=len
         )
         return html
 

@@ -27,6 +27,13 @@
             </article>
             <article class="testing-article">
                 <div class="testing-article__header">Тестирование переходов по дереву диалога</div>
+                {% for i in range(len(pass_result)) %}
+                    <p>Для набора интентов
+                        {% for j in range(len(pass_result[i])) %}
+                            {{ "'" + pass_result[i][j] + "'" }}
+                        {% endfor %}
+                    не произошел переход в сцену</p>
+                {% endfor %}
             </article>
         </form>
     </main>

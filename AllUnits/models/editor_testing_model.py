@@ -134,18 +134,27 @@ def get_scene_answer(scene, question):
     return answer
 
 
-def pass_testing(root):
-    res = []
-    pass_testing_rec(res, root)
+# def pass_testing(root):
+#     res = []
+#     pass_testing_rec(res, root)
+#
+#
+# def pass_testing_rec(res, elem):
+#     for child in elem.children:
+#         pass_testing_rec(res, elem)
 
 
-def pass_testing_rec(res, elem):
-    for child in elem.children:
-        pass_testing_rec(res, elem)
-
-
-def pass_test():
-    log_tree = ET.ElementTree.parse("logs/NF.log")
+def pass_testing():
+    log_tree = ET.parse("logs/NF.log").getroot()
+    result = []
     for log in log_tree:
-        print(log)
-    return False
+        intents = []
+        for reply in log:
+            intent_arr = reply.findall("intent")
+            for intent in intent_arr:
+                intents.append(intent.text)
+            place = reply.find("place").text
+            if place == "Нет":
+                if len(intents) != 0:
+                    result.append(intents)
+    return result

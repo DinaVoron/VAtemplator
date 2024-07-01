@@ -443,12 +443,10 @@ def archive_log(scene_name):
             place = reply.find("place")
             print(place.text)
             if place.text == scene_name:
-                print("ARCHIVE...")
-                log.attrib["type"] = "archive"
-                print(log.attrib)
+                log.attrib["archive"] = str(datetime.date.today())
     f1 = open("logs/OK.log", "r+", encoding="utf-8")
     f1.truncate(0)
-    f1.write(bytes.decode(ET.tostring(ok_root, encoding='utf-8')))
+    f1.write(bytes.decode(ET.tostring(ok_root, encoding="utf-8")))
     f1.close()
 
 
