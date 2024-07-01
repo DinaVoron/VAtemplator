@@ -833,6 +833,18 @@ def new_dialog(question,
         for intent in new_scene.questions:
             if type(intent) == IntentTemplate:
                 scene_intents.append(intent.name)
+    else:
+        # применить контекст
+        question_intents = question_intents + previous_intents
+        question_intents = list(set(question_intents))
+        new_scene = dialog_tree.final_pass_to_scene(question_intents)
+        if new_scene:
+            for intent in new_scene.questions:
+                if type(intent) == IntentTemplate:
+                    scene_intents.append(intent.name)
+
+    to_context = previous_intents + question_intents
+    to_context = list(set(to_context))
 
     #print(new_scene)
     list_dict_intents = []
@@ -897,7 +909,7 @@ def new_dialog(question,
                                                         list_dict_intents_final,
                                                         graph))
                                 return [clarifying_question, new_scene.name,
-                                        list_dict_intents_final, scene_intents, scene_intents_values]
+                                        list_dict_intents_final, scene_intents, scene_intents_values, to_context]
                 if isinstance(word, str):
                     answer += word
                 answer += ' '
@@ -923,7 +935,7 @@ def new_dialog(question,
                                     return [clarifying_question,
                                             new_scene.name,
                                             list_dict_intents_final,
-                                            scene_intents]
+                                            scene_intents, to_context]
                 if isinstance(word, str):
                     answer += word
                 answer += ' '
@@ -932,8 +944,8 @@ def new_dialog(question,
     print(list_dict_intents_meaning_found)
     #print([answer, new_scene.name, list_dict_intents_final, scene_intents])
     if isinstance(new_scene, bool):
-        return [answer, "Нет", list_dict_intents_final, scene_intents, scene_intents_values]
-    return [answer, new_scene.name, list_dict_intents_final, scene_intents, scene_intents_values]
+        return [answer, "Нет", list_dict_intents_final, scene_intents, scene_intents_values, to_context]
+    return [answer, new_scene.name, list_dict_intents_final, scene_intents, scene_intents_values, to_context]
 
 
 # поиск интентов в вопросе по интентам графа

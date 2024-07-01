@@ -33,6 +33,30 @@
 
 <answer><date>2024-06-27</date><time>08:17:35</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
 
+</log>
+
+<log>
+
+</log>
+
+<log>
+
+<question><date>2024-07-01</date><time>13:47:54</time><text>направление </text><place>Нет</place></question>
+
+<answer><date>2024-07-01</date><time>13:47:54</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
+
+<question><date>2024-07-01</date><time>13:48:03</time><intent>баллом</intent><value>200</value><place>проверка_направлений</place></question>
+
+<answer><date>2024-07-01</date><time>13:48:03</time><text>['200'] </text><place>проверка_направлений</place></answer>
+
+<question><date>2024-07-01</date><time>13:48:16</time><intent>направление</intent><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>13:48:16</time><text>Не получилось найти ответ  найдены </text><intent>балл</intent><text>  None</text><intent>направление</intent><text>  None </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>13:48:35</time><text>направление200</text><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>13:48:35</time><intent>балл</intent><text>['200']</text><intent>направление</intent><text>['прикладной математика информатика'] </text><place>проверка_балла_направления</place></answer>
+
 </log>
 <log>
 </log>

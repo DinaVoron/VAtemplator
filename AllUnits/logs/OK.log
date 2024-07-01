@@ -53,11 +53,23 @@
 
 <answer><date>2024-06-27</date><time>12:48:24</time><text>Не получилось найти ответ  найдены  балл   None направление   None </text><place>проверка_балла_направления</place></answer>
 
-</log>
-<log>
+</log>
+
+<log>
+
 <question><date>2024-06-27</date><time>13:51:02</time><intent>направление</intent><intent>балл</intent><value>200</value><place>проверка_балла_направления</place></question>
 
 <answer><date>2024-06-27</date><time>13:51:02</time><intent>балл</intent><text>['200']</text><intent>направление</intent><text>['прикладной математика информатика'] </text><place>проверка_балла_направления</place></answer>
+
+</log>
+<log>
+<question><date>2024-07-01</date><time>13:50:46</time><intent>направление</intent><text>подготовки за год c</text><intent>баллом</intent><value>200</value><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>13:50:46</time><intent>балл</intent><text>['200']</text><intent>направление</intent><text>['прикладной математика информатика'] </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>13:50:51</time><intent>направление</intent><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>13:50:51</time><text>Не получилось найти ответ  найдены </text><intent>балл</intent><text>  None</text><intent>направление</intent><text>  None </text><place>проверка_балла_направления</place></answer>
 
 </log>
 </logs>
