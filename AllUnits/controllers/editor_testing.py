@@ -4,7 +4,7 @@ from models.editor_testing_model import get_scenes, get_questions
 from models.editor_testing_model import get_scene_by_name
 from models.editor_testing_model import automatic_testing
 from models.editor_testing_model import get_scene_answer
-from models.editor_data_model import graph_verify
+from models.editor_data_model import graph_verify, archive_log
 from fpdf import FPDF
 import subprocess
 ####################################################################################################
@@ -131,6 +131,7 @@ def editor_testing():
         makePDF(session["scene"], answers, user_questions)
 
     if session["type"] == "manual":
+        archive_log("непон")
         html = render_template(
             "editor_testing_manual.html",
             scenes=scenes,

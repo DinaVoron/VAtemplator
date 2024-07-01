@@ -434,6 +434,24 @@ def clean_logs():
     f1.truncate(0)
     f1.close()
 
+
+def archive_log(scene_name):
+    ok_root = ET.parse("logs/OK.log").getroot()
+    for log in ok_root:
+        print(log.attrib)
+        for reply in log:
+            place = reply.find("place")
+            print(place.text)
+            if place.text == scene_name:
+                print("ARCHIVE...")
+                log.attrib["type"] = "archive"
+                print(log.attrib)
+    f1 = open("logs/OK.log", "r+", encoding="utf-8")
+    f1.truncate(0)
+    f1.write(bytes.decode(ET.tostring(ok_root, encoding='utf-8')))
+    f1.close()
+
+
 # def get_scenes_names(dialog_tree):
 #     return get_pretty_nodes(dialog_tree)
 #

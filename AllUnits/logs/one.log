@@ -1,0 +1,75 @@
+<logs>
+
+<log>
+
+<question><date>2024-04-07</date><time>22:19:17</time><intent>направление</intent><value>инженери€</value><text>имеет</text><intent>балл</intent><place>main</place></question>
+
+<answer><date>2024-04-07</date><time>22:19:19</time><text> на направление ['инженери€'] балл None</text><place>main</place></answer>
+
+</log>
+
+<log>
+
+<question><date>2024-05-08</date><time>23:15:55</time><intent>направление</intent><value>инженери€</value><text>имеет</text><intent>балл</intent><place>main</place></question>
+
+<answer><date>2024-05-08</date><time>23:15:58</time><text> на направление ['инженери€'] балл None</text><place>main</place></answer>
+
+<question><date>2024-05-08</date><time>23:16:00</time><text>какой</text><intent>балл</intent><text>у</text><intent>курс</intent><value>3</value><place>sub1</place></question>
+
+<answer><date>2024-05-08</date><time>23:16:20</time><text> на курс ['3'] балл None</text><place>sub1</place></answer>
+
+</log>
+
+<log>
+
+<question><date>2024-05-21</date><time>22:00:57</time><text /><place>срок_приема_подготовки</place></question>
+
+<answer><date>2024-05-21</date><time>22:00:57</time><text /><place>срок_приема_подготовки</place></answer>
+
+<question><date>2024-05-21</date><time>22:01:27</time><text>Hello</text><place>срок_приема_подготовки</place></question>
+
+<answer><date>2024-05-21</date><time>22:01:27</time><text /><place>срок_приема_подготовки</place></answer>
+
+</log>
+
+<log>
+
+<question><date>2024-05-21</date><time>23:52:14</time><text>€ысс</text><place>срок_приема_подготовки</place></question>
+
+<answer><date>2024-05-21</date><time>23:52:14</time><text /><place>срок_приема_подготовки</place></answer>
+
+<question><date>2024-05-21</date><time>23:52:23</time><text> акой €</text><place>срок_приема_подготовки</place></question>
+
+<answer><date>2024-05-21</date><time>23:52:23</time><text> ƒа</text><place>срок_приема_подготовки</place></answer>
+
+</log>
+
+<log>
+
+</log>
+
+<log>
+
+<question><date>2024-06-27</date><time>12:48:23</time><text>балл направление почему</text><place>проверка_балла_направлени€</place></question>
+
+<answer><date>2024-06-27</date><time>12:48:24</time><text>Ќе получилось найти ответ  найдены  балл   None направление   None </text><place>проверка_балла_направлени€</place></answer>
+
+</log>
+
+<log>
+
+<question><date>2024-06-27</date><time>13:51:02</time><intent>направление</intent><intent>балл</intent><value>200</value><place>проверка_балла_направлени€</place></question>
+
+<answer><date>2024-06-27</date><time>13:51:02</time><intent>балл</intent><text>['200']</text><intent>направление</intent><text>['прикладной математика информатика'] </text><place>проверка_балла_направлени€</place></answer>
+
+</log>
+
+<log type="archive">
+
+<question><date>2024-06-27</date><time>13:51:02</time><intent>направление</intent><intent>балл</intent><value>200</value><place>проверка</place></question>
+
+<answer><date>2024-06-27</date><time>13:51:02</time><intent>балл</intent><text>['200']</text><intent>направление</intent><text>['прикладной математика информатика'] </text><place>проверка_балла_направлени€</place></answer>
+
+</log>
+
+</logs>
