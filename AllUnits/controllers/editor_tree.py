@@ -193,6 +193,13 @@ def editor_tree():
     for child in dialog_tree.root.children:
         print(child.name)
 
+    print(dialog_tree.root.name)
+    print(dialog_tree.root.answer)
+    print(dialog_tree.root.short_answer)
+    print(dialog_tree.root.questions)
+    print(dialog_tree.root.available_intents_list)
+    print(dialog_tree.root.clarifying_question)
+
     html = render_template(
         "editor_tree.html",
         current_page='editor_tree',

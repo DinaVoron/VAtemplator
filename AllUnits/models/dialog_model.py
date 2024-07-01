@@ -338,6 +338,7 @@ class Scene:
             for child in self.children:
                 counter += 1
                 descendant_list.append(child)
+                child.count_descendants(counter, descendant_list)
         return counter, descendant_list
 
     # проверка входа в сцену, необходимо совпадение только по интентам, а не значениям
@@ -347,7 +348,7 @@ class Scene:
 
     def get_answer(self, question, graph):
         graph_intents = graph.nodes_intent_text
-        question_normal = make_words_normal(question)
+        question_normal = make_words_normal(question, graph)
         question_intents = find_intents(graph_intents, question_normal)
         # сцена с шаблоном ответа
         scene_intents = []
@@ -837,7 +838,7 @@ def new_dialog(question,
     list_dict_intents = []
     graph_intents = graph.nodes_intent_text
     #question = 'направление подготовки за год c баллом 200'
-    question_normal = make_words_normal(question)
+    question_normal = make_words_normal(question, graph)
     question_intents = find_intents(graph_intents, question_normal)
     # сцена с шаблоном ответа
     new_scene = dialog_tree.final_pass_to_scene(question_intents)
@@ -901,7 +902,10 @@ def new_dialog(question,
     else:
         send_log("question", question, scene_intents_values, new_scene.name)
 
+    print("bbbbbbbbbb")
+    print(list_dict_intents_meaning_found)
     list_dict_intents_final = graph.search(list_dict_intents_meaning_found)
+    print(list_dict_intents_final)
     answer = ''
     if new_scene:
         # выбор короткого и длинного ответа
@@ -975,12 +979,11 @@ def find_intents(all_intents_text, question_text):
     return question_intents
 
 
-def make_words_normal(question):
-    question_list = question.split(' ')
-    normal_list = []
-    for word in question_list:
-        normal_list.append(morph.parse(word)[0].normal_form)
-    normal_question = ' '.join(normal_list)
+def make_words_normal(question, graph):
+    print(question)
+    normal_question = graph.processing_text(question, is_stop=False)
+    print('aaaaa')
+    print(normal_question)
     return normal_question
 
 

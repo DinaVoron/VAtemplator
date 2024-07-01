@@ -1,2 +1,8 @@
-<logs>
+<logs>
+<log>
+<question><date>2024-07-01</date><time>22:44:37</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:44:38</time><text>Проходной балл для</text><intent>направления подготовка</intent><text>['прикладной математика информатика'] - проходной балл </text><place>проверка_балла_направления</place></answer>
+
+</log>
 </logs>

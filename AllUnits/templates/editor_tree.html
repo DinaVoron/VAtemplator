@@ -57,7 +57,7 @@
             <!--
             <form method="get">
                 <input type="hidden" name = go_to_scene value="1">
-                <textarea name = scene_name value="Имя сцены"> </textarea>
+                <textarea name = scene_name value="Имя сцены"></textarea>
                 <input type="submit" value="Перейти в сцену">
             </form>
             <br>
@@ -65,7 +65,7 @@
             <!--
             <form method="get">
                 <input type="hidden" name = add_child_scene value="1">
-                <textarea name = child_scene_name> </textarea>Имя сцены
+                <textarea name = child_scene_name></textarea>Имя сцены
                 <input type="submit" value="Добавить потомка">
             </form>
             {% if child_scene_name != None %}
@@ -77,27 +77,27 @@
                 <p> Данные сцены</p>
                 <input type="hidden" name = hidden_scene_name id = hidden_scene_name>
                 <!-- <input type="hidden" id = add_scene value="1">
-                <br><textarea id = parent_scene_name> </textarea> Имя родительской сцены-->
+                <br><textarea id = parent_scene_name></textarea> Имя родительской сцены-->
                 <br><div class="textarea_container"><p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Имя сцены:&nbsp;</p><textarea name = scene_name id = scene_name rows="4" cols="50"> </textarea></div>
-                <!--<br><textarea id = pass_conditions> </textarea>Условия перехода-->
+                Имя сцены:&nbsp;</p><textarea name = scene_name id = scene_name rows="4" cols="50"></textarea></div>
+                <!--<br><textarea id = pass_conditions></textarea>Условия перехода-->
                 <br><div class="textarea_container"><p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Шаблон ответа: &nbsp;</p><textarea name = answer id = answer rows="4" cols="50"> </textarea></div>
-                <br><div class="textarea_container"><p>Шаблон короткого ответа: &nbsp;</p><textarea name = short_answer id = short_answer rows="4" cols="50"> </textarea></div>
+                Шаблон ответа: &nbsp;</p><textarea name = answer id = answer rows="4" cols="50"></textarea></div>
+                <br><div class="textarea_container"><p>Шаблон короткого ответа: &nbsp;</p><textarea name = short_answer id = short_answer rows="4" cols="50"></textarea></div>
                 <br><div class="textarea_container"><p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Шаблон вопроса: &nbsp;</p><textarea name = questions id = questions rows="4" cols="50"> </textarea></div>
+                Шаблон вопроса: &nbsp;</p><textarea name = questions id = questions rows="4" cols="50"></textarea></div>
                 <br><div class="textarea_container"><p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 Интенты сцены: &nbsp;</p>
-                <textarea name = available_intents id = available_intents rows="4" cols="50"> </textarea></div>
+                <textarea name = available_intents id = available_intents rows="4" cols="50"></textarea></div>
                 <br>
                 <br><div class="textarea_container"><p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Уточняющий вопрос: &nbsp;</p><textarea name = clarifying_question id = clarifying_question rows="4" cols="50"> </textarea></div>
+                Уточняющий вопрос: &nbsp;</p><textarea name = clarifying_question id = clarifying_question rows="4" cols="50"></textarea></div>
                 <br><input type="submit" name= "change_scene" value="Изменить сцену">
 
             </form>
@@ -123,13 +123,13 @@
             <!--
             <form method="get">
                 <input type="hidden" name = go_to_scene value="1">
-                <textarea name = scene_name value="Имя сцены"> </textarea>
+                <textarea name = scene_name value="Имя сцены"></textarea>
                 <input type="submit" value="Перейти в сцену">
             </form>
             <br>
             <form method="get">
                 <input type="hidden" name = add_child_scene value="1">
-                <textarea name = child_scene_name> </textarea> Имя сцены
+                <textarea name = child_scene_name></textarea> Имя сцены
                 <input type="submit" value="Добавить потомка">
             </form>
             {% if child_scene_name != None %}
@@ -141,26 +141,26 @@
                 <p> Новая сцена</p>
                 <br><div class="textarea_container"><p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Родительская сцена: </p><textarea name = scene_parent id = scene_parent rows="4" cols="50"> </textarea></div>
+                Родительская сцена: </p><textarea name = scene_parent id = scene_parent rows="4" cols="50"></textarea></div>
                 <!--<input type="hidden" id = hidden_scene_name_new>-->
                 <br><div class="textarea_container"><p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Имя сцены: </p><textarea name = scene_name_new id = scene_name_new value="{{current_scene.name}}" rows="4" cols="50"> </textarea></div>
-                <!--<br><textarea id = pass_conditions_new value="{{current_scene.pass_conditions}}"> </textarea> Условия перехода-->
+                Имя сцены: </p><textarea name = scene_name_new id = scene_name_new value="{{current_scene.name}}" rows="4" cols="50"></textarea></div>
+                <!--<br><textarea id = pass_conditions_new value="{{current_scene.pass_conditions}}"></textarea> Условия перехода-->
                 <br><div class="textarea_container"><p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Шаблон ответа: </p><textarea name = answer_new id = answer_new rows="4" cols="50"> </textarea></div>
-                <br><div class="textarea_container"><p>Шаблон короткого ответа: </p><textarea name = short_answer_new id = short_answer_new rows="4" cols="50"> </textarea></div>
+                Шаблон ответа: </p><textarea name = answer_new id = answer_new rows="4" cols="50"></textarea></div>
+                <br><div class="textarea_container"><p>Шаблон короткого ответа: </p><textarea name = short_answer_new id = short_answer_new rows="4" cols="50"></textarea></div>
                 <br><div class="textarea_container"><p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Шаблон вопроса: </p><textarea name = questions_new id = questions_new rows="4" cols="50"> </textarea></div>
+                Шаблон вопроса: </p><textarea name = questions_new id = questions_new rows="4" cols="50"></textarea></div>
                 <br><div class="textarea_container"><p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Интенты сцены: <textarea name = available_intents_new id = available_intents_new rows="4" cols="50"> </textarea></p></div>
+                Интенты сцены: <textarea name = available_intents_new id = available_intents_new rows="4" cols="50"></textarea></p></div>
                 <br><div class="textarea_container"><p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Уточняющий вопрос: </p><textarea name = clarifying_question_new id = clarifying_question_new rows="4" cols="50"> </textarea></div>
+                Уточняющий вопрос: </p><textarea name = clarifying_question_new id = clarifying_question_new rows="4" cols="50"></textarea></div>
                 <br><input type="submit" name="add_scene" value="Добавить сцену">
             </form>
             <form method="post">
