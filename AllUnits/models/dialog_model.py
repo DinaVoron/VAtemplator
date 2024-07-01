@@ -840,7 +840,18 @@ def new_dialog(question,
         for intent in question_intents:
             list_dict_intents_logs.append(intent)
             list_dict_intents.append({'intent': intent, 'meaning': None,
-                                      'type': 'REPRESENT'})  # represent - представление
+                                      'type': 'REPRESENT'})  # represent - представление      
+        # применить контекст
+        question_intents = question_intents + previous_intents
+        question_intents = list(set(question_intents))
+        new_scene = dialog_tree.final_pass_to_scene(question_intents)
+        if new_scene:
+            for intent in new_scene.questions:
+                if type(intent) == IntentTemplate:
+                    scene_intents.append(intent.name)
+
+    to_context = previous_intents + question_intents
+    to_context = list(set(to_context))
 
     question_references = []
     for intent in scene_intents:
@@ -902,7 +913,7 @@ def new_dialog(question,
                                                         list_dict_intents_final,
                                                         graph))
                                 return [clarifying_question, new_scene.name,
-                                        list_dict_intents_final, scene_intents, scene_intents_values]
+                                        list_dict_intents_final, scene_intents, scene_intents_values, to_context]
                 if isinstance(word, str):
                     answer += word
                 answer += ' '
@@ -928,8 +939,7 @@ def new_dialog(question,
                                     return [clarifying_question,
                                             new_scene.name,
                                             list_dict_intents_final,
-                                            scene_intents,
-                                            scene_intents_values]
+                                            scene_intents, scene_intents_values, to_context]
                 if isinstance(word, str):
                     answer += word
                 answer += ' '
@@ -942,8 +952,8 @@ def new_dialog(question,
     print(scene_intents_values)
 
     if isinstance(new_scene, bool):
-        return [answer, "Нет", list_dict_intents_final, scene_intents, scene_intents_values]
-    return [answer, new_scene.name, list_dict_intents_final, scene_intents, scene_intents_values]
+        return [answer, "Нет", list_dict_intents_final, scene_intents, scene_intents_values, to_context]
+    return [answer, new_scene.name, list_dict_intents_final, scene_intents, scene_intents_values, to_context]
 
 
 # поиск интентов в вопросе по интентам графа

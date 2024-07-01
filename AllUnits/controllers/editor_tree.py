@@ -99,7 +99,7 @@ def editor_tree():
         question_references.append(graph.get_reference_lemma(intent))
 
     print(question_references)
-    #question_references.remove("Нап") # ломается на "Нап"
+    #question_references.remove("Нап")
     #question_references = ['Под', 'Бал']
     for intent in question_references:
         list_dict_intents.append({'intent':intent, 'meaning': None, 'type': 'REPRESENT'}) # represent - представление
