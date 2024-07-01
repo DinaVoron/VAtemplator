@@ -1,5 +1,5 @@
 from models.graph_model import Graph
-from models.editor_data_model import send_log
+from models.editor_data_model import send_log, archive_log
 import pickle as pc
 import speech_recognition as sr
 import pyttsx3
@@ -740,6 +740,7 @@ def find_parent(current_scene, find_scene):
 def delete_scene(scene_name, dialog_tree):
     scene = find_scene_by_name(scene_name, dialog_tree)
     parent = find_parent(current_scene=dialog_tree.root, find_scene=scene)
+    archive_log(scene_name)
     if parent is not None:
         parent.children.remove(scene)
 
@@ -822,6 +823,8 @@ def new_dialog(question,
                dialog_tree,
                previous_intents=None):
     scene_intents_values = []
+    list_dict_intents_logs = []
+    list_dict_intents = []
     graph_intents = graph.nodes_intent_text
     #question = 'направление подготовки за год c баллом 200'
     question_normal = make_words_normal(question)
@@ -834,6 +837,10 @@ def new_dialog(question,
             if type(intent) == IntentTemplate:
                 scene_intents.append(intent.name)
     else:
+        for intent in question_intents:
+            list_dict_intents_logs.append(intent)
+            list_dict_intents.append({'intent': intent, 'meaning': None,
+                                      'type': 'REPRESENT'})  # represent - представление      
         # применить контекст
         question_intents = question_intents + previous_intents
         question_intents = list(set(question_intents))
@@ -846,9 +853,6 @@ def new_dialog(question,
     to_context = previous_intents + question_intents
     to_context = list(set(to_context))
 
-    #print(new_scene)
-    list_dict_intents = []
-    list_dict_intents_logs = []
     question_references = []
     for intent in scene_intents:
         list_dict_intents_logs.append(intent)
@@ -935,7 +939,7 @@ def new_dialog(question,
                                     return [clarifying_question,
                                             new_scene.name,
                                             list_dict_intents_final,
-                                            scene_intents, to_context]
+                                            scene_intents, scene_intents_values, to_context]
                 if isinstance(word, str):
                     answer += word
                 answer += ' '
@@ -943,6 +947,10 @@ def new_dialog(question,
     #print(new_scene.name)
     print(list_dict_intents_meaning_found)
     #print([answer, new_scene.name, list_dict_intents_final, scene_intents])
+
+    print("scene_intents_values")
+    print(scene_intents_values)
+
     if isinstance(new_scene, bool):
         return [answer, "Нет", list_dict_intents_final, scene_intents, scene_intents_values, to_context]
     return [answer, new_scene.name, list_dict_intents_final, scene_intents, scene_intents_values, to_context]

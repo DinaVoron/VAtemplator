@@ -91,7 +91,7 @@ def automatic_testing():
     answers_arr = []
     question_arr = []
     # Получаем ответы и вопросы из файла успешного логирования
-    log_tree = ET.parse("logs/OK.log")
+    log_tree = ET.parse("logs/OK.log", ET.XMLParser(encoding='utf-8'))
     get_ok(log_tree, answers_arr, question_arr)
     print(answers_arr)
     # Теперь получаем ответ на вопрос для каждого элемента массива, сравниваем
@@ -142,3 +142,10 @@ def pass_testing(root):
 def pass_testing_rec(res, elem):
     for child in elem.children:
         pass_testing_rec(res, elem)
+
+
+def pass_test():
+    log_tree = ET.ElementTree.parse("logs/NF.log")
+    for log in log_tree:
+        print(log)
+    return False

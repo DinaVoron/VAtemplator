@@ -30,14 +30,14 @@
                 <section>
                     от: <input name="start_date" type="date" class="period-input" value="{{ start_date }}">&nbsp;&nbsp;
                     до: <input name="end_date" type="date" class="period-input" value="{{ end_date }}">&nbsp;&nbsp;
-                    <input type="submit" name="show" value="Показать" class="button">
+                    <input type="submit" name="show" value="Показать" class="button shadow">
                 </section>
             </article>
             <article class="testing-article">
                 <div class="testing-article__header">Среднее время ответа</div>
                 <figure>
                     <svg width="125" height="125">
-                        <circle cx="62" cy="62" r="57" stroke="#D6C153" stroke-width="10" fill="#F0F4EF"/>
+                        <circle class="shadow" cx="62" cy="62" r="57" stroke="#D6C153" stroke-width="10" fill="#F0F4EF"/>
                         <text x="47" y="70" class="time-text">{{ time }}</text>
                     </svg>
                 </figure>
@@ -49,7 +49,7 @@
                     {% for i in range(scene["height"]) %}
                     &nbsp;&nbsp;&nbsp;
                     {% endfor %}
-                    <p class="tree-scene" style="background-color: {{ errs_per_scene[scene['name']]['color'] }}"> {{ scene["name"] }}:
+                    <p class="tree-scene shadow" style="background-color: {{ errs_per_scene[scene['name']]['color'] }}"> {{ scene["name"] }}:
                         {{ errs_per_scene[scene['name']]['err'] }}
                         / {{ errs_per_scene[scene['name']]['ok'] }}
                         / {{ errs_per_scene[scene['name']]['nf'] }}
