@@ -30,8 +30,6 @@ def editor_tree():
             scene_stats = get_scene_everything(current_scene)
     elif request.values.get("delete_scene"):
         scene_name = request.values.get("hidden_scene_name_delete")
-        print(scene_name)
-        print("сцена на удаление")
         delete_scene(scene_name, dialog_tree)
         current_scene = get_root(dialog_tree=dialog_tree)
     else:
@@ -49,22 +47,6 @@ def editor_tree():
             add_child(current_scene, child_scene, dialog_tree = dialog_tree)
     else:
         child_scene_name = None
-    '''
-    if request.values.get("add_scene"):
-        add_name = request.values.get("scene_name")
-        add_parent = request.values.get("parent_scene_name")
-        add_pass = request.values.get("pass_conditions")
-        add_answer = request.values.get("answer")
-        add_questions = request.values.get("questions")
-        add_clarifying_question = request.values.get("clarifying_question")
-        add_scene(name = add_name, parent = add_parent,
-                  pass_conditions = add_pass,
-                  answer = add_answer,
-                  questions = add_questions,
-                  clarifying_question = add_clarifying_question,
-                  dialog_tree = dialog_tree
-                  )
-    '''
 
     if request.values.get("save_tree"):
         save_tree("save_files/pickle_test.PKL", dialog_tree = dialog_tree)
@@ -74,70 +56,6 @@ def editor_tree():
 
     graph_intents = graph.nodes_intent_text
     graph_full_intents = graph.nodes_intent
-
-    #   graph_intent = graph_full_intents[0]
-    #print(type(graph_intent))
-    #print(graph_intent.__dict__)
-    #print(graph.nodes_meaning[0].__dict__)
-    #question = 'направление подготовки за год c баллом 200'
-    #question = 'направление подготовки'
-    #new_dialog(question, graph, dialog_tree)
-    '''
-    # проверочный код, убрать
-    question = 'направление подготовки за год c баллом 200'
-    question_normal = make_words_normal(question)
-    print(question_normal + ' - вопрос в нормальной форме')
-    question_intents = find_intents(graph_intents, question_normal)
-    print('интенты')
-    print(question_intents)
-    print(dialog_tree.root.check_to_enter(question_intents))
-    new_scene = dialog_tree.final_pass_to_scene(question_intents)
-    print(new_scene)
-    list_dict_intents = []
-    question_references = []
-    for intent in question_intents:
-        question_references.append(graph.get_reference_lemma(intent))
-
-    print(question_references)
-    #question_references.remove("Нап")
-    #question_references = ['Под', 'Бал']
-    for intent in question_references:
-        list_dict_intents.append({'intent':intent, 'meaning': None, 'type': 'REPRESENT'}) # represent - представление
-    print(list_dict_intents)
-    list_dict_intents_possible = graph.search(list_dict_intents, flag=True) # flag - true, если без значений
-    # найдены возможные значения, проверить в вопросе
-    print(list_dict_intents_possible)
-    list_dict_intents_meaning_found = []
-    for intent in list_dict_intents_possible:
-        remaining_meaning = []
-        if intent['meaning'] != None:
-            for meaning in intent['meaning']:
-                if meaning in question_normal:
-                    remaining_meaning.append(meaning)
-        if not remaining_meaning:
-            remaining_meaning = None
-        intent_dict = {'intent': intent['intent'], 'meaning': remaining_meaning, 'type': 'REPRESENT'}
-        list_dict_intents_meaning_found.append(intent_dict)
-    print(list_dict_intents_meaning_found)
-    #print(graph.reference)
-    list_dict_intents_final = graph.search(list_dict_intents_meaning_found)
-    print(list_dict_intents_final)
-    #print(question_normal)
-    #
-    '''
-    '''
-    print('проверка ответа')
-    question = 'направление подготовки за год c баллом'
-    question_normal = make_words_normal(question)
-    print(question_normal + ' - вопрос в нормальной форме')
-    question_intents = find_intents(graph_intents, question_normal)
-    print('интенты')
-    print(question_intents)
-    print(dialog_tree.root.check_to_enter(question_intents))
-    new_scene = dialog_tree.final_pass_to_scene(question_intents)
-    answer = new_scene.get_answer(question, graph)
-    print(answer)
-    '''
 
     # Изменение сцены
     if request.values.get("change_scene"):
@@ -157,15 +75,9 @@ def editor_tree():
         scene.set_clarifying_question(clarifying_question)
         scene.name = new_scene_name
 
-        print(old_scene_name)
-        print(answer)
-        print(scene.name)
-        print(scene.answer)
-        print(scene.short_answer)
-        print(scene.questions)
-        print(scene.available_intents_list)
-        print(clarifying_question)
-        print("Сцена после изменения")
+        scenes_count, scenes_list = dialog_tree.get_scenes_list()
+        json_scenes_list = jsons.dump(scenes_list)
+        json_scenes_list = jsons.load(json_scenes_list)
 
     # добавление сцены
     if request.values.get("add_scene"):
@@ -184,23 +96,11 @@ def editor_tree():
         scene.set_question(questions)
         scene.available_intents_list = available_intents.split(",")
         scene.set_clarifying_question(clarifying_question)
-        print(json_scenes_list)
         parent_scene.add_child(scene)
 
         scenes_count, scenes_list = dialog_tree.get_scenes_list()
         json_scenes_list = jsons.dump(scenes_list)
         json_scenes_list = jsons.load(json_scenes_list)
-        print(json_scenes_list)
-
-    for child in dialog_tree.root.children:
-        print(child.name)
-
-    print(dialog_tree.root.name)
-    print(dialog_tree.root.answer)
-    print(dialog_tree.root.short_answer)
-    print(dialog_tree.root.questions)
-    print(dialog_tree.root.available_intents_list)
-    print(dialog_tree.root.clarifying_question)
 
     html = render_template(
         "editor_tree.html",
