@@ -68,8 +68,6 @@ class Scene:
             else:
                 answer_list_final.append(answer_word)
 
-        print(answer_list_final)
-        print("лист ответа")
         self.answer = answer_list_final
         print(self.answer)
         for ans in self.answer:
@@ -321,11 +319,8 @@ class Scene:
             # оставлены только уникальные интенты
             checklist = list(set(checklist))
             checklist.sort()
-            print(checklist)
-            print(key_words)
             # Переход в потомка с соответствующим номером
             if checklist == key_words and checklist != []:
-                print(self.children)
                 if self.children == []:
                     return self.name
                 else:
@@ -749,7 +744,6 @@ def find_parent(current_scene, find_scene):
 
 def delete_scene(scene_name, dialog_tree):
     scene = find_scene_by_name(scene_name, dialog_tree)
-    print(scene_name)
     parent = find_parent(current_scene=dialog_tree.root, find_scene=scene)
     archive_log(scene_name)
     if parent is not None:
@@ -784,11 +778,7 @@ def ask_question(current_scene, question_text, graph):
     send_log("question", question_text, question_intent_dict,
              current_scene.name)
     if question_intent_dict:
-        print("question_intent_dict")
-        print(question_intent_dict)
         question_intent_dict = graph.search(question_intent_dict)
-        print("new_question_dict")
-        print(question_intent_dict)
         answer = current_scene.give_answer(question_intent_dict)
     else:
         answer = ""
@@ -822,7 +812,6 @@ def dialog(current_scene, question_text, graph):
     if question_intent_dict:
         question_intent_dict = graph.search(question_intent_dict)
     intent_list = intent_dict_to_list(question_intent_dict)
-    # print(intent_list)
     new_scene_name = pass_scene(current_scene, intent_list)
     return [answer, new_scene_name, question_intent_dict, intent_list]
 
@@ -902,10 +891,7 @@ def new_dialog(question,
     else:
         send_log("question", question, scene_intents_values, new_scene.name)
 
-    print("bbbbbbbbbb")
-    print(list_dict_intents_meaning_found)
     list_dict_intents_final = graph.search(list_dict_intents_meaning_found)
-    print(list_dict_intents_final)
     answer = ''
     if new_scene:
         # выбор короткого и длинного ответа
@@ -958,9 +944,7 @@ def new_dialog(question,
                     answer += word
                 answer += ' '
 
-    #print(new_scene.name)
     print(list_dict_intents_meaning_found)
-    #print([answer, new_scene.name, list_dict_intents_final, scene_intents])
 
     print("scene_intents_values")
     print(scene_intents_values)
@@ -980,10 +964,7 @@ def find_intents(all_intents_text, question_text):
 
 
 def make_words_normal(question, graph):
-    print(question)
     normal_question = graph.processing_text(question, is_stop=False)
-    print('aaaaa')
-    print(normal_question)
     return normal_question
 
 
