@@ -25,9 +25,10 @@ def handle_chat_send():
     current_scene = find_scene_by_name(request.json.get("scene"),
                                        dialog_tree=dialog_tree)
     question = request.json.get("question")
-
+    print(question)
     answer, scene_name, _, _, intent_values, to_context = new_dialog(question, graph,
                                                    dialog_tree, previous_intents=context)
+
     context = to_context
 
     if find_scene_by_name(scene_name, dialog_tree=dialog_tree) is None:

@@ -58,15 +58,23 @@ class Scene:
         answer_list_final = []
         for answer_word in answer_list:
             if "Интент" in answer_word:
+                to_add_intent = answer_word.split("Интент ")[1]
                 answer_list_final.append(
-                    IntentTemplate(name=answer_word.split("Интент ")[1]))
+                    IntentTemplate(name=to_add_intent))
             elif "Значение" in answer_word:
+                to_add_intent = answer_word.split("Значение ")[1]
                 answer_list_final.append(
-                    IntentValue(name=answer_word.split("Значение ")[1]))
+                    IntentValue(name=to_add_intent))
             else:
                 answer_list_final.append(answer_word)
 
+        print(answer_list_final)
+        print("лист ответа")
         self.answer = answer_list_final
+        print(self.answer)
+        for ans in self.answer:
+            if isinstance(ans, IntentTemplate):
+                print(ans.name)
 
     def set_short_answer(self, answer):
         answer = answer.removesuffix(' | ')
@@ -92,10 +100,12 @@ class Scene:
             if "Интент" in question_word:
                 question_list_final.append(
                     IntentTemplate(name=question_word.split("Интент ")[1]))
-            else:
+            elif "Значение" in question_word:
                 question_list_final.append(
                     IntentValue(name=question_word.split("Значение ")[1]))
-        self.question = question_list_final
+            else:
+                question_list_final.append(question_word)
+        self.questions = question_list_final
 
     def set_name(self, name):
         self.name = name
@@ -328,6 +338,7 @@ class Scene:
             for child in self.children:
                 counter += 1
                 descendant_list.append(child)
+                child.count_descendants(counter, descendant_list)
         return counter, descendant_list
 
     # проверка входа в сцену, необходимо совпадение только по интентам, а не значениям
@@ -337,7 +348,7 @@ class Scene:
 
     def get_answer(self, question, graph):
         graph_intents = graph.nodes_intent_text
-        question_normal = make_words_normal(question)
+        question_normal = make_words_normal(question, graph)
         question_intents = find_intents(graph_intents, question_normal)
         # сцена с шаблоном ответа
         scene_intents = []
@@ -729,16 +740,16 @@ def save_tree(file, dialog_tree):
 
 def find_parent(current_scene, find_scene):
     if current_scene.children is not None:
-        print(current_scene.name)
         for child in current_scene.children:
             if child == find_scene:
                 return current_scene
             else:
-                return find_parent(child, find_scene)
+                find_parent(child, find_scene)
 
 
 def delete_scene(scene_name, dialog_tree):
     scene = find_scene_by_name(scene_name, dialog_tree)
+    print(scene_name)
     parent = find_parent(current_scene=dialog_tree.root, find_scene=scene)
     archive_log(scene_name)
     if parent is not None:
@@ -827,7 +838,7 @@ def new_dialog(question,
     list_dict_intents = []
     graph_intents = graph.nodes_intent_text
     #question = 'направление подготовки за год c баллом 200'
-    question_normal = make_words_normal(question)
+    question_normal = make_words_normal(question, graph)
     question_intents = find_intents(graph_intents, question_normal)
     # сцена с шаблоном ответа
     new_scene = dialog_tree.final_pass_to_scene(question_intents)
@@ -891,7 +902,10 @@ def new_dialog(question,
     else:
         send_log("question", question, scene_intents_values, new_scene.name)
 
+    print("bbbbbbbbbb")
+    print(list_dict_intents_meaning_found)
     list_dict_intents_final = graph.search(list_dict_intents_meaning_found)
+    print(list_dict_intents_final)
     answer = ''
     if new_scene:
         # выбор короткого и длинного ответа
@@ -965,12 +979,11 @@ def find_intents(all_intents_text, question_text):
     return question_intents
 
 
-def make_words_normal(question):
-    question_list = question.split(' ')
-    normal_list = []
-    for word in question_list:
-        normal_list.append(morph.parse(word)[0].normal_form)
-    normal_question = ' '.join(normal_list)
+def make_words_normal(question, graph):
+    print(question)
+    normal_question = graph.processing_text(question, is_stop=False)
+    print('aaaaa')
+    print(normal_question)
     return normal_question
 
 
