@@ -563,7 +563,7 @@ class Graph:
 
         print("content")
         print(content)
-        return content[:-1]
+        return content[:-2]
 
     def is_reference_name(self, name):
         return name in self.reference

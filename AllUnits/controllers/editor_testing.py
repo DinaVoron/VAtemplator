@@ -122,6 +122,7 @@ def editor_testing():
     if "type" not in session:
         html = render_template(
             "editor_testing.html",
+            current_page="editor_testing"
         )
         return html
 
