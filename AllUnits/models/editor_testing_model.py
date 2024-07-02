@@ -45,12 +45,16 @@ def get_questions(node):
 
 
 def get_scene_by_name(node, name):
+    print("Имена: ")
+    print(node.name)
+    print(name)
     if node.name == name:
         return node
     for child in node.children:
-        return get_scene_by_name(child, name)
+        scene = get_scene_by_name(child, name)
+        if scene is not None:
+            return scene
     return None
-
 
 def get_ok(log_tree, answers, questions):
     root = log_tree.getroot()
