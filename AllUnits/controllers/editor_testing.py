@@ -78,7 +78,9 @@ def editor_testing():
     scenes = get_scenes()
     is_answer = False
 
+    print("Сцена: ")
     if "scene" in session and session["scene"] is not None:
+
         if request.values.get("scene") is None:
             selected_scene = session["scene"]
         elif session["scene"] != request.values.get("scene"):
@@ -90,6 +92,10 @@ def editor_testing():
             user_questions = request.values.getlist("questions")
     else:
         session["scene"] = dialog_tree.root.name
+    print("'" + session["scene"] + "'")
+    print(
+        dialog_tree.root.children
+    )
 
     if request.values.get("get_answers"):
         is_answer = True
@@ -131,7 +137,6 @@ def editor_testing():
         makePDF(session["scene"], answers, user_questions)
 
     if session["type"] == "manual":
-        archive_log("непон")
         html = render_template(
             "editor_testing_manual.html",
             scenes=scenes,

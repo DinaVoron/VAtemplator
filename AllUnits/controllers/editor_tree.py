@@ -184,11 +184,13 @@ def editor_tree():
         scene.set_question(questions)
         scene.available_intents_list = available_intents.split(",")
         scene.set_clarifying_question(clarifying_question)
+        print(json_scenes_list)
         parent_scene.add_child(scene)
 
         scenes_count, scenes_list = dialog_tree.get_scenes_list()
         json_scenes_list = jsons.dump(scenes_list)
         json_scenes_list = jsons.load(json_scenes_list)
+        print(json_scenes_list)
 
     for child in dialog_tree.root.children:
         print(child.name)
