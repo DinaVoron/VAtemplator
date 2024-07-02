@@ -1,4 +1,0 @@
-<question><date>2024-07-01</date><time>23:58:10</time><intent>Код дисциплины</intent><text>- 01 03 02  какое</text><intent>направление подготовки</intent><text /><place>проверка_направлений</place></question>
-<answer><date>2024-07-01</date><time>23:58:10</time><text>короткий ['прикладной математика информатика'] </text><place>проверка_направлений</place></answer>
-<question><date>2024-07-01</date><time>23:59:03</time><text>в какие</text><intent>года</intent><text>по</text><value>прикладной математике и информатике</value><text>была</text><intent>программа</intent><text>платного обучения </text><place>проверка_программы</place></question>
-<answer><date>2024-07-01</date><time>23:59:03</time><text>None    ['2022'  '2023'  '2020'  '2021']   уточнение </text><place>проверка_программы</place></answer>
