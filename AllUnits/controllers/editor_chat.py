@@ -37,7 +37,7 @@ def handle_chat_send():
         answer = "Мои соболезнования. Я не нашел ответа на ваш вопрос."
         session["nf"] = True
 
-    send_log("answer", answer, intent_values, scene_name)
+    send_log("answer", answer, intent_values, scene_name, graph)
 
     return make_response(jsonify({
         "scene_name": scene_name, "question": question, "answer": answer,

@@ -776,7 +776,7 @@ def take_command():
 def ask_question(current_scene, question_text, graph):
     question_intent_dict = current_scene.get_work_question(question_text)
     send_log("question", question_text, question_intent_dict,
-             current_scene.name)
+             current_scene.name, graph)
     if question_intent_dict:
         question_intent_dict = graph.search(question_intent_dict)
         answer = current_scene.give_answer(question_intent_dict)
@@ -808,7 +808,7 @@ def dialog(current_scene, question_text, graph):
     answer = answer_and_intents[0]
     question_intent_dict = answer_and_intents[1]
     #question_intent_dict = current_scene.get_work_question(question_text)
-    send_log("answer", answer, False, current_scene.name)
+    send_log("answer", answer, False, current_scene.name, graph)
     if question_intent_dict:
         question_intent_dict = graph.search(question_intent_dict)
     intent_list = intent_dict_to_list(question_intent_dict)
@@ -887,9 +887,9 @@ def new_dialog(question,
         scene_intents_values.append(intent_dict_log)
 
     if isinstance(new_scene, bool):
-        send_log("question", question, scene_intents_values, "Нет")
+        send_log("question", question, scene_intents_values, "Нет", graph)
     else:
-        send_log("question", question, scene_intents_values, new_scene.name)
+        send_log("question", question, scene_intents_values, new_scene.name, graph)
 
     list_dict_intents_final = graph.search(list_dict_intents_meaning_found)
     answer = ''

@@ -1,5 +1,4 @@
-<logs>
-
+<logs>
 <log>
 
 <question><date>2024-07-01</date><time>22:44:37</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
@@ -32,4 +31,37 @@
 
 </log>
 
+<log>
+
+<question><date>2024-07-02</date><time>17:22:32</time><text>Есть ли направление подготовки</text><value>прикладная математика и информатика</value><text /><place>проверка_направлений</place></question>
+
+<answer><date>2024-07-02</date><time>17:22:32</time><value>['прикладной математика информатика']</value><text /><place>проверка_направлений</place></answer>
+
+<question><date>2024-07-02</date><time>17:22:43</time><text>Какой проходной балл на направление подготовки математика и информатика в</text><value>2020</value><text>году </text><place>направления_подготовки_в_году</place></question>
+
+<answer><date>2024-07-02</date><time>17:22:44</time><value>['2020']</value><text>- ['прикладной математика информатика'] </text><place>направления_подготовки_в_году</place></answer>
+
+</log>
+
+<log>
+
+<question><date>2024-07-02</date><time>17:35:23</time><text>Есть ли направление подготовки</text><value>прикладная математика и информатика</value><text /><place>проверка_направлений</place></question>
+
+<answer><date>2024-07-02</date><time>17:35:23</time><value>['прикладной математика информатика']</value><text /><place>проверка_направлений</place></answer>
+
+<question><date>2024-07-02</date><time>17:35:33</time><text>Какой проходной балл на направление подготовки математика и информатика в</text><value>2020</value><text>году </text><place>направления_подготовки_в_году</place></question>
+
+<answer><date>2024-07-02</date><time>17:35:33</time><value>['2020']</value><text>- ['прикладной математика информатика'] </text><place>направления_подготовки_в_году</place></answer>
+
+</log>
+<log>
+<question><date>2024-07-02</date><time>17:38:45</time><text>Есть ли</text><intent>направление подготовки</intent><value>прикладная математика и информатика</value><text /><place>проверка_направлений</place></question>
+
+<answer><date>2024-07-02</date><time>17:38:45</time><value>['прикладной математика информатика']</value><text /><place>проверка_направлений</place></answer>
+
+<question><date>2024-07-02</date><time>17:38:51</time><text>Какой проходной балл на</text><intent>направление подготовки</intent><text>математика и информатика в</text><value>2020</value><intent>году</intent><text /><place>направления_подготовки_в_году</place></question>
+
+<answer><date>2024-07-02</date><time>17:38:52</time><value>['2020']</value><text>- ['прикладной математика информатика'] </text><place>направления_подготовки_в_году</place></answer>
+
+</log>
 </logs>

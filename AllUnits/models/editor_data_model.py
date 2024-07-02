@@ -211,38 +211,53 @@ def graph_verify(dialog_tree, graph):
     return chains
 
 
-def send_log(rep_type, text, intent_values, place):
+def send_log(rep_type, text, intent_values, place, graph):
     f = open("logs/temp.log", "a+", encoding="utf-8")
-    f.write(log_message_try(rep_type, text, intent_values, place) + "\r\n")
+    f.write(log_message_try(rep_type, text, intent_values, place, graph) + "\r\n")
 
 
-def log_message(text, intents_values_dic, place):
+def log_message(text, intents_values_dic, place, graph):
     if not intents_values_dic:
         intents_values_dic = []
-    morph = pymorphy3.MorphAnalyzer()
+    # morph = pymorphy3.MorphAnalyzer()
     intent_values = intent_array(intents_values_dic)
     text_split = multi_split(text)
     text_split_normal = []
     for word in text_split:
-        text_split_normal.append(morph.parse(word)[0].normal_form)
+        # text_split_normal.append(morph.parse(word)[0].normal_form)
+        text_split_normal.append(graph.processing_text(word))
     for words in intent_values:
         new_words = words.split(" ")
+        print("new_words[0]")
+        print(new_words[0])
         arr_start = text_split_normal.index(new_words[0])
         arr_end = text_split_normal.index(new_words[len(new_words) - 1])
+        print("new_words[len(new_words) - 1]")
+        print(new_words[len(new_words) - 1])
         text_split[arr_start] = "<intent>" + text_split[arr_start]
         text_split[arr_end] = text_split[arr_end] + "</intent>"
+        print("text_split_normal")
+        print(text_split_normal)
         if intent_values[words] is not None:
             for intent in intent_values[words]:
                 value_arr = str(intent).split(" ")
                 print("value_arr")
                 print(value_arr)
+                # arr_value_start = text_split_normal.index(
+                #     morph.parse(str(value_arr[0]))[0].normal_form
+                # )
                 arr_value_start = text_split_normal.index(
-                    morph.parse(str(value_arr[0]))[0].normal_form
+                    graph.processing_text(str(value_arr[0]))
                 )
+                # arr_value_end = text_split_normal.index(
+                #     morph.parse(str(
+                #         value_arr[len(value_arr) - 1]
+                #     ))[0].normal_form
+                # )
                 arr_value_end = text_split_normal.index(
-                    morph.parse(str(
+                    graph.processing_text(str(
                         value_arr[len(value_arr) - 1]
-                    ))[0].normal_form
+                    ))
                 )
                 text_split[arr_value_start] = ("<value>"
                                                + text_split[arr_value_start])
@@ -307,7 +322,7 @@ def send_res(res):
             print_info(filename)
 
 
-def log_message_try(rep_type, text, intents_values_dic, place):
+def log_message_try(rep_type, text, intents_values_dic, place, graph):
     print("intents_values_dic")
     print(intents_values_dic)
 
@@ -319,14 +334,15 @@ def log_message_try(rep_type, text, intents_values_dic, place):
 
     if not intents_values_dic:
         intents_values_dic = []
-    morph = pymorphy3.MorphAnalyzer()
+    # morph = pymorphy3.MorphAnalyzer()
     intent_values = intent_array(intents_values_dic)
     text_split = multi_split(text)
     text_split_normal = []
     text_split_indexes = []
 
     for word in text_split:
-        text_split_normal.append(morph.parse(word)[0].normal_form)
+        # text_split_normal.append(morph.parse(word)[0].normal_form)
+        text_split_normal.append(graph.processing_text(word))
         text_split_indexes.append("")
 
     print("text_split_normal")
@@ -351,22 +367,24 @@ def log_message_try(rep_type, text, intents_values_dic, place):
             for intent in intent_values[words]:
                 value_arr = str(intent).split(" ")
                 if len(value_arr) == 1:
-                    if (morph.parse(str(value_arr[0]))[0].normal_form
+                    if (graph.processing_text(str(value_arr[0]))
                             in text_split_normal):
                         arr_value_start_end = text_split_normal.index(
-                            morph.parse(str(value_arr[0]))[0].normal_form
+                            graph.processing_text(str(value_arr[0]))
                         )
                         text_split_indexes[arr_value_start_end] = "value"
                 else:
-                    if (morph.parse(str(value_arr[0]))[0].normal_form
+                    if (graph.processing_text(str(value_arr[0]))
+                            in text_split_normal
+                            and graph.processing_text(str(value_arr[len(value_arr) - 1]))
                             in text_split_normal):
                         arr_value_start = text_split_normal.index(
-                            morph.parse(str(value_arr[0]))[0].normal_form
+                            graph.processing_text(str(value_arr[0]))
                         )
                         arr_value_end = text_split_normal.index(
-                            morph.parse(str(
+                            graph.processing_text(str(
                                 value_arr[len(value_arr) - 1])
-                            )[0].normal_form
+                            )
                         )
                         text_split_indexes[arr_value_start] = "value_start"
                         text_split_indexes[arr_value_end] = "value_end"
@@ -443,12 +461,10 @@ def archive_log(scene_name):
             place = reply.find("place")
             print(place.text)
             if place.text == scene_name:
-                print("ARCHIVE...")
-                log.attrib["type"] = "archive"
-                print(log.attrib)
+                log.attrib["archive"] = str(datetime.date.today())
     f1 = open("logs/OK.log", "r+", encoding="utf-8")
     f1.truncate(0)
-    f1.write(bytes.decode(ET.tostring(ok_root, encoding='utf-8')))
+    f1.write(bytes.decode(ET.tostring(ok_root, encoding="utf-8")))
     f1.close()
 
 

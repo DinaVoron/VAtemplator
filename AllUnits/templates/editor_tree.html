@@ -109,13 +109,13 @@
                         {% endfor %}
                     </optgroup>
                 </select>
-                <br><input type="submit" value="Добавить интент">
             </form>
             <form method="post">
                 <p> Удаление сцены (и ее потомков)!!!</p>
                 <input type="hidden" name = delete_scene value="1">
                 <input type="hidden" name = hidden_scene_name_delete id = hidden_scene_name_delete>
                 <br><input type="submit" value="Удалить сцену">
+                <br><input type="submit" class="save_tree" name="save_tree" value="Сохранить дерево">
             </form>
         </div>
 
@@ -171,15 +171,10 @@
                         {% endfor %}
                     </optgroup>
                 </select>
-                <br><input type="submit" value="Добавить интент">
             </form>
-        <!-- </div> -->
         </div>
     </main>
-    <form method="post">
-        <!--<input type="hidden" name = save_tree value="1">-->
-        <br><input type="submit" name="save_tree" value="Сохранить дерево">
-    </form>
+
 
     <script>
         var scenes_list = JSON.parse('{{json_scenes_list | tojson | safe}}');
