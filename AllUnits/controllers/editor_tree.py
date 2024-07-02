@@ -99,7 +99,7 @@ def editor_tree():
         question_references.append(graph.get_reference_lemma(intent))
 
     print(question_references)
-    #question_references.remove("Нап") # ломается на "Нап"
+    #question_references.remove("Нап")
     #question_references = ['Под', 'Бал']
     for intent in question_references:
         list_dict_intents.append({'intent':intent, 'meaning': None, 'type': 'REPRESENT'}) # represent - представление
@@ -150,12 +150,22 @@ def editor_tree():
         clarifying_question = request.values.get("clarifying_question")
 
         scene = dialog_tree.to_scene(old_scene_name)
-        scene.answer = scene.set_answer(answer)
-        scene.short_answer = scene.set_short_answer(short_answer)
-        scene.questions = scene.set_question(questions)
+        scene.set_answer(answer)
+        scene.set_short_answer(short_answer)
+        scene.set_question(questions)
         scene.available_intents_list = available_intents.split(",")
-        scene.clarifying_question = scene.set_clarifying_question(clarifying_question)
+        scene.set_clarifying_question(clarifying_question)
         scene.name = new_scene_name
+
+        print(old_scene_name)
+        print(answer)
+        print(scene.name)
+        print(scene.answer)
+        print(scene.short_answer)
+        print(scene.questions)
+        print(scene.available_intents_list)
+        print(clarifying_question)
+        print("Сцена после изменения")
 
     # добавление сцены
     if request.values.get("add_scene"):
@@ -169,21 +179,34 @@ def editor_tree():
 
         scene = Scene(name=scene_name)
         parent_scene = dialog_tree.to_scene(parent_scene_name)
-        scene.answer = scene.set_answer(answer)
-        scene.short_answer = scene.set_short_answer(short_answer)
-        scene.questions = scene.set_question(questions)
+        scene.set_answer(answer)
+        scene.set_short_answer(short_answer)
+        scene.set_question(questions)
         scene.available_intents_list = available_intents.split(",")
-        scene.clarifying_question = scene.set_clarifying_question(clarifying_question)
+        scene.set_clarifying_question(clarifying_question)
+        print(json_scenes_list)
         parent_scene.add_child(scene)
 
-    print(request.values.get("delete_scene"))
+        scenes_count, scenes_list = dialog_tree.get_scenes_list()
+        json_scenes_list = jsons.dump(scenes_list)
+        json_scenes_list = jsons.load(json_scenes_list)
+        print(json_scenes_list)
+
+    for child in dialog_tree.root.children:
+        print(child.name)
+
+    print(dialog_tree.root.name)
+    print(dialog_tree.root.answer)
+    print(dialog_tree.root.short_answer)
+    print(dialog_tree.root.questions)
+    print(dialog_tree.root.available_intents_list)
+    print(dialog_tree.root.clarifying_question)
 
     html = render_template(
         "editor_tree.html",
         current_page='editor_tree',
         dialog_tree = dialog_tree,
         #text_scenes = text_scenes,
-        all_tree = all_tree,
         current_scene = current_scene,
         scene_name = scene_name,
         #scene_stats = scene_stats,

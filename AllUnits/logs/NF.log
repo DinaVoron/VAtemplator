@@ -41,135 +41,71 @@
 
 <log>
 
-<question><date>2024-06-28</date><time>22:44:12</time><text>платное обучение</text><place>Нет</place></question>
-
-<answer><date>2024-06-28</date><time>22:44:13</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
-
 </log>
 
 <log>
-
-</log>
-
-<log>
-
-<question><date>2024-06-28</date><time>22:44:58</time><text>обучение</text><place>Нет</place></question>
-
-<answer><date>2024-06-28</date><time>22:44:58</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
-
-</log>
-
-<log>
-
-</log>
-
-<log>
-
-<question><date>2024-06-28</date><time>22:49:42</time><text>платное обучение</text><place>Нет</place></question>
-
-<answer><date>2024-06-28</date><time>22:49:42</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
-
-<question><date>2024-06-28</date><time>22:49:46</time><text>платный обучение</text><place>Нет</place></question>
-
-<answer><date>2024-06-28</date><time>22:49:46</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
-
-</log>
-
-<log>
-
-</log>
-
-<log>
-
-<question><date>2024-06-28</date><time>23:04:35</time><text>обучение платный</text><place>Нет</place></question>
-
-<answer><date>2024-06-28</date><time>23:04:36</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
-
-</log>
-
-<log>
-
-</log>
-
-<log>
-
-<question><date>2024-06-28</date><time>23:18:28</time><text>обучение платный</text><place>Нет</place></question>
-
-<answer><date>2024-06-28</date><time>23:18:28</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
-
-</log>
-
-<log>
-
-</log>
-
-<log>
-
-<question><date>2024-06-28</date><time>23:22:10</time><intent>платный обучение</intent><place>Нет</place></question>
-
-<answer><date>2024-06-28</date><time>23:22:10</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
-
-</log>
-
-<log>
-
-</log>
-
-<log>
-
-<question><date>2024-06-28</date><time>23:27:33</time><intent>платный обучение</intent><text>25</text><place>Нет</place></question>
-
-<answer><date>2024-06-28</date><time>23:27:33</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
-
-</log>
-
-<log>
-
-</log>
-
-<log>
-
-<question><date>2024-06-28</date><time>23:34:02</time><text>197</text><place>Нет</place></question>
-
-<answer><date>2024-06-28</date><time>23:34:02</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
-
-</log>
-
-<log>
-
-</log>
-
-<log>
-
-<question><date>2024-06-29</date><time>10:46:30</time><intent>рубль</intent><text>5000000</text><place>Нет</place></question>
-
-<answer><date>2024-06-29</date><time>10:46:31</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
-
-</log>
-
-<log>
-
-</log>
-
-<log>
-
-<question><date>2024-06-29</date><time>10:48:58</time><intent>сумма</intent><text>автокредита банк</text><place>Нет</place></question>
-
-<answer><date>2024-06-29</date><time>10:48:58</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
-
-</log>
-
-<log>
-
-</log>
-
-<log>
-
-<question><date>2024-06-29</date><time>11:09:52</time><intent>рубль</intent><text>8000000</text><place>Нет</place></question>
-
-<answer><date>2024-06-29</date><time>11:09:52</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_направлений</place></answer>
 
 </log>
 <log>
+<question><date>2024-07-01</date><time>22:38:59</time><intent>Направление подготовки</intent><value>прикладная математика и информатика</value><text>в</text><value>2020</value><intent>году</intent><text>какой имела проходной балл </text><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:38:59</time><text>Проходной балл для</text><intent>направления подготовка</intent><text>['прикладной математика информатика'] - проходной балл </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:39:15</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:39:15</time><text>Проходной балл для</text><intent>направления подготовка</intent><text>['прикладной математика информатика'] - проходной балл </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:40:02</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:40:02</time><text>Проходной балл для</text><intent>направления подготовка</intent><text>['прикладной математика информатика'] - проходной балл </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:40:06</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:40:06</time><text>Проходной балл для</text><intent>направления подготовка</intent><text>['прикладной математика информатика'] - проходной балл </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:40:07</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:40:08</time><text>Проходной балл для</text><intent>направления подготовка</intent><text>['прикладной математика информатика'] - проходной балл </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:40:10</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:40:10</time><text>проходной балл - ['прикладной математика информатика'] </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:40:34</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:40:34</time><text>проходной балл - ['прикладной математика информатика'] </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:40:36</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:40:36</time><text>Проходной балл для</text><intent>направления подготовка</intent><text>['прикладной математика информатика'] - проходной балл </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:40:38</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:40:39</time><text>Проходной балл для</text><intent>направления подготовка</intent><text>['прикладной математика информатика'] - проходной балл </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:40:40</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:40:40</time><text>Проходной балл для</text><intent>направления подготовка</intent><text>['прикладной математика информатика'] - проходной балл </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:40:42</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:40:42</time><text>проходной балл - ['прикладной математика информатика'] </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:41:15</time><text>фывапролдорп</text><place>Нет</place></question>
+
+<answer><date>2024-07-01</date><time>22:41:15</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:41:31</time><text>пропапролапролапрол</text><place>Нет</place></question>
+
+<answer><date>2024-07-01</date><time>22:41:31</time><text>Мои соболезнования  Я не нашел ответа на ваш вопрос </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:41:48</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:41:48</time><text>Проходной балл для</text><intent>направления подготовка</intent><text>['прикладной математика информатика'] - проходной балл </text><place>проверка_балла_направления</place></answer>
+
+<question><date>2024-07-01</date><time>22:41:53</time><text>пьрплпплпллпо</text><place>проверка_балла_направления</place></question>
+
+<answer><date>2024-07-01</date><time>22:41:54</time><text>Уточнение по вопросу  интенты </text><intent>направление подготовка</intent><text /><place>проверка_балла_направления</place></answer>
+
 </log>
 </logs>

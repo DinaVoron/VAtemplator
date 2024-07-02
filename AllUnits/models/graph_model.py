@@ -8,7 +8,7 @@ from models.module.graph_nlp import ClusterType, create_clusters
 
 
 class Graph:
-    def __init__(self, documents_folder="./documents", model="ru_core_news_sm"):
+    def __init__(self, documents_folder="./documents", model="ru_core_news_lg"):
         """
         Конструктор класса Graph.
 
@@ -449,10 +449,6 @@ class Graph:
         Returns:
         - list: Обновленный список запросов с найденной информацией.
         """
-        print()
-        print(request, flag)
-        print(self.static_layer)
-        print()
 
         # Список для хранения слоев, связанных с запросом
         if flag:
@@ -565,6 +561,8 @@ class Graph:
                 content += word.lemma_ + " "
             content = content[:-1] + ". "
 
+        print("content")
+        print(content)
         return content[:-1]
 
     def is_reference_name(self, name):

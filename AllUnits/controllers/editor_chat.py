@@ -4,7 +4,7 @@ from models.dialog_model import get_root, get_scene_name, find_scene_by_name, \
     dialog, new_dialog
 from models.editor_data_model import send_res, clean_logs, send_log
 
-
+context = []
 @app.route("/chat", methods=["GET"])
 def editor_chat():
     session["nf"] = False
@@ -21,12 +21,15 @@ def editor_chat():
 
 @app.route("/chat/send", methods=["POST"])
 def handle_chat_send():
+    global context
     current_scene = find_scene_by_name(request.json.get("scene"),
                                        dialog_tree=dialog_tree)
     question = request.json.get("question")
+    print(question)
+    answer, scene_name, _, _, intent_values, to_context = new_dialog(question, graph,
+                                                   dialog_tree, previous_intents=context)
 
-    answer, scene_name, _, _, intent_values = new_dialog(question, graph,
-                                                   dialog_tree)
+    context = to_context
 
     if find_scene_by_name(scene_name, dialog_tree=dialog_tree) is None:
         scene_name = request.json.get("scene")
@@ -55,6 +58,9 @@ def handle_chat_rating():
 
 @app.route("/chat/finish", methods=["POST"])
 def handle_chat_finish():
+    global context
+    print(context)
+    context = []
     if session["nf"]:
         send_res("NF")
     return make_response(jsonify({

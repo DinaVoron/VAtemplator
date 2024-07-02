@@ -2,65 +2,33 @@
 
 <log>
 
-<question><date>2024-05-08</date><time>23:15:55</time><intent>napravlenie</intent><value>инженерия</value><text>имеет</text><intent>балл</intent><place>main</place></question>
+<question><date>2024-07-01</date><time>22:44:37</time><text>Какой проходной балл</text><intent>направление подготовки</intent><value>прикладной математики и информатики</value><text>имело в</text><value>2020</value><intent>году</intent><text /><place>проверка_балла_направления</place></question>
 
-<answer><date>2024-05-08</date><time>23:15:58</time><text> на направление ['инженерия'] балл None</text><place>main</place></answer>
-
-<question><date>2024-05-08</date><time>23:16:00</time><text>какой</text><intent>балл</intent><text>у</text><intent>курс</intent><value>3</value><place>sub1</place></question>
-
-<answer><date>2024-05-08</date><time>23:16:20</time><text> на курс ['3'] балл None</text><place>sub1</place></answer>
+<answer><date>2024-07-01</date><time>22:44:38</time><text>Проходной балл для</text><intent>направления подготовка</intent><text>['прикладной математика информатика'] - проходной балл </text><place>проверка_балла_направления</place></answer>
 
 </log>
 
 <log>
 
-<question><date>2024-05-21</date><time>22:00:57</time><text /><place>срок_приема_подготовки</place></question>
+<question><date>2024-07-02</date><time>14:48:16</time><intent>Код дисциплины</intent><text>- 01 03 02  какое</text><intent>направление подготовки</intent><text /><place>проверка_направлений</place></question>
 
-<answer><date>2024-05-21</date><time>22:00:57</time><text /><place>срок_приема_подготовки</place></answer>
+<answer><date>2024-07-02</date><time>14:48:16</time><text>короткий ['прикладной математика информатика'] </text><place>проверка_направлений</place></answer>
 
-<question><date>2024-05-21</date><time>22:01:27</time><text>Hello</text><place>срок_приема_подготовки</place></question>
+<question><date>2024-07-02</date><time>14:48:24</time><text>Какой проходной балл в</text><value>2020</value><intent>году</intent><text>по</text><value>прикладной математика информатика</value><text /><place>проверка_балла_направления</place></question>
 
-<answer><date>2024-05-21</date><time>22:01:27</time><text /><place>срок_приема_подготовки</place></answer>
-
-</log>
-
-<log>
-
-<question><date>2024-05-21</date><time>23:52:14</time><text>яысс</text><place>срок_приема_подготовки</place></question>
-
-<answer><date>2024-05-21</date><time>23:52:14</time><text /><place>срок_приема_подготовки</place></answer>
-
-<question><date>2024-05-21</date><time>23:52:23</time><text>Какой я</text><place>срок_приема_подготовки</place></question>
-
-<answer><date>2024-05-21</date><time>23:52:23</time><text> Да</text><place>срок_приема_подготовки</place></answer>
+<answer><date>2024-07-02</date><time>14:48:24</time><text>проходной балл - ['197']   </text><place>проверка_балла_направления</place></answer>
 
 </log>
 
 <log>
 
-</log>
+<question><date>2024-07-02</date><time>15:06:12</time><text>Какой проходной балл в 2025</text><intent>году</intent><text>с</text><intent>кодом дисциплины</intent><text>01 03 02 </text><place>проверка_балла_направления</place></question>
 
-<log>
+<answer><date>2024-07-02</date><time>15:06:12</time><text>Уточнение по вопросу  интенты </text><intent>направление подготовка</intent><text /><place>проверка_балла_направления</place></answer>
 
-<question><date>2024-06-27</date><time>12:48:23</time><text>балл направление почему</text><place>проверка_балла_направления</place></question>
+<question><date>2024-07-02</date><time>15:06:30</time><text>Какой проходной балл в</text><value>2023</value><intent>году</intent><text>с</text><intent>кодом дисциплины</intent><text>01 03 02 </text><place>проверка_балла_направления</place></question>
 
-<answer><date>2024-06-27</date><time>12:48:24</time><text>Не получилось найти ответ  найдены  балл   None направление   None </text><place>проверка_балла_направления</place></answer>
-
-</log>
-
-<log>
-
-<question><date>2024-06-27</date><time>13:51:02</time><intent>направление</intent><intent>балл</intent><value>200</value><place>проверка_балла_направления</place></question>
-
-<answer><date>2024-06-27</date><time>13:51:02</time><intent>балл</intent><text>['200']</text><intent>направление</intent><text>['прикладной математика информатика'] </text><place>проверка_балла_направления</place></answer>
-
-</log>
-
-<log archive="2024-07-01">
-
-<question><date>2024-06-27</date><time>13:51:02</time><intent>направление</intent><intent>балл</intent><value>200</value><place>непон</place></question>
-
-<answer><date>2024-06-27</date><time>13:51:02</time><intent>балл</intent><text>['200']</text><intent>направление</intent><text>['прикладной математика информатика'] </text><place>проверка_балла_направления</place></answer>
+<answer><date>2024-07-02</date><time>15:06:31</time><text>Проходной балл для</text><intent>направления подготовка</intent><text>['прикладной математика информатика'] - ['230']   ['2023'] </text><place>проверка_балла_направления</place></answer>
 
 </log>
 
